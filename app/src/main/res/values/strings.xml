@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">travel3</string>
+    <string name="login_with_google">Google로 로그인 하기</string>
 </resources>

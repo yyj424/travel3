@@ -7,7 +7,7 @@
     android:background="#FFFFFF">
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/topBar"
+        android:id="@+id/topBar_main"
         android:layout_width="412dp"
         android:layout_height="268dp"
         android:layout_marginStart="1dp"
@@ -61,13 +61,13 @@
         android:background="@drawable/s_form"
         android:ems="10"
         android:inputType="textPersonName"
-        android:paddingLeft="10"
+        android:paddingLeft="10dp"
         android:text="이름을 입력하세요."
         android:textColor="#BDBDBD"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topBar" />
+        app:layout_constraintTop_toBottomOf="@+id/topBar_main" />
 
     <EditText
         android:id="@+id/etEmailForm"
@@ -77,7 +77,7 @@
         android:background="@drawable/s_form"
         android:ems="10"
         android:inputType="textPersonName"
-        android:paddingLeft="10"
+        android:paddingLeft="10dp"
         android:text="이메일을 입력하세요"
         android:textColor="#BDBDBD"
         app:layout_constraintEnd_toEndOf="parent"
@@ -109,7 +109,7 @@
         android:background="@drawable/s_form"
         android:ems="10"
         android:inputType="textPassword"
-        android:paddingLeft="10"
+        android:paddingLeft="10dp"
         android:text="비밀번호를 입력하세요."
         android:textColor="#BDBDBD"
         app:layout_constraintEnd_toEndOf="parent"
@@ -121,9 +121,9 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginTop="48dp"
-        android:background="@drawable/s_btnLogin"
+        android:background="@drawable/s_form"
         android:fontFamily="@font/tmoney_regular"
-        android:paddingTop="10"
+        android:paddingTop="10dp"
         android:text="로그인"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -136,9 +136,9 @@
         android:layout_width="300dp"
         android:layout_height="50dp"
         android:layout_marginBottom="40dp"
-        android:background="@drawable/s_btnLogin"
+        android:background="@drawable/s_form"
         android:fontFamily="@font/tmoney_regular"
-        android:paddingTop="10"
+        android:paddingTop="10dp"
         android:text="회원가입"
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -153,15 +153,14 @@
         android:layout_marginTop="8dp"
         android:background="@drawable/s_form"
         android:fontFamily="@font/tmoney_regular"
-        android:paddingTop="10"
-        android:text="Button"
-        android:textColor="#FFCC5C"
+        android:paddingTop="10dp"
+        android:text="@string/login_with_google"
+        android:textColor="#DADADA"
         android:textSize="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.504"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnLogin"
-        tools:text="Google로 로그인 하기" />
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
 
     <TextView
         android:id="@+id/findPW"
