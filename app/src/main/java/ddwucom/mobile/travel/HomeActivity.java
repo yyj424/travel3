@@ -15,7 +15,7 @@ public class HomeActivity extends AppCompatActivity {
 
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
         Intent intent;
-        switch (v.getId()) { // 필요한 부분만 주석 풀어서 쓰세욥.
+        switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
 //            case R.id.btn_plan:
 //                intent = new Intent(this, );
 //                break;
