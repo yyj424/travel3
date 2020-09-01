@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">travel3</string>
     <string name="login_with_google">Google로 로그인 하기</string>
+    <string name="pw_rules1">* 10자 이상</string>
+    <string name="pw_rules2">* 영문/숫자/특수문자(공백제외)허용, 2개이상 조합</string>
 </resources>

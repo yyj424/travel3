@@ -1,6 +1,193 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#FFFFFF">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/header2"
+        android:layout_width="415dp"
+        android:layout_height="80dp"
+        android:background="#DBFFCC5C"
+        app:layout_constraintBottom_toTopOf="@+id/body2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/textView8"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/tmoney_bold"
+            android:text="회원가입"
+            android:textColor="#FFFFFF"
+            android:textSize="24dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="51dp"
+            android:layout_height="41dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginLeft="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/abc_vector_test" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/body2"
+        android:layout_width="412dp"
+        android:layout_height="768dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header2">
+
+        <TextView
+            android:id="@+id/textView14"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pw_rules2"
+            android:textColor="#BDBDBD"
+            app:layout_constraintBottom_toTopOf="@+id/textView10"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView15"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="휴대전화"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/editTextPhone"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword2"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:background="@drawable/s_form2"
+            android:ems="10"
+            android:hint="비밀번호"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/textView11"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextTextPassword"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:background="@drawable/s_form2"
+            android:ems="10"
+            android:inputType="textPassword"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/textView15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName3"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="45dp"
+            android:background="@drawable/s_form2"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="이름을 입력해주세요."
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView12" />
+
+        <TextView
+            android:id="@+id/textView13"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/pw_rules1"
+            android:textColor="#BDBDBD"
+            app:layout_constraintBottom_toTopOf="@+id/textView14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView11"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호 확인"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/textView12"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="이름"
+            android:textColor="#000000"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="비밀번호"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword2"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <EditText
+            android:id="@+id/editTextTextPersonName"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:layout_marginTop="2dp"
+            android:background="@drawable/s_form2"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:paddingLeft="10dp"
+            android:text="예) travel3Good"
+            android:textColor="#BDBDBD"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView9" />
+
+        <TextView
+            android:id="@+id/textView9"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="11dp"
+            android:fontFamily="@font/tmoney_regular"
+            android:text="아이디"
+            android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/editTextTextPersonName"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
+
+        <EditText
+            android:id="@+id/editTextPhone"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:background="@drawable/s_form2"
+            android:ems="10"
+            android:inputType="phone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
