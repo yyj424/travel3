@@ -21,15 +21,18 @@ public class HomeActivity extends Activity {
 //                Intent intent = new Intent(this, RecordListActivity.class);
 //                startActivity(intent);
 //                break;
-//            case R.id.btn_map:
+//            case R.id.btn_room:
 //                Intent intent = new Intent(this, );
 //                startActivity(intent);
+//                break;
 //            case R.id.btn_course:
 //                Intent intent = new Intent(this, );
 //                startActivity(intent);
-//            case R.id.btn_friends:
+//                break;
+//            case R.id.btn_map:
 //                Intent intent = new Intent(this, );
 //                startActivity(intent);
+//                break;
         }
     }
 }

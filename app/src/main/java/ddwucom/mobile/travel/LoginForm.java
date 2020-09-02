@@ -19,14 +19,14 @@ public class LoginForm extends AppCompatActivity {
         setContentView(R.layout.loginform_main);
 
         etName = findViewById(R.id.etNameForm);
-
+        etEmail = findViewById(R.id.etEmailForm);
         etPW = findViewById(R.id.etPwForm);
 
         findID = findViewById(R.id.findID);
         findPW = findViewById(R.id.findPW);
 
         btnLogin = findViewById(R.id.btnLogin);
-
+        btnGoogleLogin = findViewById(R.id.btnLoginGoogle);
         btnJoin = findViewById(R.id.btnJoin);
     }
 }
