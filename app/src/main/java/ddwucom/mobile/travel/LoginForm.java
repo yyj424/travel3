@@ -9,9 +9,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class LoginForm extends AppCompatActivity {
-    EditText etName, etEmail, etPW;
+    EditText etName, etPW;
     TextView findID, findPW;
-    Button btnLogin, btnJoin, btnGoogleLogin;
+    Button btnLogin, btnJoin;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -19,14 +19,12 @@ public class LoginForm extends AppCompatActivity {
         setContentView(R.layout.loginform_main);
 
         etName = findViewById(R.id.etNameForm);
-        etEmail = findViewById(R.id.etEmailForm);
         etPW = findViewById(R.id.etPwForm);
 
         findID = findViewById(R.id.findID);
         findPW = findViewById(R.id.findPW);
 
         btnLogin = findViewById(R.id.btnLogin);
-        btnGoogleLogin = findViewById(R.id.btnLoginGoogle);
         btnJoin = findViewById(R.id.btnJoin);
     }
 }
