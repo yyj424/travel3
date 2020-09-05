@@ -17,6 +17,17 @@
             </intent-filter>
         </activity>
         <activity android:name=".LoadingActivity"/>
+        <activity android:name=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".MainActivity" />
+        </activity>
+        <activity android:name=".RecordListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+        <user-permission android:name="android.permission.INTERNET" />
     </application>
 
 </manifest>
