@@ -18,13 +18,14 @@
         app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
-            android:id="@+id/imageView17"
+            android:id="@+id/foundID_imgBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
             android:layout_marginLeft="24dp"
             android:layout_marginEnd="93dp"
             android:layout_marginRight="93dp"
+            android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView16"
             app:layout_constraintStart_toStartOf="parent"

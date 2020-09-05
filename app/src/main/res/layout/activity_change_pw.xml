@@ -29,7 +29,7 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView23"
+            android:id="@+id/changePW_imgBack"
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
@@ -50,13 +50,13 @@
         android:text="새 비밀번호 등록"
         android:textColor="#000000"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword3"
+        app:layout_constraintBottom_toTopOf="@+id/etNewPW"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.008"
         app:layout_constraintStart_toStartOf="parent" />
 
     <EditText
-        android:id="@+id/editTextTextPassword3"
+        android:id="@+id/etNewPW"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -64,6 +64,7 @@
         android:background="@drawable/s_context_box"
         android:ems="10"
         android:inputType="textPassword"
+        android:onClick="onClick"
         app:layout_constraintBottom_toTopOf="@+id/textView29"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.057"
@@ -78,14 +79,14 @@
         android:fontFamily="@font/tmoney_regular"
         android:textColor="#000000"
         android:textSize="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/editTextTextPassword4"
+        app:layout_constraintBottom_toTopOf="@+id/etNewPW_check"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.034"
         app:layout_constraintStart_toStartOf="parent"
         tools:text="새 비밀번호 확인" />
 
     <EditText
-        android:id="@+id/editTextTextPassword4"
+        android:id="@+id/etNewPW_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="32dp"
@@ -94,7 +95,8 @@
         android:background="@drawable/s_context_box"
         android:ems="10"
         android:inputType="textPassword"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toTopOf="@+id/btnCheck"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.228"
         app:layout_constraintStart_toStartOf="parent" />
@@ -115,10 +117,10 @@
         tools:text="@string/pw_rules" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/btnCheck"
         android:layout_width="338dp"
         android:layout_height="50dp"
-        android:layout_marginBottom="332dp"
+        android:layout_marginBottom="330dp"
         android:background="@drawable/s_btnlogin"
         android:fontFamily="@font/tmoney_bold"
         android:text="확인"
@@ -128,5 +130,19 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.63"
         app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/warnMsg"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="비밀번호가 일치하지 않습니다."
+        android:textColor="#FF0000"
+        android:textSize="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.2"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/etNewPW_check" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -24,14 +24,14 @@ public class LoginForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginform_main);
 
-        etName = findViewById(R.id.etNameForm);
-        etPW = findViewById(R.id.etPwForm);
+        etName = (EditText) findViewById(R.id.etNameForm);
+        etPW = (EditText) findViewById(R.id.etPwForm);
 
         findID = findViewById(R.id.findID);
         findPW = findViewById(R.id.findPW);
 
-        btnLogin = findViewById(R.id.btnLogin);
-        btnJoin = findViewById(R.id.btnJoin);
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnJoin = (Button) findViewById(R.id.btnJoin);
 
         SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
 
@@ -44,7 +44,6 @@ public class LoginForm extends AppCompatActivity {
                 Intent intent = new Intent(LoginForm.this, HomeActivity.class);
             }
         }
-
         SharedPreferences.Editor autoLogin = auto.edit();
         autoLogin.putString("etName", etName.getText().toString());
         autoLogin.putString("etPW", etPW.getText().toString());
@@ -55,6 +54,7 @@ public class LoginForm extends AppCompatActivity {
         startActivity(intent);
         finish();
     }
+
     public void onClick (View v){
         switch (v.getId()) {
 //            case R.id.btnLogin:
@@ -72,6 +72,9 @@ public class LoginForm extends AppCompatActivity {
             case R.id.findPW:
                 Intent intent4 = new Intent(this, FindPwActivity.class);
                 startActivity(intent4);
+                break;
+            case R.id.etNameForm:
+                etName.setText("");
                 break;
         }
     }
