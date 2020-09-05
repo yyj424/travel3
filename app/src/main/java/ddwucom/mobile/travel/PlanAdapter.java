@@ -21,7 +21,7 @@ public class PlanAdapter extends BaseAdapter {
         this.context = context;
         this.layout = layout;
         this.myPlanList = myPlanList;
-        this.layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
@@ -47,14 +47,13 @@ public class PlanAdapter extends BaseAdapter {
             convertView = layoutInflater.inflate(layout, parent, false);
         }
 
-        //ImageView image = convertView.findViewById(R.id.y_modify);
         TextView name = convertView.findViewById(R.id.y_planName);
         TextView start = convertView.findViewById(R.id.y_plan_startDate);
         TextView end = convertView.findViewById(R.id.y_plan_endDate);
 
-        //name.setText(myPlanList.get(pos).getTitle());
-        //place.setText(myDiaryList.get(pos).getPlace());
-        //date.setText(myDiaryList.get(pos).getDate());
+        name.setText(myPlanList.get(pos).getPlanName());
+        start.setText(myPlanList.get(pos).getStartDate());
+        end.setText(myPlanList.get(pos).getEndDate());
 
         return convertView;
     }
