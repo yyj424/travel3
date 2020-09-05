@@ -31,6 +31,9 @@
         <activity android:name=".FindIdActivity"/>
         <activity android:name=".LoginForm"/>
         <activity android:name=".JoinActivity"/>
+        <activity android:name=".PlanList"/>
+        <activity android:name=".PlanFirstStep"/>
+        <activity android:name=".PlanSecondStep"/>
         <user-permission android:name="android.permission.INTERNET" />
     </application>
 
