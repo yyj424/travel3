@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="country_array">
+        <item>한국</item>
+        <item>미국</item>
+        <item>중국</item>
+        <item>영국</item>
+        <item>태국</item>
+        <!--더 추가해야됨-->
+    </string-array>
+
+    <string-array name="widePlace_array">
+        <item>한국</item>
+        <item>미국</item>
+        <item>중국</item>
+        <item>영국</item>
+        <item>태국</item>
+        <!--더 추가해야됨-->
+    </string-array>
+
+    <string-array name="narrowPlace_array">
+        <item>한국</item>
+        <item>미국</item>
+        <item>중국</item>
+        <item>영국</item>
+        <item>태국</item>
+        <!--더 추가해야됨-->
+    </string-array>
+</resources>

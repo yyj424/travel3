@@ -11,6 +11,7 @@ public class MyPlan {
         PlanName = planName;
         StartDate = startDate;
         EndDate = endDate;
+
     }
 
     public long get_id() {

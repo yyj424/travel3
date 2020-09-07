@@ -8,21 +8,21 @@ import androidx.appcompat.app.AppCompatActivity;
 
 public class PlanFirstStep extends AppCompatActivity {
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.plan_1);
-    }
-
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.y_alone:
-                //Intent intent = new Intent(this, );
-                //startActivity(intent);
-                break;
-            case R.id.y_together:
-                //Intent intent = new Intent(this, );
-                //startActivity(intent);
-                break;
+        protected void onCreate(@Nullable Bundle savedInstanceState) {
+            super.onCreate(savedInstanceState);
+            setContentView(R.layout.plan_1);
         }
+
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.y_alone:
+                    //Intent intent = new Intent(this, );
+                    //startActivity(intent);
+                    break;
+                case R.id.y_together:
+                    //Intent intent = new Intent(this, );
+                    //startActivity(intent);
+                    break;
+            }
     }
 }
