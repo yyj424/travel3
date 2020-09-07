@@ -1,9 +1,11 @@
 package ddwucom.mobile.travel;
 
 import android.content.Intent;
+import android.graphics.Paint;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -12,6 +14,11 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.AuthResult;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -22,12 +29,15 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Pattern;
 
 public class JoinActivity extends AppCompatActivity {
 
     private DatabaseReference mPostReference;
+    private FirebaseAuth mAuth;
 
-    EditText etName, etID, etEmail, etPhone;
+
+    EditText etName, etID, etEmail, etPhone, etPw, etPwCheck;
 
     String _id, name, email, phone;
     String sort = "_id";
@@ -43,6 +53,10 @@ public class JoinActivity extends AppCompatActivity {
         etID = (EditText)findViewById(R.id.join_etID);
         etEmail = (EditText)findViewById(R.id.join_etEmail);
         etPhone = (EditText)findViewById(R.id.join_etPhone);
+        etPw = (EditText)findViewById(R.id.etNewPW_check);
+        etPwCheck = (EditText)findViewById(R.id.etNewPW_check);
+
+        mAuth = FirebaseAuth.getInstance(); // 인스턴스 초기화
     }
     public void postFirebaseDatabase(boolean add){
         mPostReference = FirebaseDatabase.getInstance().getReference();
@@ -104,6 +118,55 @@ public class JoinActivity extends AppCompatActivity {
         etEmail.setText("");
 //        join_btn.setEnabled(true);
 //        btn_Update.setEnabled(false);
+    }
+    public void hide_keyboard(View view){
+        InputMethodManager imm = (InputMethodManager)getSystemService(this.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(etEmail.getWindowToken(), 0);
+    }
+
+    public void button_go_register_apply(View v){
+        String email = this.etEmail.getText().toString();
+        String pw1 = this.etPw.getText().toString();
+        String pw2 = this.etPwCheck.getText().toString();
+
+        String emailPattern = "^[a-zA-Z0-9]+@[a-zA-Z0-9.]+$"; // 이메일 형식 패턴
+        if(!Pattern.matches(emailPattern , email)){
+            Toast.makeText(JoinActivity.this , "이메일 형식을 확인해수제요" , Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        StringBuffer strbuP1 = new StringBuffer(pw1);
+        StringBuffer strbuP2 = new StringBuffer(pw2);
+
+        if(strbuP1.length() < 8 || strbuP2 .length() < 8){ // 최소 비밀번호 사이즈를 맞추기 위해서
+            Toast.makeText(this, "비밀번호는 최소 8자리 이상입니다", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        if(pw1.equals("") || pw2.equals("")){
+            Toast.makeText(JoinActivity.this , "비밀번호를 입력해주세요" , Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        if(pw1.equals(pw2)){
+
+            mAuth.createUserWithEmailAndPassword(email, pw1)
+                    .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                        @Override
+                        public void onComplete(@NonNull Task<AuthResult> task) {
+                            if (task.isSuccessful()) {
+                                Toast.makeText(JoinActivity.this, "이메일 등록에 성공했습니다", Toast.LENGTH_SHORT).show();
+                                FirebaseUser user = mAuth.getCurrentUser();
+                                Toast.makeText(JoinActivity.this, "당신의 아이디는" + user.getEmail() + "입니다", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(JoinActivity.this, "이메일 등록에 실패앴습니다", Toast.LENGTH_SHORT).show();
+                            }
+                            //hide_keyboard(view);
+                        }
+                    });
+        }else{
+            Toast.makeText(this, "비밀번호가 서로 다릅니다 확인해주세요", Toast.LENGTH_SHORT).show();
+        }
     }
     public void onClick(View v){
         switch(v.getId()){
