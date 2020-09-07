@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="ddwucom.mobile.travel">
+    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
@@ -22,11 +23,12 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <!--        <activity android:name=".RecordListActivity">-->
-        <!--            <meta-data-->
-        <!--                android:name="android.support.PARENT_ACTIVITY"-->
-        <!--                android:value=".HomeActivity" />-->
-        <!--        </activity>-->
+        <activity android:name=".RecordMain">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".LoginForm"/>
         <activity android:name=".JoinActivity"/>
         <activity android:name=".FindPwActivity"/>
@@ -37,7 +39,6 @@
         <activity android:name=".PlanList"/>
         <activity android:name=".PlanFirstStep"/>
         <activity android:name=".PlanSecondStep"/>
-        <user-permission android:name="android.permission.INTERNET" />
-    </application>
 
+    </application>
 </manifest>
