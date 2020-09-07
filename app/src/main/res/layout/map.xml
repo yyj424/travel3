@@ -4,7 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#FF9800">
+    android:background="#FFFFFF">
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView18"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView16"
+        tools:context=".MapsActivity" />
 
     <ImageView
         android:id="@+id/imageView15"
@@ -34,8 +45,8 @@
         android:ems="10"
         android:fontFamily="@font/tmoney_regular"
         android:gravity="center_vertical"
+        android:hint="장소를 입력하세요"
         android:inputType="textPersonName"
-        android:text="장소를 입력하세요"
         android:textColor="#9E000000"
         android:textSize="18sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -78,7 +89,7 @@
         app:srcCompat="@drawable/y_bar1" />
 
     <ImageView
-        android:id="@+id/imageView19"
+        android:id="@+id/y_place"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="20dp"
@@ -95,6 +106,7 @@
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="132dp"
+        android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/y_finish" />
@@ -104,10 +116,43 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="132dp"
+        android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/y_courseRegister"
         app:layout_constraintHorizontal_bias="0.951"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/y_cancel" />
+
+    <TextView
+        android:id="@+id/y_placeNum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="7dp"
+        android:layout_marginLeft="7dp"
+        android:layout_marginTop="3dp"
+        android:fontFamily="@font/tmoney_bold"
+        android:text="1"
+        android:textColor="#FFFFFF"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/y_place"
+        app:layout_constraintTop_toTopOf="@+id/y_place" />
+
+    <TextView
+        android:id="@+id/textView23"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/tmoney_bold"
+        android:text="장소명"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        app:layout_constraintBottom_toBottomOf="@+id/y_place"
+        app:layout_constraintEnd_toEndOf="@+id/y_place"
+        app:layout_constraintHorizontal_bias="0.472"
+        app:layout_constraintStart_toStartOf="@+id/y_place"
+        app:layout_constraintTop_toTopOf="@+id/y_place"
+        app:layout_constraintVertical_bias="0.466" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
