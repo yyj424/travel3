@@ -8,10 +8,16 @@ import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -22,6 +28,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class Map extends AppCompatActivity {
 
     String [] permission_list ={
@@ -31,6 +39,9 @@ public class Map extends AppCompatActivity {
 
     LocationManager locationManager;
     GoogleMap map;
+    private RecyclerView listview;
+    private ArrayList<MyCourse> courseList = null;
+    private CourseListAdapter courseListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,6 +52,42 @@ public class Map extends AppCompatActivity {
             requestPermissions(permission_list, 0);
         } else {
             init();
+        }
+        courseList();//Log.d("yc","함수끝");
+    }
+
+    private void courseList() {
+        listview = findViewById(R.id.y_course_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        listview.setLayoutManager(layoutManager);
+        courseList = new ArrayList();
+        courseList.add(new MyCourse(1, "포레스트\n아웃팅스"));
+        courseList.add(new MyCourse(2, "일산칼국수"));
+        courseList.add(new MyCourse(3, "스타필드"));
+        courseListAdapter = new CourseListAdapter(this, courseList, onClickItem);
+        listview.setAdapter(courseListAdapter);
+        CourseListDecoration decoration = new CourseListDecoration(-1000);
+        listview.addItemDecoration(decoration);
+        //!!!!!!!!!!!!!!!!수정!!!!!!!!!!!!!!!!
+    }
+
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String str = (String) v.getTag();
+            Toast.makeText(Map.this, str, Toast.LENGTH_SHORT).show();
+        }//수정해야됨
+    };
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.y_courseRemove:
+                //Intent intent = new Intent(this, );
+                //startActivity(intent);
+                break;
+            case R.id.y_courseRegister:
+
+                break;
         }
     }
 

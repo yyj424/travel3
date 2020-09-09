@@ -74,30 +74,9 @@
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/y_coursechoice" />
-
-    <ImageView
-        android:id="@+id/imageView20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/y_bar1" />
-
-    <ImageView
-        android:id="@+id/y_place"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.05"
-        app:layout_constraintStart_toStartOf="parent"
-        app:srcCompat="@drawable/y_course" />
 
     <ImageView
         android:id="@+id/y_courseRegister"
@@ -123,36 +102,17 @@
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/y_cancel" />
 
-    <TextView
-        android:id="@+id/y_placeNum"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/y_course_list"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="7dp"
-        android:layout_marginLeft="7dp"
-        android:layout_marginTop="3dp"
-        android:fontFamily="@font/tmoney_bold"
-        android:text="1"
-        android:textColor="#FFFFFF"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/y_place"
-        app:layout_constraintTop_toTopOf="@+id/y_place" />
-
-    <TextView
-        android:id="@+id/textView23"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="8dp"
-        android:fontFamily="@font/tmoney_bold"
-        android:text="장소명"
-        android:textColor="#FFFFFF"
-        android:textSize="14sp"
-        app:layout_constraintBottom_toBottomOf="@+id/y_place"
-        app:layout_constraintEnd_toEndOf="@+id/y_place"
-        app:layout_constraintHorizontal_bias="0.472"
-        app:layout_constraintStart_toStartOf="@+id/y_place"
-        app:layout_constraintTop_toTopOf="@+id/y_place"
-        app:layout_constraintVertical_bias="0.466" />
+        android:layout_height="87dp"
+        android:layout_marginStart="3dp"
+        android:layout_marginLeft="3dp"
+        android:layout_marginBottom="28dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.043"
+        app:layout_constraintStart_toStartOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
