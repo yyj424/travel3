@@ -1,11 +1,36 @@
 package ddwucom.mobile.travel;
 
 import android.Manifest;
+import android.content.pm.PackageManager;
+import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ListView;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class Map extends AppCompatActivity {/*
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.ArrayList;
+
+public class Map extends AppCompatActivity {
 
     String [] permission_list ={
             Manifest.permission.ACCESS_FINE_LOCATION,
@@ -14,16 +39,55 @@ public class Map extends AppCompatActivity {/*
 
     LocationManager locationManager;
     GoogleMap map;
+    private RecyclerView listview;
+    private ArrayList<MyCourse> courseList = null;
+    private CourseListAdapter courseListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.map);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permission_list, 0);
         } else {
             init();
+        }
+        courseList();//Log.d("yc","함수끝");
+    }
+
+    private void courseList() {
+        listview = findViewById(R.id.y_course_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        listview.setLayoutManager(layoutManager);
+        courseList = new ArrayList();
+        courseList.add(new MyCourse(1, "포레스트\n아웃팅스"));
+        courseList.add(new MyCourse(2, "일산칼국수"));
+        courseList.add(new MyCourse(3, "스타필드"));
+        courseListAdapter = new CourseListAdapter(this, courseList, onClickItem);
+        listview.setAdapter(courseListAdapter);
+        CourseListDecoration decoration = new CourseListDecoration(-1000);
+        listview.addItemDecoration(decoration);
+        //!!!!!!!!!!!!!!!!수정!!!!!!!!!!!!!!!!
+    }
+
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            String str = (String) v.getTag();
+            Toast.makeText(Map.this, str, Toast.LENGTH_SHORT).show();
+        }//수정해야됨
+    };
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.y_courseRemove:
+                //Intent intent = new Intent(this, );
+                //startActivity(intent);
+                break;
+            case R.id.y_courseRegister:
+
+                break;
         }
     }
 
@@ -51,12 +115,7 @@ public class Map extends AppCompatActivity {/*
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            //Log.d("test123", "사용준비끝");
             getMyLocation();
-//            MarkerOptions markerOptions = new MarkerOptions();
-//            markerOptions.title("sdfs");
-//            markerOptions.position(getMyLocation());
-            map.addMarker(new MarkerOptions());
         }
     }
 
@@ -64,7 +123,7 @@ public class Map extends AppCompatActivity {/*
     public void getMyLocation() {
         locationManager = (LocationManager)getSystemService(LOCATION_SERVICE);
 
-        //권한 확인 작업
+        //권한 확인 작업(일부 코드가 권한 작업을 해야 오류 안남)
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
                 return;
@@ -87,19 +146,23 @@ public class Map extends AppCompatActivity {/*
         GetMyLocationListener listener = new GetMyLocationListener();
 
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == true) {
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10f, listener);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10f, (android.location.LocationListener) listener);
         }
         if(locationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER) == true) {
-            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10f, listener);
+            locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000, 10f, (android.location.LocationListener) listener);
         }
     }
 
     public void setMyLocation(Location location) {
-        Log.d("test123", "위도 : " + location.getLatitude());
-        Log.d("test123", "경도 : " + location.getLongitude());
-
         //위도와 경도값을 관리하는 객체
         LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+
+        //maker가 생기질 않음...
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(position);
+        markerOptions.title("title");//수정!!!
+        markerOptions.snippet("snippet");//수정!!
+        markerOptions.draggable(true);
 
         CameraUpdate update1 = CameraUpdateFactory.newLatLng(position);
         CameraUpdate update2 = CameraUpdateFactory.zoomTo(15f);
@@ -118,26 +181,26 @@ public class Map extends AppCompatActivity {/*
     }
 
     //현재 위치 측정이 성공하면 반응하는 리스너
-    class GetMyLocationListener implements LocationListener{
+    class GetMyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location location) {
             setMyLocation(location);
-            locationManager.removeUpdates(this);//위치 측정 중단
+            locationManager.removeUpdates((android.location.LocationListener) this);//위치 측정 중단
         }
 
         @Override
         public void onStatusChanged(String provider, int status, Bundle extras) {
-
+            //상태 변경 시 호출
         }
 
         @Override
         public void onProviderEnabled(String provider) {
-
+            //위치 측정하기 위한 요소가 사용 불가능시 호출
         }
 
         @Override
         public void onProviderDisabled(String provider) {
-
+            //위치 측정하기 위한 요소가 사용 가능시 호출
         }
     }
 //
