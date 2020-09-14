@@ -16,27 +16,27 @@
         app:srcCompat="@drawable/y_review" />
 
     <ImageView
-        android:id="@+id/imageView23"
+        android:id="@+id/y_addPhoto"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:onClick="onClick"
-        app:layout_constraintEnd_toStartOf="@+id/imageView24"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+        app:layout_constraintEnd_toStartOf="@+id/y_removePhoto"
+        app:layout_constraintTop_toBottomOf="@+id/y_reivewContent"
         app:srcCompat="@drawable/y_add" />
 
     <ImageView
-        android:id="@+id/imageView24"
+        android:id="@+id/y_removePhoto"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="50dp"
         android:layout_marginEnd="10dp"
         android:layout_marginRight="10dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+        app:layout_constraintTop_toBottomOf="@+id/y_reivewContent"
         app:srcCompat="@drawable/y_remove" />
 
     <ImageView
@@ -93,7 +93,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="148dp"
+        android:layout_marginTop="120dp"
         android:fontFamily="@font/tmoney_bold"
         android:text="사진 등록"
         android:textColor="#969191"
@@ -107,7 +107,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginLeft="24dp"
-        android:layout_marginTop="128dp"
+        android:layout_marginTop="88dp"
         android:fontFamily="@font/tmoney_bold"
         android:text="카테고리"
         android:textColor="#969191"
@@ -116,34 +116,18 @@
         app:layout_constraintTop_toBottomOf="@+id/textView33" />
 
     <ImageView
-        android:id="@+id/imageView26"
+        android:id="@+id/y_reviewPhoto"
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:layout_marginTop="72dp"
-        app:layout_constraintEnd_toStartOf="@+id/imageView23"
-        app:layout_constraintHorizontal_bias="0.525"
+        android:layout_marginTop="30dp"
+        app:layout_constraintEnd_toStartOf="@+id/y_addPhoto"
+        app:layout_constraintHorizontal_bias="0.51"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName2"
+        app:layout_constraintTop_toBottomOf="@+id/y_reivewContent"
         app:srcCompat="@drawable/y_course" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="260dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="20dp"
-        android:background="@drawable/y_categorybar"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.793"
-        app:layout_constraintStart_toEndOf="@+id/textView35" />
-
     <RatingBar
-        android:id="@+id/ratingBar2"
+        android:id="@+id/ratingBar"
         style="@style/RatingBar"
         android:layout_width="152dp"
         android:layout_height="29dp"
@@ -154,16 +138,16 @@
         android:rating="0"
         android:stepSize="0.5"
         android:theme="@style/RatingBar"
-        app:layout_constraintStart_toEndOf="@+id/editTextTextPersonName"
+        app:layout_constraintStart_toEndOf="@+id/y_rating"
         app:layout_constraintTop_toBottomOf="@+id/imageView17" />
 
     <TextView
         android:id="@+id/textView35"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="36dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/tmoney_regular"
         android:text="청결도"
         android:textColor="#969191"
@@ -172,26 +156,26 @@
         app:layout_constraintTop_toBottomOf="@+id/textView34" />
 
     <TextView
-        android:id="@+id/textView36"
+        android:id="@+id/textView37"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/tmoney_regular"
-        android:text="가성비"
+        android:text="분위기"
         android:textColor="#969191"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView35" />
+        app:layout_constraintTop_toBottomOf="@+id/textView36" />
 
     <TextView
         android:id="@+id/textView38"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/tmoney_regular"
         android:text="접근성"
         android:textColor="#969191"
@@ -200,93 +184,89 @@
         app:layout_constraintTop_toBottomOf="@+id/textView37" />
 
     <TextView
-        android:id="@+id/textView37"
+        android:id="@+id/textView36"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="32dp"
-        android:layout_marginLeft="32dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="44dp"
+        android:layout_marginLeft="44dp"
+        android:layout_marginTop="16dp"
         android:fontFamily="@font/tmoney_regular"
-        android:text="분위기"
+        android:text="가성비"
         android:textColor="#969191"
         android:textSize="17sp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView36" />
+        app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
     <ProgressBar
-        android:id="@+id/progressBar2"
+        android:id="@+id/ctg1"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="260dp"
+        android:layout_width="200dp"
         android:layout_height="25dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginLeft="20dp"
+        android:layout_marginStart="2dp"
+        android:layout_marginLeft="2dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/y_categorybar"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar3"
+        android:max="100"
+        app:layout_constraintBottom_toTopOf="@+id/ctg2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.711"
-        app:layout_constraintStart_toEndOf="@+id/textView36" />
+        app:layout_constraintHorizontal_bias="0.882"
+        app:layout_constraintStart_toEndOf="@+id/textView35"
+        app:layout_constraintTop_toBottomOf="@+id/y_reviewPhoto"
+        app:layout_constraintVertical_bias="0.951" />
 
     <ProgressBar
-        android:id="@+id/progressBar3"
+        android:id="@+id/ctg3"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="260dp"
+        android:layout_width="200dp"
         android:layout_height="25dp"
         android:layout_marginStart="37dp"
         android:layout_marginLeft="37dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
         android:layout_marginBottom="20dp"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar4"
+        android:max="100"
+        app:layout_constraintBottom_toTopOf="@+id/ctg4"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.535"
+        app:layout_constraintHorizontal_bias="0.828"
         app:layout_constraintStart_toEndOf="@+id/textView37" />
 
     <ProgressBar
-        android:id="@+id/progressBar4"
+        android:id="@+id/ctg4"
         style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="260dp"
+        android:layout_width="200dp"
         android:layout_height="25dp"
         android:layout_marginStart="20dp"
         android:layout_marginLeft="20dp"
         android:layout_marginEnd="5dp"
         android:layout_marginRight="5dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="156dp"
+        android:max="100"
         app:layout_constraintBottom_toTopOf="@+id/imageView25"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.714"
+        app:layout_constraintHorizontal_bias="0.86"
         app:layout_constraintStart_toEndOf="@+id/textView38" />
 
-    <TextView
-        android:id="@+id/textView39"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="200dp"
-        android:layout_marginRight="200dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/tmoney_regular"
-        android:text="나쁨"
-        android:textColor="#93C599"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintEnd_toStartOf="@+id/textView40" />
-
-    <TextView
-        android:id="@+id/textView40"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginEnd="23dp"
-        android:layout_marginRight="23dp"
-        android:layout_marginBottom="5dp"
-        android:fontFamily="@font/tmoney_regular"
-        android:text="좋음"
-        android:textColor="#93C599"
-        app:layout_constraintBottom_toTopOf="@+id/progressBar"
-        app:layout_constraintEnd_toEndOf="parent" />
+    <ProgressBar
+        android:id="@+id/ctg2"
+        style="?android:attr/progressBarStyleHorizontal"
+        android:layout_width="200dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginEnd="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginBottom="24dp"
+        android:background="@drawable/y_categorybar"
+        android:max="100"
+        app:layout_constraintBottom_toTopOf="@+id/ctg3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.86"
+        app:layout_constraintStart_toEndOf="@+id/textView36" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName"
+        android:id="@+id/y_rating"
         android:layout_width="58dp"
         android:layout_height="34dp"
         android:layout_marginStart="40dp"
@@ -300,7 +280,7 @@
         app:layout_constraintTop_toBottomOf="@+id/imageView17" />
 
     <EditText
-        android:id="@+id/editTextTextPersonName2"
+        android:id="@+id/y_reivewContent"
         android:layout_width="271dp"
         android:layout_height="136dp"
         android:layout_marginTop="20dp"
@@ -311,5 +291,5 @@
         android:inputType="textPersonName"
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/ratingBar2" />
+        app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 </androidx.constraintlayout.widget.ConstraintLayout>
