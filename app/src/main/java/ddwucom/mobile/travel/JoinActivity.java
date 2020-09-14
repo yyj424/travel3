@@ -35,7 +35,8 @@ import java.util.regex.Pattern;
 public class JoinActivity extends AppCompatActivity {
     private static final String TAG = "rgrg";
     private DatabaseReference mPostReference;
-    private FirebaseAuth firebaseAuth;
+    private FirebaseAuth mAuth;
+    private FirebaseAuth.AuthStateListener mAuthListener;
 
     EditText etName, etID, etEmail, etPhone, etPw, etPwCheck;
     Button btnOk;
@@ -58,42 +59,66 @@ public class JoinActivity extends AppCompatActivity {
         btnOk = (Button)findViewById(R.id.join_btnOk);
 
         /*Firebase 인증 객체 선언*/
-        firebaseAuth = FirebaseAuth.getInstance(); // 인스턴스 초기화
-
+        mAuth = FirebaseAuth.getInstance(); // 인스턴스 초기화
+        mAuthListener = new FirebaseAuth.AuthStateListener() {
+            @Override
+            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
+                FirebaseUser user = firebaseAuth.getCurrentUser();
+                if(true){
+                    Toast.makeText(JoinActivity.this, "*^^*", Toast.LENGTH_SHORT).show();
+                }
+            }
+        };
     }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mAuth.addAuthStateListener(mAuthListener);
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        if(mAuthListener != null){
+            mAuth.removeAuthStateListener(mAuthListener);
+        }
+    }
+
     public void signUp(){ /*회원가입 정보 전달*/
         etEmail = (EditText)findViewById(R.id.join_etEmail);
         etPw = (EditText)findViewById(R.id.join_etPwCheck);
         Log.d("TAG", "editText");
         email = etEmail.getText().toString();
         pw = etPw.getText().toString();
-        Log.d("TAG", "String 변환");
+        Log.d(TAG, "String 변환");
         createUser(email, pw);
     }
     // 회원가입 -> Firebase authentification에 전달
     public void createUser(String email, String password) {
-        firebaseAuth.createUserWithEmailAndPassword(email, password)
+        mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d("TAG", "onComplete ㅂ진입");
+                        Log.d(TAG, "createUserWithEmail:onComplete:" + task.isSuccessful());
+//                        checkTaskException(task);
                         if (task.isSuccessful()) {
                             // 회원가입 성공
-                            Log.d("TAG", "성공");
+                            Log.d(TAG, "성공");
                             AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
                             builder.setTitle("회원가입 완료")
                                     .setMessage("회원가입이 완료되었습니다.")
                                     .setPositiveButton("확인", null)
                                     .show();
-                            Log.d("TAG", "다이얼로그");
+                            Log.d(TAG, "다이얼로그");
                             Toast.makeText(JoinActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
                         } else {
                             // 회원가입 실패
-                            Log.d("TAG", "실패");
+                            Log.d(TAG, "실패");
                             Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
+
                 });
     }
     //    public void postFirebaseDatabase(boolean add){
@@ -213,17 +238,15 @@ public class JoinActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.join_btnOk:
-                if (!etEmail.getText().toString().equals("") && !etPw.getText().toString().equals("") && !etPwCheck.getText().toString().equals("")) {
+//                if (!etEmail.getText().toString().equals("") && !etPw.getText().toString().equals("") && !etPwCheck.getText().toString().equals("")) {
                     // 이메일과 비밀번호가 공백이 아닌 경우
                     Log.d("TAG", "눌렀을 때");
                     signUp();
-                } else {
-                    // 이메일과 비밀번호가 공백인 경우
-                    Toast.makeText(JoinActivity.this, "계정과 비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
-                }
+                //}// else {
+//                    // 이메일과 비밀번호가 공백인 경우
+//                    Toast.makeText(JoinActivity.this, "계정과 비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
+//                }
                 break;
-
-
             case R.id.btnDoubleCheck:
                 _id = etID.getText().toString();
                 name = etName.getText().toString();
