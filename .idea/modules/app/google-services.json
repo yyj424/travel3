@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "1002664965735-qvnmbllij5gmujdg39nnc0931frl376m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ddwucom.mobile.travel",
+            "certificate_hash": "9ca75c98e76e68b5d8ff106c8814a6796e289a98"
+          }
+        },
+        {
           "client_id": "1002664965735-5c25n9j1u7414vf740t1d57i7a249ima.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
