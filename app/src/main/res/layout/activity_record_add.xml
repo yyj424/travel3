@@ -34,7 +34,6 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="44dp"
-        android:background="@drawable/record_image_rounding"
         android:src="@android:drawable/ic_menu_gallery"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView" />
