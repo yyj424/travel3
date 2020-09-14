@@ -1,14 +1,11 @@
 package ddwucom.mobile.travel;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.EditText;
-import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.SearchView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -20,23 +17,24 @@ public class PlanList extends AppCompatActivity {
     private ListView listView;
     private PlanAdapter planAdapter;
     private ArrayList<MyPlan> PlanList = null;
-    private ArrayList<MyPlan> myPlanList = null;
-    EditText search;
+    private ArrayList<MyPlan> sPlanList = null;
+    SearchView searchView;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.plan_list);
 
-        PlanList = new ArrayList();
+        PlanList = new ArrayList<MyPlan>();
+        sPlanList = new ArrayList<MyPlan>();
 
-        //PlanList.add( new MyPlan(1, "일산 여행", "2020.09.05", "2020.09.05"));
-        myPlanList.addAll(PlanList);
-
-        planAdapter = new PlanAdapter(this, R.layout.planlist_adapter_view, PlanList);
+        PlanList.add( new MyPlan(1, "일산 여행", "2020.09.05", "2020.09.05"));
+        PlanList.add( new MyPlan(2, "동덕여대", "2020.09.10", "2020.09.11"));
+        sPlanList.addAll(PlanList);
+        planAdapter = new PlanAdapter(this, R.layout.planlist_adapter_view, sPlanList);
 
         listView = (ListView)findViewById(R.id.y_planList);
-        search = findViewById(R.id.y_searchList);
+        searchView = findViewById(R.id.y_searchView);
 
         listView.setAdapter(planAdapter);
 
@@ -48,15 +46,16 @@ public class PlanList extends AppCompatActivity {
             }
         });
 
-        search.addTextChangedListener(new TextWatcher() {
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
+            public boolean onQueryTextSubmit(String query) {
+                return false;
+            }
+
             @Override
-            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) { }
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String searchPlan = search.getText().toString();
-                search(searchPlan);
+            public boolean onQueryTextChange(String newText) {
+                search(newText);
+                return false;
             }
         });
     }
@@ -74,18 +73,18 @@ public class PlanList extends AppCompatActivity {
     }
 
     public void search(String charText) {
-        PlanList.clear();
+        sPlanList.clear();
 
         if (charText.length() == 0) {
-            PlanList.addAll(myPlanList);
+            sPlanList.addAll(PlanList);
         }
         else
         {
-            for(int i = 0;i < myPlanList.size(); i++)
+            for(int i = 0; i < PlanList.size(); i++)
             {
-                if (myPlanList.get(i).getPlanName().toLowerCase().contains(charText))
+                if (PlanList.get(i).getPlanName().toLowerCase().contains(charText))
                 {
-                    myPlanList.add(myPlanList.get(i));
+                    sPlanList.add(PlanList.get(i));
                 }
             }
         }
