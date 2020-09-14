@@ -90,7 +90,7 @@ public class JoinActivity extends AppCompatActivity {
                     }
                 });
     }
-//    public void postFirebaseDatabase(boolean add){
+    //    public void postFirebaseDatabase(boolean add){
 //        mPostReference = FirebaseDatabase.getInstance().getReference();
 //
 //        Map<String, Object> childUpdates = new HashMap<>();
