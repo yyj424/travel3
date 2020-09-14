@@ -19,6 +19,7 @@ public class LoginForm extends AppCompatActivity {
     Button btnLogin, btnJoin;
     String loginId, loginPwd;
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -33,23 +34,8 @@ public class LoginForm extends AppCompatActivity {
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnJoin = (Button) findViewById(R.id.btnJoin);
 
-        SharedPreferences auto = getSharedPreferences("auto", Activity.MODE_PRIVATE);
+        //Toast.makeText(LoginForm.this, etName.getText().toString() + "님 환영합니다.", Toast.LENGTH_SHORT).show();
 
-        loginId = auto.getString("etName", null);
-        loginPwd = auto.getString("etPW", null);
-
-        if (loginId != null && loginPwd != null) {
-            if (loginId.equals("aaa") && loginPwd.equals("1234")) {
-                Toast.makeText(LoginForm.this, loginId + "님 자동로그인 입니다.", Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(LoginForm.this, HomeActivity.class);
-            }
-        }
-        SharedPreferences.Editor autoLogin = auto.edit();
-        autoLogin.putString("etName", etName.getText().toString());
-        autoLogin.putString("etPW", etPW.getText().toString());
-        //꼭 commit()을 해줘야 값이 저장됩니다 ㅎㅎ
-        autoLogin.commit();
-        Toast.makeText(LoginForm.this, etName.getText().toString() + "님 환영합니다.", Toast.LENGTH_SHORT).show();
         Intent intent = new Intent(LoginForm.this, HomeActivity.class);
         startActivity(intent);
         finish();
