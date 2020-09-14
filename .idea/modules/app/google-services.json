@@ -1,0 +1,56 @@
+{
+  "project_info": {
+    "project_number": "1002664965735",
+    "firebase_url": "https://travel3-262be.firebaseio.com",
+    "project_id": "travel3-262be",
+    "storage_bucket": "travel3-262be.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1002664965735:android:86b32a025f4e393f5946c2",
+        "android_client_info": {
+          "package_name": "ddwucom.mobile.travel"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1002664965735-qvnmbllij5gmujdg39nnc0931frl376m.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ddwucom.mobile.travel",
+            "certificate_hash": "9ca75c98e76e68b5d8ff106c8814a6796e289a98"
+          }
+        },
+        {
+          "client_id": "1002664965735-5c25n9j1u7414vf740t1d57i7a249ima.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "ddwucom.mobile.travel",
+            "certificate_hash": "006fc8667a948e0d36b912c5259750edb19f3d57"
+          }
+        },
+        {
+          "client_id": "1002664965735-snmcfe8oslpoptodsjcusm5klg59j7gn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDic_GzW9BHS_LseH3K0mbqJh5SimWHafk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1002664965735-snmcfe8oslpoptodsjcusm5klg59j7gn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
