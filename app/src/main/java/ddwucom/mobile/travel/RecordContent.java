@@ -1,8 +1,11 @@
 package ddwucom.mobile.travel;
 
+import java.util.List;
+
 public class RecordContent {
+    int _id;
     String location;
-    String imageResIds;
+    List<String> imageResIds;
     String content;
 
     public RecordContent() {
@@ -11,12 +14,11 @@ public class RecordContent {
         this.content = null;
     }
 
-    public RecordContent(String location, String imageResIds, String content) {
+    public RecordContent(String location, List<String> imageResIds, String content) {
         this.location = location;
         this.imageResIds = imageResIds;
         this.content = content;
     }
-
 
     public String getLocation() {
         return location;
@@ -26,11 +28,11 @@ public class RecordContent {
         this.location = location;
     }
 
-    public String getImageResIds() {
+    public List<String> getImageResIds() {
         return imageResIds;
     }
 
-    public void setImageResIds(String imageResIds) {
+    public void setImageResIds(List<String> imageResIds) {
         this.imageResIds = imageResIds;
     }
 
