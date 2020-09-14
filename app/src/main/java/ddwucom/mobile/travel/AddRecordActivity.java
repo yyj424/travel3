@@ -83,13 +83,12 @@ public class AddRecordActivity extends Activity {
                 firebaseStorage = FirebaseStorage.getInstance();  Log.d("goeun", firebaseStorage.getReference().getName());
 //                mStorageRef = firebaseStorage.getReference(); Log.d("goeun", mStorageRef.getName());
 
-                //Unique한 파일명을 만들자.
+                // 파일명
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
                 Date now = new Date();
                 filename = formatter.format(now) + ".png";
-                //storage 주소와 폴더 파일명을 지정해 준다.
+
                 mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + filename);
-                //올라가거라...
                 mStorageRef.putFile(selectedImageUri)
                         .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                             @Override
@@ -131,25 +130,6 @@ public class AddRecordActivity extends Activity {
                                 }
                             }
                         });
-
-
-
-//                Task<Uri> downloadUri = mStorageRef.getDownloadUrl();
-//                downloadUri.addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                    @Override
-//                    public void onSuccess(Uri uri) {
-//                        imageUrl = uri.toString();
-//                        Log.d("이미지", imageUrl);
-//
-//                        recordContent = new RecordContent();
-//                        recordContent.setImageResIds(imageUrl); Log.d("goeun", imageUrl);
-//                        recordContent.setLocation(String.valueOf(et_location));
-//                        recordContent.setContent(String.valueOf(et_content));
-//
-//                        //FirebaseDatabase.getInstance().getReference().child("RecordContent").push().setValue(recordContent);
-//                    }
-//                });
-
                 break;
         }
 
