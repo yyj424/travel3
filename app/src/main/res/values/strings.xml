@@ -5,4 +5,11 @@
     <string name="pw_rules2">* 영문/숫자/특수문자(공백제외)허용, 2개이상 조합</string>
     <string name="pw_rules">최소 10글자 이상/영문, 숫자, 특수문자 2개 이상 조합\n 동일한 숫자 3개 이상 연속 사용 불가</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+    <string name="calendar">calendar</string>
+    <string name="record_title">Record Title</string>
+    <string name="record_date">Record Date</string>
+    <string name="location">장소가 입력되지 않았습니다.</string>
+    <string name="record_context">내용을 입력하세요.</string>
 </resources>
