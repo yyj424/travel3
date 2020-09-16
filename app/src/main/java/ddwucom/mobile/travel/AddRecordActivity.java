@@ -3,6 +3,7 @@ package ddwucom.mobile.travel;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -13,6 +14,8 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -26,6 +29,7 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -42,53 +46,77 @@ public class AddRecordActivity extends Activity {
 
 
     // image upload
-    StorageReference mStorageRef;
-    FirebaseStorage firebaseStorage;
-    FirebaseDatabase database;
-    DatabaseReference dbRef;
+    private StorageReference mStorageRef;
+    private FirebaseStorage firebaseStorage;
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
 
-    Intent intent;
-    Uri selectedImageUri;
-    RecordContent recordContent;
-    ImageView iv;
-    EditText et_location;
-    EditText et_content;
-    String filename;
-    String imageUrl;
+    private Intent intent;
+    private Uri selectedImageUri;
+    private RecordContent recordContent;
+    private ImageView img_record_1;
+    private ImageView img_record_2;
+    private ImageView img_record_3;
+    private ImageView img_record_4;
+    private ArrayList<ImageView> imageViews;
+    private EditText et_location;
+    private EditText et_content;
+    private String filename;
+    private String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_add);
 
-        iv = findViewById(R.id.img_record);
+        imageViews = new ArrayList<>();
+        imageViews.add((ImageView) findViewById(R.id.img_record_1));
+        imageViews.add((ImageView) findViewById(R.id.img_record_2));
+        imageViews.add((ImageView) findViewById(R.id.img_record_3));
+        imageViews.add((ImageView) findViewById(R.id.img_record_4));
+//        img_record_1 = findViewById(R.id.img_record_1);
+//        img_record_2 = findViewById(R.id.img_record_2);
+//        img_record_3 = findViewById(R.id.img_record_3);
+//        img_record_4 = findViewById(R.id.img_record_4);
+
         et_location = findViewById(R.id.et_location);
         et_content = findViewById(R.id.et_content);
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReferenceFromUrl("https://travel3-262be.firebaseio.com/");
-    }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == GET_GALLERY_IMAGE && resultCode == RESULT_OK && data != null && data.getData() != null) {
-            selectedImageUri = data.getData();
-            iv.setImageURI(selectedImageUri);
+        for (ImageView iv:imageViews) {
+            iv.setVisibility(View.GONE);
         }
+//        img_record_1.setVisibility(View.GONE);
+//        img_record_2.setVisibility(View.GONE);
+//        img_record_3.setVisibility(View.GONE);
+//        img_record_4.setVisibility(View.GONE);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_image:
-//                intent = new Intent(Intent.ACTION_PICK);
-//                intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
-//                startActivityForResult(intent, GET_GALLERY_IMAGE);
                 TedImagePicker.with(this)
-                        .start(new OnSelectedListener() {
+                        .max(4, "사진은 4장까지만 추가 가능합니다.")
+                        .startMultiImage(new OnMultiSelectedListener() {
                             @Override
-                            public void onSelected(Uri uri) {
-                                Log.d("goeun", uri.toString());
+                            public void onSelected(@NotNull List<? extends Uri> uriList) {
+                                int visibleCnt = 0;
+                                if (visibleCnt != 4) {
+                                    for (Uri uri:uriList) {
+                                        for (ImageView iv:imageViews) {
+                                            if (iv.getVisibility() != View.GONE) {
+                                                continue;
+                                            }
+                                            iv.setVisibility(View.VISIBLE);
+                                            iv.setImageURI(uri);
+                                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                                            break;
+                                        }
+                                    }
+                                }
+                                //iv.setImageURI(selectedImageUri);
                             }
                         });
                 break;

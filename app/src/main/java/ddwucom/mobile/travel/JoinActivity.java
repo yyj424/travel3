@@ -35,7 +35,7 @@ import java.util.regex.Pattern;
 public class JoinActivity extends AppCompatActivity {
     private static final String TAG = "rg";
     private DatabaseReference mPostReference;
-    private FirebaseAuth firebaseAuth;
+    FirebaseAuth firebaseAuth;
 
     EditText etName, etID, etEmail, etPhone, etPw, etPwCheck;
     Button btnOk;
