@@ -39,7 +39,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".LoginForm"/>
+        <activity android:name=".LoginForm">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".JoinActivity">
                     <intent-filter>
                         <action android:name="android.intent.action.MAIN" />
