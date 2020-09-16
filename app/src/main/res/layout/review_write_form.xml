@@ -19,25 +19,12 @@
         android:id="@+id/y_addPhoto"
         android:layout_width="40dp"
         android:layout_height="40dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
-        android:onClick="onClick"
-        app:layout_constraintEnd_toStartOf="@+id/y_removePhoto"
-        app:layout_constraintTop_toBottomOf="@+id/y_reivewContent"
-        app:srcCompat="@drawable/y_add" />
-
-    <ImageView
-        android:id="@+id/y_removePhoto"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginEnd="10dp"
-        android:layout_marginRight="10dp"
+        android:layout_marginTop="52dp"
+        android:layout_marginEnd="8dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/y_reivewContent"
-        app:srcCompat="@drawable/y_remove" />
+        app:srcCompat="@drawable/y_add" />
 
     <ImageView
         android:id="@+id/imageView25"
@@ -114,17 +101,6 @@
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView33" />
-
-    <ImageView
-        android:id="@+id/y_reviewPhoto"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
-        android:layout_marginTop="30dp"
-        app:layout_constraintEnd_toStartOf="@+id/y_addPhoto"
-        app:layout_constraintHorizontal_bias="0.51"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/y_reivewContent"
-        app:srcCompat="@drawable/y_course" />
 
     <RatingBar
         android:id="@+id/ratingBar"
@@ -203,9 +179,8 @@
         android:layout_width="200dp"
         android:layout_height="25dp"
         android:layout_marginStart="2dp"
-        android:layout_marginLeft="2dp"
+        android:layout_marginTop="90dp"
         android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
         android:layout_marginBottom="16dp"
         android:background="@drawable/y_categorybar"
         android:max="100"
@@ -213,8 +188,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.882"
         app:layout_constraintStart_toEndOf="@+id/textView35"
-        app:layout_constraintTop_toBottomOf="@+id/y_reviewPhoto"
-        app:layout_constraintVertical_bias="0.951" />
+        app:layout_constraintTop_toBottomOf="@+id/y_addPhoto" />
 
     <ProgressBar
         android:id="@+id/ctg3"
@@ -285,11 +259,23 @@
         android:layout_height="136dp"
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:background="@drawable/y_reviewcontent"
         android:ems="10"
         android:inputType="textPersonName"
         android:text="Name"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/y_RimageList"
+        android:layout_width="235dp"
+        android:layout_height="73dp"
+        android:layout_marginTop="44dp"
+        android:scrollbars="horizontal"
+        app:layout_constraintEnd_toStartOf="@+id/y_addPhoto"
+        app:layout_constraintHorizontal_bias="0.809"
+        app:layout_constraintStart_toEndOf="@+id/textView33"
+        app:layout_constraintTop_toBottomOf="@+id/y_reivewContent" />
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

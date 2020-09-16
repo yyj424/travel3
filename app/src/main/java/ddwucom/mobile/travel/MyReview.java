@@ -1,18 +1,20 @@
 package ddwucom.mobile.travel;
 
+import java.util.ArrayList;
+
 public class MyReview {
     private long _id;
     private String rating;
-    private String image;
+    private ArrayList<String> Imagelist;
     private String category1;
     private String category2;
     private String category3;
     private String category4;
 
-    public MyReview(long _id, String rating, String image, String category1, String category2, String category3, String category4) {
+    public MyReview(long _id, String rating, ArrayList<String> imagelist, String category1, String category2, String category3, String category4) {
         this._id = _id;
         this.rating = rating;
-        this.image = image;
+        this.Imagelist = imagelist;//this가 빠져도 되나?
         this.category1 = category1;
         this.category2 = category2;
         this.category3 = category3;
@@ -35,12 +37,12 @@ public class MyReview {
         this.rating = rating;
     }
 
-    public String getImage() {
-        return image;
+    public ArrayList<String> getImagelist() {
+        return Imagelist;
     }
 
-    public void setImage(String image) {
-        this.image = image;
+    public void setImagelist(ArrayList<String> imagelist) {
+        Imagelist = imagelist;
     }
 
     public String getCategory1() {
