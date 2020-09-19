@@ -25,7 +25,6 @@ public class LoginForm extends AppCompatActivity {
     EditText etName, etPW;
     TextView findID, findPW;
     Button btnLogin, btnJoin;
-    String loginId, loginPwd;
     FirebaseAuth firebaseAuth;
     final String TAG = "sera";
 
@@ -34,8 +33,11 @@ public class LoginForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginform_main);
 
-        findID = findViewById(R.id.findID);
-        findPW = findViewById(R.id.findPW);
+        Intent intent = new Intent(this, LoadingActivity.class);
+        startActivity(intent);
+
+        findID = (TextView) findViewById(R.id.findID);
+        findPW = (TextView) findViewById(R.id.findPW);
 
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnJoin = (Button) findViewById(R.id.btnJoin);

@@ -23,7 +23,9 @@
         <activity android:name=".LoadingActivity" />
         <activity android:name=".HomeActivity" />
 <!--        <activity android:name=".RecordMain" />-->
-        <activity android:name=".LoginForm" />
+        <activity android:name=".LoginForm">
+
+        </activity>
         <activity android:name=".JoinActivity"/>
         <activity android:name=".FindPwActivity"/>
         <activity android:name=".FindIdActivity"/>
