@@ -8,15 +8,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topBar_id"
-        android:layout_width="415dp"
+        android:layout_width="0dp"
         android:layout_height="245dp"
         android:background="#DBFFCC5C"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.75"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/textView3"
@@ -53,7 +52,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginEnd="68dp"
-            android:layout_marginRight="68dp"
             android:fontFamily="@font/tmoney_bold"
             android:onClick="onClick"
             android:text="LOGIN"
@@ -69,8 +67,6 @@
         android:id="@+id/bar"
         android:layout_width="205dp"
         android:layout_height="5dp"
-        android:layout_marginTop="2dp"
-        android:layout_marginBottom="1dp"
         android:background="#5CFFCC5C"
         app:layout_constraintBottom_toTopOf="@+id/body"
         app:layout_constraintEnd_toEndOf="parent"
@@ -83,15 +79,14 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/body"
-        android:layout_width="415dp"
-        android:layout_height="541dp"
-        android:layout_marginTop="5dp"
+        android:layout_width="0dp"
+        android:layout_height="468dp"
         android:background="#24FFCC5C"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/bottomBar"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/topBar_id"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintTop_toBottomOf="@+id/topBar_id">
 
         <TextView
             android:id="@+id/textView6"
@@ -99,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="80dp"
             android:fontFamily="@font/tmoney_regular"
-            android:text="이름과 이메일을 입력해 주세요."
+            android:text="등록한 이메일을 입력해 주세요."
             android:textColor="#000000"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
@@ -108,27 +103,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <EditText
-            android:id="@+id/findID_etName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:background="@drawable/s_form2"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:onClick="onClick"
-            android:paddingLeft="10dp"
-            android:text="이름을 입력하세요."
-            android:textColor="#BDBDBD"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.519"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView6" />
-
-        <EditText
             android:id="@+id/findID_etEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             android:background="@drawable/s_form2"
             android:ems="10"
             android:inputType="textEmailAddress"
@@ -136,19 +114,17 @@
             android:paddingLeft="10dp"
             android:text="이메일을 입력하세요."
             android:textColor="#BDBDBD"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.519"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/findID_etName"
-            app:layout_constraintVertical_bias="0.0" />
+            app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomBar"
-        android:layout_width="415dp"
-        android:layout_height="60dp"
+        android:layout_width="0dp"
+        android:layout_height="65dp"
         android:background="#DBFFCC5C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

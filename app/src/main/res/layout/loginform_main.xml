@@ -8,12 +8,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topBar_main"
-        android:layout_width="412dp"
+        android:layout_width="0dp"
         android:layout_height="268dp"
         android:layout_marginStart="1dp"
-        android:layout_marginLeft="1dp"
         android:layout_marginEnd="1dp"
-        android:layout_marginRight="1dp"
         android:background="#DBFFCC5C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
