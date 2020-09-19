@@ -3,6 +3,7 @@ package ddwucom.mobile.travel;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.media.Image;
 import android.net.Uri;
 import android.os.Bundle;
@@ -44,79 +45,78 @@ import gun0912.tedimagepicker.builder.listener.OnSelectedListener;
 public class AddRecordActivity extends Activity {
     private final int GET_GALLERY_IMAGE = 100;
 
-
     // image upload
     private StorageReference mStorageRef;
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase database;
     private DatabaseReference dbRef;
 
-    private Intent intent;
-    private Uri selectedImageUri;
-    private RecordContent recordContent;
-    private ImageView img_record_1;
-    private ImageView img_record_2;
-    private ImageView img_record_3;
-    private ImageView img_record_4;
-    private ArrayList<ImageView> imageViews;
-    private EditText et_location;
-    private EditText et_content;
-    private String filename;
-    private String imageUrl;
+    int maxCount = 4;
+    Intent intent;
+    Uri selectedImageUri;
+    RecordContent recordContent;
+    AddRecordImageAdapter addRecordImageAdapter;
+    ArrayList<Uri> selectedImageList;
+    ArrayList<Uri> dlUriList;
+    RecyclerView recyclerView;
+    ImageView btn_image_remove;
+
+    EditText et_location;
+    EditText et_content;
+
+    String filename;
+    String imageUrl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_add);
 
-        imageViews = new ArrayList<>();
-        imageViews.add((ImageView) findViewById(R.id.img_record_1));
-        imageViews.add((ImageView) findViewById(R.id.img_record_2));
-        imageViews.add((ImageView) findViewById(R.id.img_record_3));
-        imageViews.add((ImageView) findViewById(R.id.img_record_4));
-//        img_record_1 = findViewById(R.id.img_record_1);
-//        img_record_2 = findViewById(R.id.img_record_2);
-//        img_record_3 = findViewById(R.id.img_record_3);
-//        img_record_4 = findViewById(R.id.img_record_4);
+        selectedImageList = new ArrayList<>();
+        dlUriList = new ArrayList<>();
+//        imageViews.add((ImageView) findViewById(R.id.img_record_1));
+//        imageViews.add((ImageView) findViewById(R.id.img_record_2));
+//        imageViews.add((ImageView) findViewById(R.id.img_record_3));
+//        imageViews.add((ImageView) findViewById(R.id.img_record_4));
+//        btn_image_remove = findViewById(R.id.btn_image_remove);
+//        btn_image_remove.setVisibility(View.GONE);
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        recyclerView = findViewById(R.id.add_record_img_list);
+        recyclerView.setLayoutManager(layoutManager);
 
         et_location = findViewById(R.id.et_location);
         et_content = findViewById(R.id.et_content);
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReferenceFromUrl("https://travel3-262be.firebaseio.com/");
-
-        for (ImageView iv:imageViews) {
-            iv.setVisibility(View.GONE);
-        }
-//        img_record_1.setVisibility(View.GONE);
-//        img_record_2.setVisibility(View.GONE);
-//        img_record_3.setVisibility(View.GONE);
-//        img_record_4.setVisibility(View.GONE);
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_image:
                 TedImagePicker.with(this)
-                        .max(4, "사진은 4장까지만 추가 가능합니다.")
+                        .max(maxCount, "사진은 4장까지만 추가할 수 있습니다.")
                         .startMultiImage(new OnMultiSelectedListener() {
                             @Override
                             public void onSelected(@NotNull List<? extends Uri> uriList) {
-                                int visibleCnt = 0;
-                                if (visibleCnt != 4) {
-                                    for (Uri uri:uriList) {
-                                        for (ImageView iv:imageViews) {
-                                            if (iv.getVisibility() != View.GONE) {
-                                                continue;
-                                            }
-                                            iv.setVisibility(View.VISIBLE);
-                                            iv.setImageURI(uri);
-                                            iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
-                                            break;
-                                        }
-                                    }
-                                }
-                                //iv.setImageURI(selectedImageUri);
+                                selectedImageList.addAll(uriList);
+                                addRecordImageAdapter = new AddRecordImageAdapter(AddRecordActivity.this, selectedImageList);
+                                recyclerView.setAdapter(addRecordImageAdapter);
+//                                for (Uri uri:uriList) {
+//                                    for (ImageView iv:imageViews) {
+//                                        if (iv.getVisibility() != View.GONE) {
+//                                            continue;
+//                                        }
+//                                        btn_image_remove.setVisibility(View.VISIBLE);
+//                                        iv.setVisibility(View.VISIBLE);
+//                                        iv.setImageURI(uri);
+//                                        iv.setScaleType(ImageView.ScaleType.CENTER_CROP);
+//                                        //selectedImageList.add(uri);
+//                                        maxCount--;
+//                                        break;
+//                                    }
+//                                }
                             }
                         });
                 break;
@@ -135,6 +135,7 @@ public class AddRecordActivity extends Activity {
 //                filename = formatter.format(now) + ".png";
 //
 //                mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + filename);
+//                for ()
 //                mStorageRef.putFile(selectedImageUri)
 //                        .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
 //                            @Override
@@ -146,15 +147,7 @@ public class AddRecordActivity extends Activity {
 //                                    public void onSuccess(Uri uri) { //4.Url 받는곳
 //                                        imageUrl = uri.toString();
 //                                        Log.d("이미지",imageUrl);
-//                                        recordContent = new RecordContent();
-//                                        recordContent.setImageResIds(imageUrl); Log.d("goeun", imageUrl);
-//                                        String location = et_location.getText().toString();
-//                                        String content = et_content.getText().toString();
-//                                        recordContent.setLocation(location);
-//                                        recordContent.setContent(content);
-//
-//                                        dbRef.child("record_content_list").push().setValue(recordContent);
-////                                        dbRef.child("record_content_list").push().
+//                                        dlUriList.add(imageUrl);
 //                                    }
 //                                });
 //                            }
@@ -177,8 +170,16 @@ public class AddRecordActivity extends Activity {
 //                                }
 //                            }
 //                        });
+//
+//                recordContent = new RecordContent();
+//                recordContent.setImageResIds(imageUrl); Log.d("goeun", imageUrl);
+//                String location = et_location.getText().toString();
+//                String content = et_content.getText().toString();
+//                recordContent.setLocation(location);
+//                recordContent.setContent(content);
+//
+//                dbRef.child("record_content_list").push().setValue(recordContent);
 //                break;
         }
-
     }
 }

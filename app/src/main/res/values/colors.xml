@@ -6,4 +6,6 @@
     <color name="colorBg">#FFF8E8</color>
     <color name="colorTop">#FFEEAD</color>
     <color name="colorFolder">#CCFFCC5C</color>
+    <color name="ted_image_picker_primary">#CCFFCC5C</color>
+    <color name="ted_image_picker_primary_pressed">#FFEEAD</color>
 </resources>
