@@ -5,6 +5,9 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
+import android.widget.RatingBar;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,16 +21,16 @@ import gun0912.tedimagepicker.builder.TedImagePicker;
 import gun0912.tedimagepicker.builder.listener.OnMultiSelectedListener;
 
 public class ReviewForm extends AppCompatActivity {
-    EditText rating;
+    TextView rating;
     EditText reviewContent;
     RecyclerView listview;
     ProgressBar category1;
     ProgressBar category2;
     ProgressBar category3;
     ProgressBar category4;
-    private List<Uri> selectedUriList;
     private ReviewImageAdapter reviewImageAdapter;
     private ArrayList<Uri> ImageList = null;
+    private RatingBar rb;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +47,16 @@ public class ReviewForm extends AppCompatActivity {
         category2 = findViewById(R.id.ctg2);
         category3 = findViewById(R.id.ctg3);
         category4 = findViewById(R.id.ctg4);
-        //image.setScaleType(ImageView.ScaleType.Center
+        rb = findViewById(R.id.ratingBar);
+        final float[] r = {0};
+
+        rb.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
+            @Override
+            public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
+                r[0] = rating;
+            }
+        });
+        rating.setText((int) r[0]);
     }
 
     public void onClick(View v){

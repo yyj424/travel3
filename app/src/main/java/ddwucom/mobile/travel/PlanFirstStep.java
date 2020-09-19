@@ -1,5 +1,6 @@
 package ddwucom.mobile.travel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -16,8 +17,8 @@ public class PlanFirstStep extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.y_alone:
-                    //Intent intent = new Intent(this, );
-                    //startActivity(intent);
+                    Intent intent = new Intent(PlanFirstStep.this, PlanSecondStep.class);
+                    startActivity(intent);
                     break;
                 case R.id.y_together:
                     //Intent intent = new Intent(this, );

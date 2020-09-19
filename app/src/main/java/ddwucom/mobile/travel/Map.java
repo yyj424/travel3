@@ -75,8 +75,6 @@ public class Map extends AppCompatActivity {
         courseList.add(new MyCourse(3, "스타필드"));
         courseListAdapter = new CourseListAdapter(this, courseList, onClickItem);
         listview.setAdapter(courseListAdapter);
-        CourseListDecoration decoration = new CourseListDecoration(10);
-        listview.addItemDecoration(decoration);
         //!!!!!!!!!!!!!!!!수정!!!!!!!!!!!!!!!!
     }
 

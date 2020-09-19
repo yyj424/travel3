@@ -11,6 +11,10 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import gun0912.tedimagepicker.builder.TedImagePicker;
+import gun0912.tedimagepicker.builder.listener.OnMultiSelectedListener;
 
 
 public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.ViewHolder> {
@@ -32,11 +36,19 @@ public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.
     }
 
     @Override
-    public void onBindViewHolder(ReviewImageAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(ReviewImageAdapter.ViewHolder holder, final int position) {
         Uri uri = ImageList.get(position);
 
         holder.Rimage.setImageURI(uri);
         holder.Rimage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+        holder.remove.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ImageList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, ImageList.size());
+            }
+        });
     }
 
     @Override
@@ -48,11 +60,13 @@ public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView Rimage;
+        public ImageView remove;
         public GradientDrawable drawable;
 
         public ViewHolder(View itemView) {
             super(itemView);
             Rimage = itemView.findViewById(R.id.y_reviewImage);
+            remove = itemView.findViewById(R.id.y_remove_reviewImage);
             drawable = (GradientDrawable) context.getDrawable(R.drawable.background_rounding);
             Rimage.setBackground(drawable);
             Rimage.setClipToOutline(true);

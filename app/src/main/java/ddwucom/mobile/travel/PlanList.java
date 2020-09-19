@@ -1,5 +1,6 @@
 package ddwucom.mobile.travel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -63,8 +64,8 @@ public class PlanList extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.y_addPlan:
-                //Intent intent = new Intent(this, );
-                //startActivity(intent);
+                Intent intent = new Intent(PlanList.this, PlanFirstStep.class);
+                startActivity(intent);
                 break;
             case R.id.y_removePlan:
                 

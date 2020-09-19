@@ -20,18 +20,6 @@
         tools:layout_conversion_absoluteHeight="70dp"
         tools:layout_conversion_absoluteWidth="411dp" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView3"
-        app:srcCompat="@drawable/y_search"
-        tools:layout_conversion_absoluteHeight="100dp"
-        tools:layout_conversion_absoluteWidth="411dp" />
-
     <ListView
         android:id="@+id/y_planList"
         android:layout_width="match_parent"
@@ -39,7 +27,7 @@
         android:choiceMode="singleChoice"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView4"
+        app:layout_constraintTop_toBottomOf="@+id/imageView19"
         tools:layout_conversion_absoluteHeight="454dp"
         tools:layout_conversion_absoluteWidth="411dp">
 
@@ -69,13 +57,22 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/y_remove" />
 
+    <ImageView
+        android:id="@+id/imageView19"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/imageView3"
+        app:srcCompat="@drawable/y_sform" />
+
     <SearchView
         android:id="@+id/y_searchView"
-        android:layout_width="303dp"
+        android:layout_width="350dp"
         android:layout_height="31dp"
         android:layout_marginTop="24dp"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.601"
+        app:layout_constraintHorizontal_bias="0.49"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView3" />
 
