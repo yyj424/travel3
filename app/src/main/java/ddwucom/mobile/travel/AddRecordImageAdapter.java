@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,12 +16,12 @@ import java.util.ArrayList;
 
 public class AddRecordImageAdapter extends RecyclerView.Adapter<AddRecordImageAdapter.ViewHolder> {
 
-    private ArrayList<Uri> ImageList = null;
+    private ArrayList<Uri> imageList = null;
     private Context context;
 
-    public AddRecordImageAdapter(Context context, ArrayList<Uri> ImageList) {
+    public AddRecordImageAdapter(Context context, ArrayList<Uri> imageList) {
         this.context = context;
-        this.ImageList = ImageList;
+        this.imageList = imageList;
     }
 
     @Override
@@ -32,16 +33,30 @@ public class AddRecordImageAdapter extends RecyclerView.Adapter<AddRecordImageAd
     }
 
     @Override
-    public void onBindViewHolder(AddRecordImageAdapter.ViewHolder holder, int position) {
-        Uri uri = ImageList.get(position);
+    public long getItemId(int position) {
+        return super.getItemId(position);
+    }
+
+    @Override
+    public void onBindViewHolder(AddRecordImageAdapter.ViewHolder holder, final int position) {
+        Uri uri = imageList.get(position);
 
         holder.imageView.setImageURI(uri);
         holder.imageView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+
+        holder.imageRemoveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imageList.remove(position);
+                notifyItemRemoved(position);
+                notifyItemRangeChanged(position, imageList.size());
+            }
+        });
     }
 
     @Override
     public int getItemCount() {
-        return ImageList.size();
+        return imageList.size();
     }
 
 
@@ -49,6 +64,7 @@ public class AddRecordImageAdapter extends RecyclerView.Adapter<AddRecordImageAd
 
         public ImageView imageView;
         public GradientDrawable drawable;
+        ImageButton imageRemoveBtn;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -56,6 +72,7 @@ public class AddRecordImageAdapter extends RecyclerView.Adapter<AddRecordImageAd
             drawable = (GradientDrawable) context.getDrawable(R.drawable.background_rounding);
             imageView.setBackground(drawable);
             imageView.setClipToOutline(true);
+            imageRemoveBtn = itemView.findViewById(R.id.btn_image_remove);
         }
     }
 }
