@@ -3,11 +3,13 @@ package ddwucom.mobile.travel;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -39,6 +41,7 @@ public class JoinActivity extends AppCompatActivity {
 
     EditText etName, etID, etEmail, etPhone, etPw, etPwCheck;
     Button btnOk;
+    TextView errMSG;
     String _id, name, email, phone, pw;
     String sort = "_id";
 
@@ -54,10 +57,11 @@ public class JoinActivity extends AppCompatActivity {
         etPw = (EditText)findViewById(R.id.join_etPW);
         etPwCheck = (EditText)findViewById(R.id.join_etPwCheck);
         btnOk = (Button)findViewById(R.id.join_btnOk);
+        errMSG = (TextView)findViewById(R.id.errorMessage);
 
         /*Firebase 인증 객체 선언*/
         firebaseAuth = FirebaseAuth.getInstance(); // 인스턴스 초기화
-
+        errMSG.setText("");
         etName.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,11 +115,19 @@ public class JoinActivity extends AppCompatActivity {
         etPw = (EditText)findViewById(R.id.join_etPwCheck);
         email = etEmail.getText().toString();
         pw = etPw.getText().toString();
+
+        if(TextUtils.isEmpty(email)){
+            Toast.makeText(this, "Email을 입력해 주세요.", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(pw)){
+            Toast.makeText(this, "Password를 입력해 주세요.", Toast.LENGTH_SHORT).show();
+        }
         Log.d(TAG, "create user 전");
         createUser(email, pw);
     }
     // 회원가입 -> Firebase authentification에 전달
-    public void createUser(String email, String password) {
+    public void createUser(final String email, String password) {
         firebaseAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -126,13 +138,13 @@ public class JoinActivity extends AppCompatActivity {
                             Log.d(TAG, "회원가입 성공");
                             AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
                             builder.setTitle("회원가입 완료")
-                                    .setMessage("회원가입이 완료되었습니다.")
+                                    .setMessage(email + " 회원님 환영합니다.")
                                     .setPositiveButton("확인", null)
                                     .show();
-                            Toast.makeText(JoinActivity.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
-                        } else {
+                            } else {
                             // 회원가입 실패
                             Log.d(TAG, "회원가입 실패");
+                            errMSG.setText(R.string.error);
                             Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
                         }
                     }
