@@ -74,12 +74,6 @@ public class AddRecordActivity extends Activity {
 
         selectedImageList = new ArrayList<>();
         dlUriList = new ArrayList<>();
-//        imageViews.add((ImageView) findViewById(R.id.img_record_1));
-//        imageViews.add((ImageView) findViewById(R.id.img_record_2));
-//        imageViews.add((ImageView) findViewById(R.id.img_record_3));
-//        imageViews.add((ImageView) findViewById(R.id.img_record_4));
-//        btn_image_remove = findViewById(R.id.btn_image_remove);
-//        btn_image_remove.setVisibility(View.GONE);
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView = findViewById(R.id.add_record_img_list);
@@ -92,7 +86,7 @@ public class AddRecordActivity extends Activity {
         dbRef = database.getReferenceFromUrl("https://travel3-262be.firebaseio.com/");
     }
 
-    public void onClick(View v) {
+    public void onClick(View v) { // 사진 개수 counting, db 저장 구현
         switch (v.getId()) {
             case R.id.btn_image:
                 TedImagePicker.with(this)
