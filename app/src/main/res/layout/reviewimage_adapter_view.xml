@@ -4,21 +4,24 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#FFFFFF">
+    android:background="#FFFFFF"
+    android:paddingEnd="7dp">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:cardBackgroundColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
+    <ImageView
+        android:id="@+id/y_reviewImage"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@android:drawable/ic_menu_gallery" />
 
-        <ImageView
-            android:id="@+id/y_reviewImage"
-            android:layout_width="70dp"
-            android:layout_height="70dp"
-            app:srcCompat="@android:drawable/ic_menu_gallery" />
-    </androidx.cardview.widget.CardView>
+    <ImageView
+        android:id="@+id/y_remove_reviewImage"
+        android:layout_width="14dp"
+        android:layout_height="14dp"
+        android:onClick="onClick"
+        app:layout_constraintEnd_toEndOf="@+id/y_reviewImage"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/y_remove" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,7 @@
 package ddwucom.mobile.travel;
 
 import android.content.Context;
+import android.graphics.drawable.GradientDrawable;
 import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +25,6 @@ public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.
 
     @Override
     public ReviewImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // context 와 parent.getContext() 는 같다.
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.reviewimage_adapter_view, parent, false);
 
@@ -48,10 +48,14 @@ public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public ImageView Rimage;
+        public GradientDrawable drawable;
 
         public ViewHolder(View itemView) {
             super(itemView);
             Rimage = itemView.findViewById(R.id.y_reviewImage);
+            drawable = (GradientDrawable) context.getDrawable(R.drawable.background_rounding);
+            Rimage.setBackground(drawable);
+            Rimage.setClipToOutline(true);
         }
     }
 }
