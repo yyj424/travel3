@@ -11,9 +11,9 @@ public class RecordContent {
         this.content = null;
     }
 
-    public RecordContent(String location, String imageResIds, String content) {
+    public RecordContent(String location, String imageFolderName, String content) {
         this.location = location;
-        this.imageFolderName = imageResIds;
+        this.imageFolderName = imageFolderName;
         this.content = content;
     }
 
@@ -30,7 +30,7 @@ public class RecordContent {
     }
 
     public void setImageFolderName(String imageResIds) {
-        this.imageFolderName = imageResIds;
+        this.imageFolderName = imageFolderName;
     }
 
     public String getContent() {
