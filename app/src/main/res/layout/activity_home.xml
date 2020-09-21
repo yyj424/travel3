@@ -8,9 +8,9 @@
 
     <ImageView
         android:id="@+id/btn_plan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="28dp"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
+        android:layout_marginTop="50dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.511"
@@ -20,8 +20,8 @@
 
     <ImageView
         android:id="@+id/btn_record"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
         android:layout_marginTop="8dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
@@ -31,8 +31,8 @@
 
     <ImageView
         android:id="@+id/btn_map"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
         android:layout_marginTop="8dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
@@ -43,8 +43,8 @@
 
     <ImageView
         android:id="@+id/btn_course"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
         android:layout_marginTop="8dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
@@ -55,12 +55,24 @@
 
     <ImageView
         android:id="@+id/btn_room"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="350dp"
+        android:layout_height="130dp"
         android:layout_marginTop="8dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/btn_record"
         app:srcCompat="@drawable/g_room_btn" />
+
+    <Button
+        android:id="@+id/btnLogout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:onClick="onClick"
+        android:text="Logout"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btn_map" />
 </androidx.constraintlayout.widget.ConstraintLayout>
