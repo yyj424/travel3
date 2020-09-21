@@ -1,8 +1,10 @@
 package ddwucom.mobile.travel;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ProgressBar;
@@ -11,14 +13,26 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.w3c.dom.Text;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import gun0912.tedimagepicker.builder.TedImagePicker;
@@ -35,8 +49,17 @@ public class ReviewForm extends AppCompatActivity {
     TextView sbView2;
     TextView sbView3;
     TextView sbView4;
-    private ReviewImageAdapter reviewImageAdapter;
-    private ArrayList<Uri> ImageList = null;
+    ReviewImageAdapter reviewImageAdapter;
+    ArrayList<Uri> ImageList = null;
+
+    private StorageReference storageReference;
+    private FirebaseStorage firebaseStorage;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+
+    String folderName;
+    String uid;
+    Double finalRating;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +86,7 @@ public class ReviewForm extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 ratingView.setText(String.valueOf(rating));
+                finalRating = (double)rating;
             }
         });
 
@@ -70,13 +94,16 @@ public class ReviewForm extends AppCompatActivity {
         seekBarListener(seekbar2, sbView2);
         seekBarListener(seekbar3, sbView3);
         seekBarListener(seekbar4, sbView4);
+
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReferenceFromUrl("https://travel3-262be.firebaseio.com/");
     }
 
     public void seekBarListener(SeekBar sb, final TextView tv) {
         sb.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-
+                tv.setText(String.valueOf(seekBar.getProgress()));
             }
 
             @Override
@@ -86,7 +113,7 @@ public class ReviewForm extends AppCompatActivity {
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                tv.setText(String.valueOf(seekBar.getProgress())+"점");
+                //tv.setText(String.valueOf(seekBar.getProgress()));
             }
         });
     }
@@ -105,8 +132,50 @@ public class ReviewForm extends AppCompatActivity {
                         });
                 break;
             case R.id.y_reviewRegister:
-                Intent intent = new Intent(ReviewForm.this, ReviewList.class);
-                startActivity(intent);
+                final ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setTitle("리뷰 업로드 중");
+                progressDialog.show();
+
+                firebaseStorage = FirebaseStorage.getInstance();
+
+                // 폴더명 지정
+                long now = System.currentTimeMillis();
+                Date date = new Date(now);
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+
+                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                if (user != null) {
+                    // User is signed in
+                    uid = user.getUid();
+                } else {
+                    // No user is signed in
+                    Toast.makeText(getApplicationContext(), "유저 없음", Toast.LENGTH_SHORT).show();
+                }
+                folderName = uid;
+
+                // DTO 객체 생성
+                MyReview myReview = new MyReview();
+
+                // 객체에 데이터 저장
+                double rating = finalRating;
+                String content = reviewContent.getText().toString();
+                long score1 = Long.parseLong(sbView1.getText().toString());
+                long score2 = Long.parseLong(sbView2.getText().toString());
+                long score3 = Long.parseLong(sbView3.getText().toString());
+                long score4 = Long.parseLong(sbView4.getText().toString());
+
+                myReview.setRating(rating);
+                myReview.setContent(content);
+                myReview.setScore1(score1);
+                myReview.setScore2(score2);
+                myReview.setScore3(score3);
+                myReview.setScore4(score4);
+
+                // db에 recordContent 저장
+                databaseReference.child("review_content_list").push().setValue(myReview);
+
+//                Intent intent = new Intent(ReviewForm.this, ReviewList.class);
+//                startActivity(intent);
                 break;
         }
     }

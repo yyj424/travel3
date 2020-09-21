@@ -1,79 +1,83 @@
 package ddwucom.mobile.travel;
 
+import android.net.Uri;
+
 import java.util.ArrayList;
 
 public class MyReview {
-    private long _id;
-    private String rating;
-    private ArrayList<String> Imagelist;
-    private String category1;
-    private String category2;
-    private String category3;
-    private String category4;
+    //id
+    private double rating;
+    private String content;
 
-    public MyReview(long _id, String rating, ArrayList<String> imagelist, String category1, String category2, String category3, String category4) {
-        this._id = _id;
+    private long score1;
+    private long score2;
+    private long score3;
+    private long score4;
+
+    public MyReview() {
+        this.rating = 0.0;
+        this.content = "";
+        this.score1 = 0;
+        this.score2 = 0;
+        this.score3 = 0;
+        this.score4 = 0;
+    }
+
+
+    public MyReview(double rating, String content, long score1, long score2, long score3, long score4) {
         this.rating = rating;
-        this.Imagelist = imagelist;//this가 빠져도 되나?
-        this.category1 = category1;
-        this.category2 = category2;
-        this.category3 = category3;
-        this.category4 = category4;
+        this.content = content;
+        this.score1 = score1;
+        this.score2 = score2;
+        this.score3 = score3;
+        this.score4 = score4;
     }
 
-    public long get_id() {
-        return _id;
-    }
-
-    public void set_id(long _id) {
-        this._id = _id;
-    }
-
-    public String getRating() {
+    public double getRating() {
         return rating;
     }
 
-    public void setRating(String rating) {
+    public void setRating(double rating) {
         this.rating = rating;
     }
 
-    public ArrayList<String> getImagelist() {
-        return Imagelist;
+    public String getContent() {
+        return content;
     }
 
-    public void setImagelist(ArrayList<String> imagelist) {
-        Imagelist = imagelist;
+    public void setContent(String content) {
+        this.content = content;
     }
 
-    public String getCategory1() {
-        return category1;
+    public long getScore1() {
+        return score1;
     }
 
-    public void setCategory1(String category1) {
-        this.category1 = category1;
+    public void setScore1(long score1) {
+        this.score1 = score1;
     }
 
-    public String getCategory2() {
-        return category2;
+    public long getScore2() {
+        return score2;
     }
 
-    public void setCategory2(String category2) {
-        this.category2 = category2;
+    public void setScore2(long score2) {
+        this.score2 = score2;
     }
 
-    public String getCategory3() {
-        return category3;
+    public long getScore3() {
+        return score3;
     }
 
-    public void setCategory3(String category3) {
-        this.category3 = category3;
+    public void setScore3(long score3) {
+        this.score3 = score3;
     }
 
-    public String getCategory4() {
-        return category4;
+    public long getScore4() {
+        return score4;
     }
 
-    public void setCategory4(String category4) {
-        this.category4 = category4;
+    public void setScore4(long score4) {
+        this.score4 = score4;
     }
 }
