@@ -6,6 +6,24 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <SeekBar
+        android:id="@+id/seekBar4"
+        android:layout_width="230dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="22dp"
+        app:layout_constraintStart_toEndOf="@+id/textView38"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar3" />
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:layout_width="230dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="71dp"
+        app:layout_constraintStart_toEndOf="@+id/textView35"
+        app:layout_constraintTop_toBottomOf="@+id/y_RimageList" />
+
     <ImageView
         android:id="@+id/imageView17"
         android:layout_width="wrap_content"
@@ -20,7 +38,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:layout_marginTop="60dp"
-        android:layout_marginEnd="8dp"
+        android:layout_marginEnd="12dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/y_reivewContent"
@@ -36,7 +54,7 @@
         app:srcCompat="@drawable/y_bottombg" />
 
     <ImageView
-        android:id="@+id/imageView20"
+        android:id="@+id/y_reviewRegister"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="10dp"
@@ -93,10 +111,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginLeft="24dp"
-        android:layout_marginTop="88dp"
+        android:layout_marginTop="110dp"
         android:fontFamily="@font/tmoney_bold"
-        android:text="카테고리"
+        android:text="세부 점수"
         android:textColor="#969191"
         android:textSize="20sp"
         app:layout_constraintStart_toStartOf="parent"
@@ -112,7 +129,7 @@
         android:numStars="5"
         android:rating="0"
         android:stepSize="0.5"
-        android:theme="@style/RatingBar"
+        android:max = "5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView17" />
 
@@ -172,69 +189,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView35" />
 
-    <ProgressBar
-        android:id="@+id/ctg1"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="200dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="16dp"
-        android:background="@drawable/y_categorybar"
-        android:max="100"
-        app:layout_constraintBottom_toTopOf="@+id/ctg2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.675"
-        app:layout_constraintStart_toEndOf="@+id/textView35"
-        app:layout_constraintTop_toBottomOf="@+id/y_RimageList"
-        app:layout_constraintVertical_bias="1.0" />
-
-    <ProgressBar
-        android:id="@+id/ctg3"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="200dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="37dp"
-        android:layout_marginLeft="37dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginBottom="20dp"
-        android:max="100"
-        app:layout_constraintBottom_toTopOf="@+id/ctg4"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.828"
-        app:layout_constraintStart_toEndOf="@+id/textView37" />
-
-    <ProgressBar
-        android:id="@+id/ctg4"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="200dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="56dp"
-        android:max="100"
-        app:layout_constraintBottom_toTopOf="@+id/imageView25"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.731"
-        app:layout_constraintStart_toEndOf="@+id/textView38" />
-
-    <ProgressBar
-        android:id="@+id/ctg2"
-        style="?android:attr/progressBarStyleHorizontal"
-        android:layout_width="200dp"
-        android:layout_height="25dp"
-        android:layout_marginStart="20dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginBottom="44dp"
-        android:background="@drawable/y_categorybar"
-        android:max="100"
-        app:layout_constraintBottom_toTopOf="@+id/ctg3"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.612"
-        app:layout_constraintStart_toEndOf="@+id/textView36" />
-
     <EditText
         android:id="@+id/y_reivewContent"
         android:layout_width="271dp"
@@ -244,8 +198,15 @@
         android:background="@drawable/y_reviewcontent"
         android:ems="10"
         android:fontFamily="@font/tmoney_regular"
-        android:inputType="textPersonName"
-        android:text="Name"
+        android:gravity="top"
+        android:inputType="textMultiLine"
+        android:lineSpacingExtra="5sp"
+        android:paddingLeft="10dp"
+        android:paddingTop="7dp"
+        android:paddingRight="10dp"
+        android:paddingBottom="7dp"
+        android:textColor="#4A4848"
+        android:textSize="14sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
 
@@ -254,6 +215,7 @@
         android:layout_width="235dp"
         android:layout_height="77dp"
         android:layout_marginTop="44dp"
+        android:layout_marginEnd="6dp"
         android:scrollbars="horizontal"
         app:layout_constraintEnd_toStartOf="@+id/y_addPhoto"
         app:layout_constraintHorizontal_bias="0.809"
@@ -268,9 +230,79 @@
         android:layout_marginEnd="12dp"
         android:background="@drawable/y_star"
         android:fontFamily="@font/tmoney_regular"
+        android:paddingLeft="18dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="4dp"
+        android:textColor="#4A4848"
         android:textSize="18sp"
         app:layout_constraintEnd_toStartOf="@+id/ratingBar"
         app:layout_constraintTop_toBottomOf="@+id/imageView17" />
+
+    <SeekBar
+        android:id="@+id/seekBar2"
+        android:layout_width="230dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        app:layout_constraintStart_toEndOf="@+id/textView36"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar1" />
+
+    <SeekBar
+        android:id="@+id/seekBar3"
+        android:layout_width="230dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="22dp"
+        app:layout_constraintStart_toEndOf="@+id/textView37"
+        app:layout_constraintTop_toBottomOf="@+id/seekBar2" />
+
+    <TextView
+        android:id="@+id/y_sbView1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="72dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:textColor="#969191"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/seekBar1"
+        app:layout_constraintTop_toBottomOf="@+id/y_RimageList" />
+
+    <TextView
+        android:id="@+id/y_sbView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="10dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:textColor="#969191"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/seekBar2"
+        app:layout_constraintTop_toBottomOf="@+id/y_sbView1" />
+
+    <TextView
+        android:id="@+id/y_sbView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:textColor="#969191"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/seekBar3"
+        app:layout_constraintTop_toBottomOf="@+id/y_sbView2" />
+
+    <TextView
+        android:id="@+id/y_sbView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:textColor="#969191"
+        android:textSize="16sp"
+        app:layout_constraintStart_toEndOf="@+id/seekBar4"
+        app:layout_constraintTop_toBottomOf="@+id/y_sbView3" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

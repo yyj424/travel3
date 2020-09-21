@@ -2,11 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@android:id/background"
-        android:drawable="@drawable/y_emptystar"/>
+        android:drawable="@drawable/y_small_emptystar"/>
     <item
         android:id="@android:id/secondaryProgress"
-        android:drawable="@drawable/y_halfstar" />
+        android:drawable="@drawable/y_small_halfstar" />
     <item
         android:id="@android:id/progress"
-        android:drawable="@drawable/y_fullstar"/>
+        android:drawable="@drawable/y_small_fullstar"/>
 </layer-list>
