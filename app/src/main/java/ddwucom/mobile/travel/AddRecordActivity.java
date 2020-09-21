@@ -17,6 +17,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.NotNull;
@@ -27,6 +29,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -44,7 +47,6 @@ public class AddRecordActivity extends Activity {
     final int maxImg = 4;
     int selectableImgCnt = maxImg;
 
-    Intent intent;
     RecordContent recordContent;
     AddRecordImageAdapter addRecordImageAdapter;
     ArrayList<Uri> selectedImageList;
@@ -56,12 +58,18 @@ public class AddRecordActivity extends Activity {
 
     String folderName;
 
+    FirebaseUser user;
+    String uid;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_add);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
+
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
 
         selectedImageList = new ArrayList<>();
         dlUriList = new ArrayList<>();
@@ -74,8 +82,9 @@ public class AddRecordActivity extends Activity {
         et_content = findViewById(R.id.et_content);
 
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReferenceFromUrl("https://travel3-262be.firebaseio.com/");
+        dbRef = database.getReference();
     }
+
 
     public void onClick(View v) {
         switch (v.getId()) {
@@ -103,12 +112,13 @@ public class AddRecordActivity extends Activity {
 
                 // 폴더명 지정
                 SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMHH_mmss");
-                Date now = new Date();
+//                Date now = new Date(System.currentTimeMillis());
+                Date now = Calendar.getInstance().getTime();
                 folderName = formatter.format(now) + "/";
 
                 for (int i = 0; i < selectedImageList.size(); i++) { // 선택한 사진 개수만큼 반복
                     // storage에 사진 업로드
-                    mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + folderName + selectedImageList.get(i).getLastPathSegment());
+                    mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + uid + "/" + folderName + selectedImageList.get(i).getLastPathSegment());
                     mStorageRef.putFile(selectedImageList.get(i))
                             .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                 @Override
