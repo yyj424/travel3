@@ -10,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -34,19 +35,23 @@ public class FindIdActivity extends AppCompatActivity {
        btnFindID.setOnClickListener(new View.OnClickListener(){
            @Override
            public void onClick(View v) {
-               String email = etEmail.getText().toString();
+               final String email = etEmail.getText().toString();
                firebaseAuth.sendPasswordResetEmail(email)
                        .addOnCompleteListener(new OnCompleteListener<Void>() {
                            @Override
                            public void onComplete(@NonNull Task<Void> task) {
                                if(task.isSuccessful()){
-                                   Toast.makeText(FindIdActivity.this, "이메일을 보냈습니다.",Toast.LENGTH_SHORT).show();
+                                   AlertDialog.Builder builder = new AlertDialog.Builder(FindIdActivity.this);
+                                   builder.setTitle("")
+                                           .setMessage("입력한 이메일\n '" + email + "' 로 비밀번호 재설정 메일을 보냈습니다.\n메일을 확인해 주세요. ")
+                                           .setPositiveButton("확인", null)
+                                           .show();
                                     finish();
                                     Intent intent = new Intent(FindIdActivity.this, LoginForm.class);
                                     startActivity(intent);
                                }
                                else{
-                                   Toast.makeText(FindIdActivity.this, "메일 보내기 실패\n 메일을 확인해 주세요!", Toast.LENGTH_SHORT).show();
+                                   Toast.makeText(FindIdActivity.this, "메일 보내기 실패\n 메일주소를 확인해 주세요!", Toast.LENGTH_SHORT).show();
                                }
                            }
                        });

@@ -68,7 +68,6 @@ public class JoinActivity extends AppCompatActivity {
                 String name;
                 name = etName.getText().toString();
                 if(name.equals("이름을 입력해주세요.")){
-                    Log.d(TAG, "이름 입력");
                     etName.setText("");
                 }
             }
@@ -79,7 +78,6 @@ public class JoinActivity extends AppCompatActivity {
                 String id;
                 id = etID.getText().toString();
                 if(id.equals("예) travel3Good")){
-                    Log.d(TAG, "아이디 입력");
                     etID.setText("");
                 }
             }
@@ -87,24 +85,19 @@ public class JoinActivity extends AppCompatActivity {
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "버튼 누름");
                 String id, email, pw, pw_chk;
                 id = etID.getText().toString();
                 email = etEmail.getText().toString();
                 pw = etPw.getText().toString();
                 pw_chk = etPwCheck.getText().toString();
 
-                Log.d(TAG, "여기까지 오류없음 -1 if문전");
                 if (!id.equals("") && !pw.equals("") && !pw_chk.equals("")) {
                     // 이메일과 비밀번호가 공백이 아닌 경우
-                    Log.d(TAG, "if문 들어아왔음");
                     signUp();
                 } else if(email.equals("") && (pw.equals("") || pw_chk.equals(""))){
                     // 이메일과 비밀번호가 공백인 경우
-                    Log.d(TAG, "이메일과 비밀번호가 공백인 경우");
                     Toast.makeText(JoinActivity.this, "계정과 비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
                 }else if(!pw_chk.equals(pw)){
-                    Log.d(TAG, "비밀번호 불일치 경우");
                     Toast.makeText(JoinActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_LONG).show();
                 }
             }
@@ -123,7 +116,6 @@ public class JoinActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(pw)){
             Toast.makeText(this, "Password를 입력해 주세요.", Toast.LENGTH_SHORT).show();
         }
-        Log.d(TAG, "create user 전");
         createUser(email, pw);
     }
     // 회원가입 -> Firebase authentification에 전달
@@ -132,15 +124,14 @@ public class JoinActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        Log.d(TAG, "onComplete 안");
                         if (task.isSuccessful()) {
                             // 회원가입 성공
-                            Log.d(TAG, "회원가입 성공");
                             AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
                             builder.setTitle("회원가입 완료")
                                     .setMessage(email + " 회원님 환영합니다.")
                                     .setPositiveButton("확인", null)
                                     .show();
+                            finish();
                             } else {
                             // 회원가입 실패
                             Log.d(TAG, "회원가입 실패");
@@ -153,8 +144,7 @@ public class JoinActivity extends AppCompatActivity {
     public void onClick(View v){
         switch(v.getId()){
             case R.id.join_imgBack:
-                Intent intent = new Intent(this, LoginForm.class);
-                startActivity(intent);
+                finish();
                 break;
 //            case R.id.join_btnOk:
 //                break;

@@ -71,6 +71,7 @@
         android:gravity="top"
         android:hint="@string/record_context"
         android:inputType="textMultiLine|text"
+        android:lineSpacingExtra="8sp"
         android:paddingLeft="10dp"
         android:paddingTop="10dp"
         android:paddingRight="10dp"
@@ -108,10 +109,10 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
         android:layout_marginTop="6dp"
-        android:layout_marginEnd="17dp"
-        android:scrollbars="horizontal"
+        android:layout_marginEnd="10dp"
+        android:overScrollMode="never"
+        android:scrollbars="none"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.809"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/et_location" />
 

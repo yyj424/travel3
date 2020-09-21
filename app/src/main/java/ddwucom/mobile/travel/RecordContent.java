@@ -1,22 +1,19 @@
 package ddwucom.mobile.travel;
 
-import java.util.List;
-
 public class RecordContent {
-    int _id;
     String location;
-    List<String> imageResIds;
+    String imageFolderName;
     String content;
 
     public RecordContent() {
         this.location = null;
-        this.imageResIds = null;
+        this.imageFolderName = null;
         this.content = null;
     }
 
-    public RecordContent(String location, List<String> imageResIds, String content) {
+    public RecordContent(String location, String imageResIds, String content) {
         this.location = location;
-        this.imageResIds = imageResIds;
+        this.imageFolderName = imageResIds;
         this.content = content;
     }
 
@@ -28,12 +25,12 @@ public class RecordContent {
         this.location = location;
     }
 
-    public List<String> getImageResIds() {
-        return imageResIds;
+    public String getImageFolderName() {
+        return imageFolderName;
     }
 
-    public void setImageResIds(List<String> imageResIds) {
-        this.imageResIds = imageResIds;
+    public void setImageFolderName(String imageResIds) {
+        this.imageFolderName = imageResIds;
     }
 
     public String getContent() {

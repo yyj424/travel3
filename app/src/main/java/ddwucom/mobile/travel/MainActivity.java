@@ -16,8 +16,8 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Intent intent = new Intent(this, LoadingActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(this, LoadingActivity.class);
+//        startActivity(intent);
 
 
         button = findViewById(R.id.button);

@@ -201,7 +201,7 @@
             android:id="@+id/join_btnOk"
             android:layout_width="340dp"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="30dp"
+            android:layout_marginBottom="20dp"
             android:background="@drawable/s_btnlogin"
             android:fontFamily="@font/tmoney_bold"
             android:text="회원가입 완료"
@@ -255,12 +255,12 @@
             android:id="@+id/errorMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="20dp"
             android:text="TextView"
             android:textColor="#FF0000"
             android:textSize="14sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.51"
+            app:layout_constraintHorizontal_bias="0.112"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/join_etEmail" />
     </androidx.constraintlayout.widget.ConstraintLayout>
