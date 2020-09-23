@@ -16,11 +16,9 @@ public class RecordContent {
     public String getUid() {
         return uid;
     }
-
     public void setUid(String uid) {
         this.uid = uid;
     }
-
     public String getLocation() {
         return location;
     }
