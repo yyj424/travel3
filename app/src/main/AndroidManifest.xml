@@ -23,7 +23,12 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".HomeActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
 <!--        <activity android:name=".RecordMain" />-->
         <activity android:name=".LoginForm">
 
@@ -35,13 +40,23 @@
         <activity android:name=".ChangePWActivity"/>
         <activity android:name=".PlanList" />
         <activity android:name=".PlanFirstStep"/>
-        <activity android:name=".PlanSecondStep"/>
+        <activity android:name=".PlanSecondStep">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".Map" />
         <activity android:name=".ReviewList" />
         <activity android:name=".ReviewForm"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
         </activity>
-        <activity android:name=".AddRecordActivity" />
+        <activity android:name=".AddRecordActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 </manifest>
