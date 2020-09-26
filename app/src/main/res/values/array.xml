@@ -26,4 +26,12 @@
         <item>태국</item>
         <!--더 추가해야됨-->
     </string-array>
+
+<!--    <string-array name="colors">-->
+<!--        <item>#ff5251</item>-->
+<!--        <item>#969191</item>-->
+<!--        <item>#ffcfcc</item>-->
+<!--        <item>#ff5f21</item>-->
+<!--        <item>#ffb541</item>-->
+<!--    </string-array>-->
 </resources>

@@ -6,6 +6,45 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF">
 
+    <TextView
+        android:id="@+id/textView39"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="95dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="점"
+        android:textColor="#969191"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/y_sbView1"
+        app:layout_constraintTop_toBottomOf="@+id/y_addPhoto" />
+
+    <TextView
+        android:id="@+id/textView40"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="17dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="점"
+        android:textColor="#969191"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/y_sbView2"
+        app:layout_constraintTop_toBottomOf="@+id/textView39" />
+
+    <TextView
+        android:id="@+id/textView41"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="23dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="점"
+        android:textColor="#969191"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/y_sbView3"
+        app:layout_constraintTop_toBottomOf="@+id/textView40" />
+
     <SeekBar
         android:id="@+id/seekBar4"
         android:layout_width="230dp"
@@ -274,7 +313,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="13dp"
+        android:layout_marginTop="15dp"
         android:fontFamily="@font/tmoney_regular"
         android:text="0"
         android:textColor="#969191"
@@ -307,6 +346,19 @@
         android:textSize="16sp"
         app:layout_constraintStart_toEndOf="@+id/seekBar4"
         app:layout_constraintTop_toBottomOf="@+id/y_sbView3" />
+
+    <TextView
+        android:id="@+id/textView14"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="점"
+        android:textColor="#969191"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toEndOf="@+id/y_sbView4"
+        app:layout_constraintTop_toBottomOf="@+id/textView41" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
