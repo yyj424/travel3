@@ -45,6 +45,7 @@ public class HomeActivity extends AppCompatActivity {
 //                startActivity(intent);
 //                break;
             case R.id.btnLogout:
+                //이것이 추가되었나요?
                 if(firebaseAuth.getCurrentUser() != null){
                     //이미 로그인 되었다면 이 액티비티를 종료함
                     firebaseAuth.signOut();
