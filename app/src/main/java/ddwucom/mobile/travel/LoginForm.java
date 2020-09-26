@@ -47,6 +47,8 @@ public class LoginForm extends AppCompatActivity {
         btnJoin = (Button) findViewById(R.id.btnJoin);
 
         firebaseAuth = FirebaseAuth.getInstance();
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference();
 
         if(firebaseAuth.getCurrentUser() != null){
             //이미 로그인 되었다면 이 액티비티를 종료함
