@@ -1,5 +1,6 @@
 package ddwucom.mobile.travel;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Paint;
 import android.os.Bundle;
@@ -31,24 +32,36 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.regex.Pattern;
 
 public class JoinActivity extends AppCompatActivity {
     private static final String TAG = "rg";
     private DatabaseReference mPostReference;
-    FirebaseAuth firebaseAuth;
+    private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
+    private FirebaseUser user;
+
+    UserInfo userInfo;
+    List userList;
 
     EditText etName, etID, etEmail, etPhone, etPw, etPwCheck;
     Button btnOk;
     TextView errMSG;
-    String _id, name, email, phone, pw;
+    String _id, name, email, phone, pw, currentUid;
     String sort = "_id";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join);
+
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference();
+
+        userList = new ArrayList<>();
 
         etName = (EditText)findViewById(R.id.join_etName);
         etID = (EditText)findViewById(R.id.join_etID);
@@ -104,8 +117,8 @@ public class JoinActivity extends AppCompatActivity {
         });
     }
     public void signUp(){ /*회원가입 정보 전달*/
-        etEmail = (EditText)findViewById(R.id.join_etEmail);
-        etPw = (EditText)findViewById(R.id.join_etPwCheck);
+//        etEmail = (EditText)findViewById(R.id.join_etEmail);
+//        etPw = (EditText)findViewById(R.id.join_etPwCheck);
         email = etEmail.getText().toString();
         pw = etPw.getText().toString();
 
@@ -126,12 +139,32 @@ public class JoinActivity extends AppCompatActivity {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // 회원가입 성공
+                            userInfo = new UserInfo();
+
+                            Log.d(TAG, "uid log로 보기 " + task.getResult().getUser().getUid());
+                            // 객체에 이미지 외의 데이터 저장
+                            String nickname = etID.getText().toString();
+                            String phone = etPhone.getText().toString();
+//                            String uid = .toString();
+
+                            userInfo.setUid(task.getResult().getUser().getUid());
+                            userInfo.setNickname(nickname);
+                            userInfo.setPhone(phone);
+                            userInfo.setEmail(email);
+
+                            // db에 유저정보 저장
+                            dbRef.child("user_list").push().setValue(userInfo);
                             AlertDialog.Builder builder = new AlertDialog.Builder(JoinActivity.this);
                             builder.setTitle("회원가입 완료")
                                     .setMessage(email + " 회원님 환영합니다.")
-                                    .setPositiveButton("확인", null)
+                                    .setPositiveButton("확인", new DialogInterface.OnClickListener() {
+                                        @Override
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            finish();
+                                        }
+                                    })
                                     .show();
-                            finish();
+
                             } else {
                             // 회원가입 실패
                             Log.d(TAG, "회원가입 실패");
@@ -140,6 +173,24 @@ public class JoinActivity extends AppCompatActivity {
                         }
                     }
                 });
+    }
+    public int checkId(String userId){
+        dbRef  = database.getReference("user_list");
+
+        dbRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    Log.d("MainActivity", "ValueEventListener : " + snapshot.getValue());
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+        return 0;
     }
     public void onClick(View v){
         switch(v.getId()){

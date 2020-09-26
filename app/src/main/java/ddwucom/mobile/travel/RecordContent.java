@@ -19,10 +19,10 @@ public class RecordContent {
     public void setUid(String uid) {
         this.uid = uid;
     }
+
     public String getLocation() {
         return location;
     }
-
     public void setLocation(String location) {
         this.location = location;
     }
@@ -30,7 +30,6 @@ public class RecordContent {
     public String getImageFolderName() {
         return imageFolderName;
     }
-
     public void setImageFolderName(String imageFolderName) {
         this.imageFolderName = imageFolderName;
     }
@@ -38,7 +37,6 @@ public class RecordContent {
     public String getContent() {
         return content;
     }
-
     public void setContent(String content) {
         this.content = content;
     }
