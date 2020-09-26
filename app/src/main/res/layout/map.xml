@@ -38,9 +38,9 @@
 
     <EditText
         android:id="@+id/y_searchPlace"
-        android:layout_width="291dp"
-        android:layout_height="31dp"
-        android:layout_marginTop="15dp"
+        android:layout_width="350dp"
+        android:layout_height="40dp"
+        android:layout_marginTop="7dp"
         android:background="@null"
         android:ems="10"
         android:fontFamily="@font/tmoney_regular"
@@ -49,8 +49,7 @@
         android:inputType="textPersonName"
         android:textColor="#9E000000"
         android:textSize="18sp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.158"
+        app:layout_constraintEnd_toStartOf="@+id/y_placeSearch"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/imageView16" />
 
@@ -59,12 +58,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:layout_marginEnd="5dp"
-        android:layout_marginRight="5dp"
+        android:layout_marginEnd="10dp"
         android:onClick="onClick"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.981"
-        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/imageView15"
         app:srcCompat="@drawable/y_search_place" />
 
