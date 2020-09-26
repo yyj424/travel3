@@ -8,4 +8,5 @@
     <color name="colorFolder">#CCFFCC5C</color>
     <color name="ted_image_picker_primary">#CCFFCC5C</color>
     <color name="ted_image_picker_primary_pressed">#FFEEAD</color>
+    <color name="xd_gray">#969191</color>
 </resources>
