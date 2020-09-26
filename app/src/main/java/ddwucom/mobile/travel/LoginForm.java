@@ -20,6 +20,8 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class LoginForm extends AppCompatActivity {
     EditText etEmail, etPW;
@@ -27,6 +29,8 @@ public class LoginForm extends AppCompatActivity {
     Button btnLogin, btnJoin;
     FirebaseAuth firebaseAuth;
     final String TAG = "sera";
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
