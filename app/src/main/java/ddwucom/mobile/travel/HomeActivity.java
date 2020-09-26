@@ -19,6 +19,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         btnLogout = findViewById(R.id.btnLogout);
+        firebaseAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -44,9 +45,12 @@ public class HomeActivity extends AppCompatActivity {
 //                startActivity(intent);
 //                break;
             case R.id.btnLogout:
-                firebaseAuth.signOut();
-                finish();
-                startActivity(new Intent(this, LoginForm.class));
+                if(firebaseAuth.getCurrentUser() != null){
+                    //이미 로그인 되었다면 이 액티비티를 종료함
+                    firebaseAuth.signOut();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), LoginForm.class));
+                }
                 break;
         }
     }
