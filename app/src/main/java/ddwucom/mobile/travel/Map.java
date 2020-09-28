@@ -2,15 +2,22 @@ package ddwucom.mobile.travel;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,20 +35,27 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 public class Map extends AppCompatActivity {
 
+    EditText etsearch;
     String [] permission_list ={
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
+    private Marker currentMarker = null;
     LocationManager locationManager;
     GoogleMap map;
     private RecyclerView listview;
     private ArrayList<MyCourse> courseList = null;
     private CourseListAdapter courseListAdapter;
+    LatLng position;
+    double latitude;
+    double longitude;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +68,23 @@ public class Map extends AppCompatActivity {
             init();
         }
         courseList();//Log.d("yc","함수끝");
+        etsearch = findViewById(R.id.y_searchPlace);
+        final InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+        etsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                switch (actionId) {
+                    case EditorInfo.IME_ACTION_SEARCH:
+                        findPlace();
+                        break;
+                    default:
+                        etsearch.clearFocus();
+                        imm.hideSoftInputFromWindow(etsearch.getWindowToken(), 0);
+                        return false;
+                }
+                return true;
+            }
+        });
     }
 
     private void courseList() {
@@ -88,6 +119,8 @@ public class Map extends AppCompatActivity {
 
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.y_placeSearch:
+                findPlace();
             case R.id.y_courseRemove:
                 //Intent intent = new Intent(this, );
                 //startActivity(intent);
@@ -95,6 +128,29 @@ public class Map extends AppCompatActivity {
             case R.id.y_courseRegister:
 
                 break;
+        }
+    }
+
+    public void findPlace() {
+        final Geocoder geocoder = new Geocoder( getApplicationContext() );
+        String value = etsearch.getText().toString();
+        List<Address> list = null;
+        String str = value;
+        try {
+            list = geocoder.getFromLocationName( str,  20 );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        if (list != null) {
+            if (list.size() == 0) {
+                Toast.makeText( getApplicationContext(), "해당되는 주소 정보를 찾지 못했습니다.", Toast.LENGTH_SHORT ).show();
+            }
+            else {
+                Address addr = list.get( 0 );
+                latitude = addr.getLatitude();
+                longitude = addr.getLongitude();
+                getMyLocation();
+            }
         }
     }
 
@@ -122,7 +178,7 @@ public class Map extends AppCompatActivity {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            getMyLocation();
+            setDefaultLocation();
         }
     }
 
@@ -162,14 +218,17 @@ public class Map extends AppCompatActivity {
 
     public void setMyLocation(Location location) {
         //위도와 경도값을 관리하는 객체
-        LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
+       //position = new LatLng(location.getLatitude(), location.getLongitude());
+        position = new LatLng(latitude, longitude);
 
-        //maker가 생기질 않음...
+        if (currentMarker != null) currentMarker.remove();
+
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(position);
         markerOptions.title("title");//수정!!!
         markerOptions.snippet("snippet");//수정!!
         markerOptions.draggable(true);
+        currentMarker = map.addMarker(markerOptions);
 
         CameraUpdate update1 = CameraUpdateFactory.newLatLng(position);
         CameraUpdate update2 = CameraUpdateFactory.zoomTo(15f);
@@ -185,6 +244,25 @@ public class Map extends AppCompatActivity {
         }
         //현재 위치 표시
         map.setMyLocationEnabled(true);
+    }
+
+    public void setDefaultLocation() {//에뮬돌릴때만 써야됨
+        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
+        String markerTitle = "위치정보 가져올 수 없음";
+        String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
+
+
+        if (currentMarker != null) currentMarker.remove();
+
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(DEFAULT_LOCATION);
+        markerOptions.title(markerTitle);
+        markerOptions.snippet(markerSnippet);
+        markerOptions.draggable(true);
+        currentMarker = map.addMarker(markerOptions);
+
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
+        map.moveCamera(cameraUpdate);
     }
 
     //현재 위치 측정이 성공하면 반응하는 리스너
@@ -210,21 +288,4 @@ public class Map extends AppCompatActivity {
             //위치 측정하기 위한 요소가 사용 가능시 호출
         }
     }
-//
-//    @Override
-//    public void onMapReady(final GoogleMap googleMap) {
-//
-//        mMap = googleMap;
-//
-//        LatLng SEOUL = new LatLng(37.56, 126.97);
-//
-//        MarkerOptions markerOptions = new MarkerOptions();
-//        markerOptions.position(SEOUL);
-//        markerOptions.title("서울");
-//        markerOptions.snippet("한국의 수도");
-//        mMap.addMarker(markerOptions);
-//
-//        mMap.moveCamera(CameraUpdateFactory.newLatLng(SEOUL));
-//        mMap.animateCamera(CameraUpdateFactory.zoomTo(10));
-//    }{*/
 }
