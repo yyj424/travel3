@@ -14,4 +14,9 @@
     <style name="smallRatingBar" parent="Theme.AppCompat">
         <item name="android:progressDrawable">@drawable/custom_small_ratingbar</item>
     </style>
+
+    <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
+        <item name="android:fontFamily">@font/tmoney_regular</item>
+        <item name="colorAccent">@color/colorFolder</item>
+    </style>
 </resources>

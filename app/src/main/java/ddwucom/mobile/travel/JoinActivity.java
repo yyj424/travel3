@@ -37,7 +37,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 
 public class JoinActivity extends AppCompatActivity {
-    private static final String TAG = "rg";
+    private static final String TAG = "sera";
     private DatabaseReference mPostReference;
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
@@ -174,14 +174,21 @@ public class JoinActivity extends AppCompatActivity {
                     }
                 });
     }
-    public int checkId(String userId){
+    public void checkId(){
+       // Log.d(TAG, "CLick00!!");
         dbRef  = database.getReference("user_list");
+       // Log.d(TAG, "CLick11!!");
 
         dbRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.d(TAG, "CLick22!!");
+                String etNickname = etID.getText().toString();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                    Log.d("MainActivity", "ValueEventListener : " + snapshot.getValue());
+                    //Log.d(TAG, "CLick!!");
+                    Log.d(TAG, "ValueEventListener : " + snapshot.child("nickname").getValue());
+                    if(etNickname.equals(snapshot.child("nickname").getValue()))
+                        Toast.makeText(JoinActivity.this, "중복된 아이디 입니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
                 }
             }
 
@@ -190,7 +197,7 @@ public class JoinActivity extends AppCompatActivity {
 
             }
         });
-        return 0;
+        return;
     }
     public void onClick(View v){
         switch(v.getId()){
@@ -207,6 +214,7 @@ public class JoinActivity extends AppCompatActivity {
 //
 //                etID.requestFocus();
 //                etID.setCursorVisible(true);
+                checkId();
                 break;
         }
     }
