@@ -247,13 +247,6 @@ public class Map extends AppCompatActivity {
         map.setMyLocationEnabled(true);
     }
 
-    public void setDefaultLocation() {//에뮬돌릴때만 써야됨
-        setMarker(position);
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, 15);
-        map.moveCamera(cameraUpdate);
-    }
-
     public void setMarker(LatLng position) {
         if (currentMarker != null) currentMarker.remove();
 
