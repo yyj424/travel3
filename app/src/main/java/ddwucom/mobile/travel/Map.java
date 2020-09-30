@@ -54,8 +54,10 @@ public class Map extends AppCompatActivity {
     private ArrayList<MyCourse> courseList = null;
     private CourseListAdapter courseListAdapter;
     LatLng position;
-    double latitude;
-    double longitude;
+    double latitude = 0.0;
+    double longitude = 0.0;
+    Location location1;
+    Location location2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -178,7 +180,8 @@ public class Map extends AppCompatActivity {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            setDefaultLocation();
+            //setDefaultLocation();
+            getMyLocation();
         }
     }
 
@@ -194,9 +197,10 @@ public class Map extends AppCompatActivity {
         }
 
         //이전 측정 값
-        Location location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
-        Location location2 = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+        location1 = locationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+        location2 = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
 
+        //이전 측정 값이 있다면
         if(location1 != null) {
             setMyLocation(location1);
         }
@@ -218,17 +222,14 @@ public class Map extends AppCompatActivity {
 
     public void setMyLocation(Location location) {
         //위도와 경도값을 관리하는 객체
-       //position = new LatLng(location.getLatitude(), location.getLongitude());
-        position = new LatLng(latitude, longitude);
+        if (latitude == 0.0 && longitude == 0.0) {
+            position = new LatLng(location.getLatitude(), location.getLongitude());
+        }
+        else {
+            position = new LatLng(latitude, longitude);
+        }
 
-        if (currentMarker != null) currentMarker.remove();
-
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(position);
-        markerOptions.title("title");//수정!!!
-        markerOptions.snippet("snippet");//수정!!
-        markerOptions.draggable(true);
-        currentMarker = map.addMarker(markerOptions);
+        setMarker(position);
 
         CameraUpdate update1 = CameraUpdateFactory.newLatLng(position);
         CameraUpdate update2 = CameraUpdateFactory.zoomTo(15f);
@@ -247,22 +248,21 @@ public class Map extends AppCompatActivity {
     }
 
     public void setDefaultLocation() {//에뮬돌릴때만 써야됨
-        LatLng DEFAULT_LOCATION = new LatLng(37.56, 126.97);
-        String markerTitle = "위치정보 가져올 수 없음";
-        String markerSnippet = "위치 퍼미션과 GPS 활성 요부 확인하세요";
+        setMarker(position);
 
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(position, 15);
+        map.moveCamera(cameraUpdate);
+    }
 
+    public void setMarker(LatLng position) {
         if (currentMarker != null) currentMarker.remove();
 
         MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(DEFAULT_LOCATION);
-        markerOptions.title(markerTitle);
-        markerOptions.snippet(markerSnippet);
+        markerOptions.position(position);
+        markerOptions.title("markerTitle");
+        markerOptions.snippet("markerSnippet");
         markerOptions.draggable(true);
         currentMarker = map.addMarker(markerOptions);
-
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngZoom(DEFAULT_LOCATION, 15);
-        map.moveCamera(cameraUpdate);
     }
 
     //현재 위치 측정이 성공하면 반응하는 리스너
