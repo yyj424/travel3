@@ -34,14 +34,13 @@ public class FindIdActivity extends AppCompatActivity {
     private DatabaseReference dbRef;
 
     final String TAG = "sera";
+    static String nickname;
     static boolean checkID = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_id);
-
-
 
         etEmail = (EditText)findViewById(R.id.findID_etEmail);
         btnFindID = (ImageView)findViewById(R.id.findID_imgNext);
@@ -54,7 +53,7 @@ public class FindIdActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 dbRef  = database.getReference("user_list");
-                // Log.d(TAG, "CLick11!!");
+                Log.d(TAG, "CLick11!!");
 
                 dbRef.addValueEventListener(new ValueEventListener() {
                     @Override
@@ -62,11 +61,13 @@ public class FindIdActivity extends AppCompatActivity {
                         Log.d(TAG, "CLick22!!");
                         int is_in = 0;
                         String etNickname = etEmail.getText().toString();
+
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             //Log.d(TAG, "CLick!!");
                             Log.d(TAG, "ValueEventListener : " + snapshot.child("email").getValue());
-                            if(etNickname.equals(snapshot.child("email").getValue())) {
+                            if(etNickname.equals(snapshot.child("email").getValue().toString())) {
                                 is_in = 1;
+                                nickname = snapshot.child("nickname").getValue().toString();
                                 break;
                             }
                         }
@@ -74,7 +75,7 @@ public class FindIdActivity extends AppCompatActivity {
                             Toast.makeText(FindIdActivity.this, "해당 이메일이 없습니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
                         }
                         else{
-                            Toast.makeText(FindIdActivity.this, "존재하는 이메일입니다. 계속 진행해주세요.", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(FindIdActivity.this, "존재하는 이메일입니다.", Toast.LENGTH_SHORT).show();
                             checkID = true;
                         }
                     }
@@ -85,32 +86,6 @@ public class FindIdActivity extends AppCompatActivity {
                 });
             }
         });
-        btnFindID.setOnClickListener(new View.OnClickListener(){
-           @Override
-           public void onClick(View v) {
-               final String email = etEmail.getText().toString();
-               firebaseAuth.sendPasswordResetEmail(email)
-                       .addOnCompleteListener(new OnCompleteListener<Void>() {
-                           @Override
-                           public void onComplete(@NonNull Task<Void> task) {
-                               if(task.isSuccessful() && checkID == true){
-                                   AlertDialog.Builder builder = new AlertDialog.Builder(FindIdActivity.this);
-                                   builder.setTitle("")
-                                           .setMessage("입력한 이메일\n '" + email + "' 로 비밀번호 재설정 메일을 보냈습니다.\n메일을 확인해 주세요. ")
-                                           .setPositiveButton("확인", null)
-                                           .show();
-                                    finish();
-                                    Intent intent = new Intent(FindIdActivity.this, LoginForm.class);
-                                    startActivity(intent);
-                               }
-                               else{
-                                   Toast.makeText(FindIdActivity.this, "메일 보내기 실패\n 메일주소를 확인해 주세요!", Toast.LENGTH_SHORT).show();
-                               }
-                           }
-                       });
-           }
-       });
-
     }
     public void onClick(View v){
         switch(v.getId()) {
@@ -122,6 +97,13 @@ public class FindIdActivity extends AppCompatActivity {
                 Intent intent2 = new Intent(this, LoginForm.class);
                 startActivity(intent2);
                 break;
+            case R.id.findID_imgNext:
+                Toast.makeText(FindIdActivity.this, "아이디는 " + nickname + "입니다", Toast.LENGTH_SHORT).show();
+                finish();
+                startActivity(new Intent(getApplicationContext(),  LoginForm.class));
+                break;
+
+
         }
     }
 }

@@ -21,7 +21,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/tmoney_bold"
-            android:text="비밀번호 찾기"
+            android:text="비밀번호 재설정"
             android:textColor="#FFFFFF"
             android:textSize="40dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -72,78 +72,32 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/body_pw"
-        android:layout_width="415dp"
-        android:layout_height="541dp"
+        android:layout_width="407dp"
+        android:layout_height="465dp"
         android:background="#24FFCC5C"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/topBar_pw">
 
         <TextView
-            android:id="@+id/textView24"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="68dp"
-            android:fontFamily="@font/tmoney_regular"
-            android:text="이름과 아이디"
-            android:textColor="#000000"
-            android:textSize="18dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.224"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
             android:id="@+id/textView25"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="2dp"
+            android:layout_marginTop="72dp"
             android:fontFamily="@font/tmoney_regular"
             android:text="가입했을 시 이메일을 입력해주세요."
             android:textColor="#000000"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView24" />
-
-        <EditText
-            android:id="@+id/findPW_etName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="150dp"
-            android:background="@drawable/s_form2"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:onClick="onClick"
-            android:paddingLeft="10dp"
-            android:text="이름을 입력해주세요."
-            android:textColor="#BDBDBD"
-            app:layout_constraintBottom_toTopOf="@+id/findPW_etID"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.43"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <EditText
-            android:id="@+id/findPW_etID"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="16dp"
-            android:background="@drawable/s_form2"
-            android:ems="10"
-            android:inputType="textPersonName"
-            android:onClick="onClick"
-            android:paddingLeft="10dp"
-            android:text="아이디를 입력해주세요."
-            android:textColor="#BDBDBD"
-            app:layout_constraintBottom_toTopOf="@+id/findPW_etEmail"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
 
         <EditText
             android:id="@+id/findPW_etEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="180dp"
+            android:layout_marginBottom="308dp"
             android:background="@drawable/s_form2"
             android:ems="10"
             android:inputType="textPersonName"
@@ -159,7 +113,7 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/bottomBar_pw"
         android:layout_width="415dp"
-        android:layout_height="60dp"
+        android:layout_height="0dp"
         android:background="#DBFFCC5C"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

@@ -4,23 +4,54 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 public class FindPwActivity extends AppCompatActivity {
-    EditText etName, etEmail, etID;
+    EditText etEmail;
+
+    private FirebaseAuth firebaseAuth;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_find_pw);
+
+        etEmail = findViewById(R.id.findPW_etEmail);
     }
     public void onClick (View v){
         switch(v.getId()){
             case R.id.findPW_imgNext:
-                Intent intent = new Intent(this, ChangePWActivity.class);
-                startActivity(intent);
+                final String email = etEmail.getText().toString();
+                firebaseAuth.sendPasswordResetEmail(email)
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this);
+                                            builder.setTitle("")
+                                                    .setMessage("입력한 이메일\n '" + email + "' 로 비밀번호 재설정 메일을 보냈습니다.\n메일을 확인해 주세요. ")
+                                                    .setPositiveButton("확인", null)
+                                                    .show();
+                                            finish();
+                                            Intent intent = new Intent(FindPwActivity.this, LoginForm.class);
+                                            startActivity(intent);
+                                        }
+                                        else{
+                                            Toast.makeText(FindPwActivity.this, "메일 보내기 실패\n 메일주소를 확인해 주세요!", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
                 break;
             case R.id.findPW_signUp:
                 Intent intent1 = new Intent(this, JoinActivity.class);
@@ -29,14 +60,6 @@ public class FindPwActivity extends AppCompatActivity {
             case R.id.findPW_login:
                 Intent intent2 = new Intent(this, LoginForm.class);
                 startActivity(intent2);
-                break;
-            case R.id.findPW_etName:
-                etName = findViewById(R.id.findPW_etName);
-                etName.setText("");
-                break;
-            case R.id.findPW_etID:
-                etID = findViewById(R.id.findPW_etID);
-                etID.setText("");
                 break;
             case R.id.findPW_etEmail:
                 etEmail = findViewById(R.id.findPW_etEmail);

@@ -105,16 +105,16 @@ public class LoginForm extends AppCompatActivity {
     public void onClick (View v){
         switch (v.getId()) {
             case R.id.btnJoin:
-                Intent intent2 = new Intent(this, JoinActivity.class);
-                startActivity(intent2);
+                Intent intent1 = new Intent(LoginForm.this, JoinActivity.class);
+                startActivity(intent1);
                 break;
             case R.id.findID:
-                Intent intent3 = new Intent(this, FindIdActivity.class);
-                startActivity(intent3);
+                Intent intent2 = new Intent(this, FindIdActivity.class);
+                startActivity(intent2);
                 break;
             case R.id.findPW:
-                Intent intent4 = new Intent(this, FindPwActivity.class);
-                startActivity(intent4);
+                Intent intent3 = new Intent(this, FindPwActivity.class);
+                startActivity(intent3);
                 break;
             case R.id.etPwForm:
                 etPW.setText("");
