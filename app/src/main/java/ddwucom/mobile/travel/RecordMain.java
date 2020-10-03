@@ -1,10 +1,11 @@
 package ddwucom.mobile.travel;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.os.Debug;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Switch;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,8 +13,6 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
-
-import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 
 public class RecordMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,6 +37,8 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
 
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+
     }
 
     @Override
@@ -50,5 +51,14 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_record_calendar, menu);
         return true;
+    }
+
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnAddRecord:
+                Intent intent = new Intent(this, RecordDayActivity.class);
+                startActivity(intent);
+                break;
+        }
     }
 }
