@@ -73,9 +73,9 @@ public class RecordListActivity extends Activity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
-            holder.recordImage.setImageResource(recordsList.get(pos).getImageResId());
-            holder.tvRecordTitle.setText(recordsList.get(position).getRecordTitle());
-            holder.tvRecordDate.setText(recordsList.get(position).getDate());
+//            holder.recordImage.setImageResource(recordsList.get(pos).getImageResId());
+//            holder.tvRecordTitle.setText(recordsList.get(position).getRecordTitle());
+//            holder.tvRecordDate.setText(recordsList.get(position).getDate());
 
             return convertView;
         }
