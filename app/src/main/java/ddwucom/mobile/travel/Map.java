@@ -1,6 +1,7 @@
 package ddwucom.mobile.travel;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
 import android.location.Geocoder;
@@ -15,17 +16,20 @@ import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.common.api.Status;
 import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -34,14 +38,25 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.libraries.places.api.Places;
+import com.google.android.libraries.places.api.model.Place;
+import com.google.android.libraries.places.api.model.TypeFilter;
+import com.google.android.libraries.places.api.net.PlacesClient;
+import com.google.android.libraries.places.widget.Autocomplete;
+import com.google.android.libraries.places.widget.AutocompleteActivity;
+import com.google.android.libraries.places.widget.AutocompleteSupportFragment;
+import com.google.android.libraries.places.widget.listener.PlaceSelectionListener;
+import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+
+import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Map extends AppCompatActivity {
 
-    EditText etsearch;
     String [] permission_list ={
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
@@ -54,8 +69,8 @@ public class Map extends AppCompatActivity {
     private ArrayList<MyCourse> courseList = null;
     private CourseListAdapter courseListAdapter;
     LatLng position;
-    double latitude = 0.0;
-    double longitude = 0.0;
+    double latitude = 100.0;
+    double longitude = 200.0;
     Location location1;
     Location location2;
 
@@ -70,24 +85,55 @@ public class Map extends AppCompatActivity {
             init();
         }
         courseList();//Log.d("yc","함수끝");
-        etsearch = findViewById(R.id.y_searchPlace);
-        final InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
-        etsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                switch (actionId) {
-                    case EditorInfo.IME_ACTION_SEARCH:
-                        findPlace();
-                        break;
-                    default:
-                        etsearch.clearFocus();
-                        imm.hideSoftInputFromWindow(etsearch.getWindowToken(), 0);
-                        return false;
-                }
-                return true;
-            }
-        });
+        //etsearch = findViewById(R.id.y_searchPlace);
+
+        String apiKey = getResources().getString(R.string.google_maps_key);
+        if (!Places.isInitialized()) {
+            Places.initialize(getApplicationContext(), apiKey);
+        }
+
+        // Create a new Places client instance.
+ //       PlacesClient placesClient = Places.createClient(Map.this);
+
+       // autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME, Place.Field.PHOTO_METADATAS));
+        
+//        AutocompleteSupportFragment autocompleteFragment = (AutocompleteSupportFragment)
+//                getSupportFragmentManager().findFragmentById(R.id.y_searchPlace);
+//
+//        //autocompleteFragment.setTypeFilter(TypeFilter.CITIES);
+//        autocompleteFragment.setPlaceFields(Arrays.asList(Place.Field.ID, Place.Field.NAME));
+//        autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
+//            @Override
+//            public void onPlaceSelected(@NotNull Place place) {
+//                // Get info about the selected place.
+//                Log.d("yj", "Place: " + place.getName() + ", " + place.getId());
+//            }
+//
+//            @Override
+//            public void onError(@NotNull Status status) {
+//                // Handle the error.
+//                Log.d("yj", "An error occurred: " + status);
+//            }
+//        });
+//        final InputMethodManager imm = (InputMethodManager) getSystemService(INPUT_METHOD_SERVICE);
+//        etsearch.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+//            @Override
+//            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+//                switch (actionId) {
+//                    case EditorInfo.IME_ACTION_SEARCH:
+//                        findPlace();
+//                        break;
+//                    default:
+//                        etsearch.clearFocus();
+//                        imm.hideSoftInputFromWindow(etsearch.getWindowToken(), 0);
+//                        return false;
+//                }
+//                return true;
+//            }
+//        });
     }
+
+
 
     private void courseList() {
         listview = findViewById(R.id.y_course_list);
@@ -122,7 +168,9 @@ public class Map extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.y_placeSearch:
-                findPlace();
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(Map.this);
+                startActivityForResult(intent, 100);
             case R.id.y_courseRemove:
                 //Intent intent = new Intent(this, );
                 //startActivity(intent);
@@ -133,13 +181,25 @@ public class Map extends AppCompatActivity {
         }
     }
 
-    public void findPlace() {
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 100 && resultCode == RESULT_OK) {
+            Place place = Autocomplete.getPlaceFromIntent(data);
+            longitude = place.getLatLng().longitude;
+            latitude = place.getLatLng().latitude;
+            getMyLocation();
+        } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
+            Status status = Autocomplete.getStatusFromIntent(data);
+            Toast.makeText(Map.this, status.getStatusMessage(), Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void findPlace(String address) {
         final Geocoder geocoder = new Geocoder( getApplicationContext() );
-        String value = etsearch.getText().toString();
         List<Address> list = null;
-        String str = value;
         try {
-            list = geocoder.getFromLocationName( str,  20 );
+            list = geocoder.getFromLocationName( address,  20 );
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -180,7 +240,6 @@ public class Map extends AppCompatActivity {
         @Override
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
-            //setDefaultLocation();
             getMyLocation();
         }
     }
@@ -202,11 +261,11 @@ public class Map extends AppCompatActivity {
 
         //이전 측정 값이 있다면
         if(location1 != null) {
-            setMyLocation(location1);
+            setMyLocation(location1);Log.d("yj","loca1");
         }
         else {
             if(location2 != null) {
-                setMyLocation(location2);
+                setMyLocation(location2);Log.d("yj","loca2");
             }
         }
         //새로운 측정 값
@@ -222,20 +281,20 @@ public class Map extends AppCompatActivity {
 
     public void setMyLocation(Location location) {
         //위도와 경도값을 관리하는 객체
-        if (latitude == 0.0 && longitude == 0.0) {
-            position = new LatLng(location.getLatitude(), location.getLongitude());
+        if (latitude == 100.0 && longitude == 200.0) {
+            position = new LatLng(location.getLatitude(), location.getLongitude());Log.d("yj","첫실행");
         }
-        else {
-            position = new LatLng(latitude, longitude);
+       else {
+            position = new LatLng(latitude, longitude);Log.d("yj","찾은");
         }
 
         setMarker(position);
 
-        CameraUpdate update1 = CameraUpdateFactory.newLatLng(position);
-        CameraUpdate update2 = CameraUpdateFactory.zoomTo(15f);
+        CameraUpdate update1 = CameraUpdateFactory.newLatLng(position);Log.d("yj","1");
+        CameraUpdate update2 = CameraUpdateFactory.zoomTo(15f);Log.d("yj","2");
 
-        map.moveCamera(update1);
-        map.animateCamera(update2);
+        map.moveCamera(update1);Log.d("yj","업");
+        map.animateCamera(update2);Log.d("yj","업2");
 
         //권한 확인 작업
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -262,7 +321,7 @@ public class Map extends AppCompatActivity {
     class GetMyLocationListener implements LocationListener {
         @Override
         public void onLocationChanged(Location location) {
-            setMyLocation(location);
+            //setMyLocation(location); Log.d("yj","getM어쩌구 리스너");
             locationManager.removeUpdates((android.location.LocationListener) this);//위치 측정 중단
         }
 
