@@ -47,6 +47,7 @@ public class JoinActivity extends AppCompatActivity {
 
     UserInfo userInfo;
     List userList;
+    static boolean isDoubleID = false;
 
     EditText etName, etID, etEmail, etPhone, etPw, etPwCheck;
     Button btnOk;
@@ -140,7 +141,7 @@ public class JoinActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
+                        if (task.isSuccessful() && !isDoubleID) {
                             // 회원가입 성공
                             userInfo = new UserInfo();
 
@@ -168,11 +169,17 @@ public class JoinActivity extends AppCompatActivity {
                                     })
                                     .show();
 
-                            } else {
-                            // 회원가입 실패
-                            Log.d(TAG, "회원가입 실패");
-                            errMSG.setText(R.string.error);
-                            Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                            } else {// 회원가입 실패
+                                if(!task.isSuccessful()){
+                                    Log.d(TAG, "회원가입 실패 - 시스템 회원가입 오류");
+                                    errMSG.setText(R.string.error);
+                                    Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                                }
+                                else if(!isDoubleID){
+                                    Log.d(TAG, "회원가입 실패 - 중복확인");
+                                    errMSG.setText(R.string.error);
+                                    Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                                }
                         }
                     }
                 });
@@ -187,8 +194,10 @@ public class JoinActivity extends AppCompatActivity {
                 String etNickname = etID.getText().toString();
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     Log.d(TAG, "ValueEventListener : " + snapshot.child("nickname").getValue());
-                    if(etNickname.equals(snapshot.child("nickname").getValue().toString()))
+                    if(etNickname.equals(snapshot.child("nickname").getValue().toString())) {
                         Toast.makeText(JoinActivity.this, "중복된 아이디 입니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
+                        isDoubleID = true;
+                    }
                 }
             }
 

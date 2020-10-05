@@ -37,6 +37,9 @@ public class FindPwActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_pw);
 
         etEmail = findViewById(R.id.findPW_etEmail);
+
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
     public void onClick (View v){
         switch(v.getId()){

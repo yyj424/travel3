@@ -24,15 +24,13 @@
             </intent-filter>
         </activity>
         <activity android:name=".HomeActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
 <!--        <activity android:name=".RecordMain" />-->
-        <activity android:name=".LoginForm">
-
-        </activity>
+        <activity android:name=".LoginForm"/>
         <activity android:name=".JoinActivity"/>
         <activity android:name=".FindPwActivity"/>
         <activity android:name=".FindIdActivity"/>
@@ -41,18 +39,18 @@
         <activity android:name=".PlanList" />
         <activity android:name=".PlanFirstStep"/>
         <activity android:name=".PlanSecondStep">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name=".Map"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
         <activity android:name=".ReviewList" />
         <activity android:name=".ReviewForm"
@@ -60,10 +58,10 @@
             android:windowSoftInputMode="adjustResize|adjustPan">
         </activity>
         <activity android:name=".AddRecordActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.MAIN" />-->
+<!--                <category android:name="android.intent.category.LAUNCHER" />-->
+<!--            </intent-filter>-->
         </activity>
     </application>
 </manifest>
