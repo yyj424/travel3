@@ -2,6 +2,7 @@ package ddwucom.mobile.travel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -14,13 +15,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 public class FindPwActivity extends AppCompatActivity {
     EditText etEmail;
 
+    private static final String TAG = "sera";
+    final int _CHECK = 1004;
+
     private FirebaseAuth firebaseAuth;
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -28,30 +37,53 @@ public class FindPwActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_pw);
 
         etEmail = findViewById(R.id.findPW_etEmail);
+
+        database = FirebaseDatabase.getInstance();
+        firebaseAuth = FirebaseAuth.getInstance();
     }
     public void onClick (View v){
         switch(v.getId()){
             case R.id.findPW_imgNext:
                 final String email = etEmail.getText().toString();
-                firebaseAuth.sendPasswordResetEmail(email)
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                                    @Override
-                                    public void onComplete(@NonNull Task<Void> task) {
-                                        if(task.isSuccessful()){
-                                            AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this);
-                                            builder.setTitle("")
-                                                    .setMessage("입력한 이메일\n '" + email + "' 로 비밀번호 재설정 메일을 보냈습니다.\n메일을 확인해 주세요. ")
-                                                    .setPositiveButton("확인", null)
-                                                    .show();
-                                            finish();
-                                            Intent intent = new Intent(FindPwActivity.this, LoginForm.class);
-                                            startActivity(intent);
-                                        }
-                                        else{
-                                            Toast.makeText(FindPwActivity.this, "메일 보내기 실패\n 메일주소를 확인해 주세요!", Toast.LENGTH_SHORT).show();
-                                        }
-                                    }
-                                });
+                dbRef  = database.getReference("user_list");
+
+                dbRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d(TAG, "CLick22!!");
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Log.d(TAG, "ValueEventListener : " + snapshot.child("email").getValue());
+                            if (email.equals(snapshot.child("email").getValue().toString())) {
+                                Toast.makeText(FindPwActivity.this, "존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
+                                firebaseAuth.sendPasswordResetEmail(email)
+                                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                            @Override
+                                            public void onComplete(@NonNull Task<Void> task) {
+                                                if(task.isSuccessful()){
+//                                                    AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this);
+//                                                    builder.setTitle("")
+//                                                            .setMessage("입력한 이메일\n '" + email + "' 로 비밀번호 재설정 메일을 보냈습니다.\n메일을 확인해 주세요. ")
+//                                                            .setPositiveButton("확인", null)
+//                                                            .show();
+
+                                                    finish();
+                                                    Intent intent = new Intent(FindPwActivity.this, FoundIDActivity.class);
+                                                    intent.putExtra("emailForCheck", email);
+                                                    startActivityForResult(intent, _CHECK);
+                                                }
+                                                else{
+                                                    Toast.makeText(FindPwActivity.this, "메일 보내기 실패\n 메일주소를 확인해 주세요!", Toast.LENGTH_SHORT).show();
+                                                }
+                                            }
+                                        });
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 break;
             case R.id.findPW_signUp:
                 Intent intent1 = new Intent(this, JoinActivity.class);

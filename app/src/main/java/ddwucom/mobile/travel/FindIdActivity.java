@@ -46,6 +46,7 @@ public class FindIdActivity extends AppCompatActivity {
         btnFindID = (ImageView)findViewById(R.id.findID_imgNext);
         checkEmail = (TextView)findViewById(R.id.checkEmail);
 
+        database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
 
         //이메일 체크 클릭 리스너
@@ -60,14 +61,16 @@ public class FindIdActivity extends AppCompatActivity {
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.d(TAG, "CLick22!!");
                         int is_in = 0;
-                        String etNickname = etEmail.getText().toString();
+                        final String email = etEmail.getText().toString();
 
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            //Log.d(TAG, "CLick!!");
-                            Log.d(TAG, "ValueEventListener : " + snapshot.child("email").getValue());
-                            if(etNickname.equals(snapshot.child("email").getValue().toString())) {
+                            Log.d(TAG, "CLick!!");
+                            Log.d(TAG, "ValueEventListener : " + snapshot.child("nickname").getValue());
+                            if(email.equals(snapshot.child("email").getValue().toString())) {
+                                Log.d(TAG, snapshot.child("nickname").getValue().toString());
                                 is_in = 1;
                                 nickname = snapshot.child("nickname").getValue().toString();
+                                Log.d(TAG, nickname);
                                 break;
                             }
                         }
@@ -75,8 +78,10 @@ public class FindIdActivity extends AppCompatActivity {
                             Toast.makeText(FindIdActivity.this, "해당 이메일이 없습니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
                         }
                         else{
+
                             Toast.makeText(FindIdActivity.this, "존재하는 이메일입니다.", Toast.LENGTH_SHORT).show();
                             checkID = true;
+
                         }
                     }
                     @Override
