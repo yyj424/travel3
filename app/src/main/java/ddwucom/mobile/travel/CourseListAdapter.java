@@ -39,7 +39,6 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
 
         holder.num.setText(num);
         holder.name.setText(name);
-        holder.bg.setOnClickListener(onClickItem);
     }
 
     @Override
@@ -52,13 +51,11 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
 
         public TextView name;
         public TextView num;
-        public ImageView bg;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.y_course_name);
             num = itemView.findViewById(R.id.y_course_num);
-            bg = itemView.findViewById(R.id.y_course_bg);
         }
     }
 }

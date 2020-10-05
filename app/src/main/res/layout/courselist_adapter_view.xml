@@ -6,38 +6,41 @@
     android:layout_height="wrap_content"
     android:background="#00FFFFFF">
 
-    <ImageView
-        android:id="@+id/y_course_bg"
+    <TextView
+        android:id="@+id/y_course_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:paddingEnd="10dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="7dp"
+        android:background="@drawable/y_yellow"
+        android:fontFamily="@font/tmoney_bold"
+        android:gravity="center"
+        android:inputType="textMultiLine"
+        android:shadowColor="#FFFFFF"
+        android:shadowDx="4"
+        android:shadowDy="4"
+        android:shadowRadius="3"
+        android:text="장소 이름"
+        android:textColor="#FFCC5C"
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/y_course" />
+        app:layout_constraintVertical_bias="0.262" />
 
     <TextView
         android:id="@+id/y_course_num"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="9dp"
-        android:layout_marginLeft="9dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="7dp"
+        android:background="@drawable/y_red"
         android:fontFamily="@font/tmoney_bold"
-        android:text="n"
+        android:gravity="center"
+        android:text="1"
         android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="@+id/y_course_bg"
-        app:layout_constraintTop_toTopOf="@+id/y_course_bg" />
-
-    <TextView
-        android:id="@+id/y_course_name"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="23dp"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="35dp"
-        android:fontFamily="@font/tmoney_bold"
-        android:text="장소 이름"
-        android:textColor="#FFFFFF"
-        app:layout_constraintStart_toStartOf="@+id/y_course_bg"
-        app:layout_constraintTop_toTopOf="@+id/y_course_bg" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 </androidx.constraintlayout.widget.ConstraintLayout>
