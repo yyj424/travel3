@@ -130,9 +130,9 @@ public class JoinActivity extends AppCompatActivity {
         if(TextUtils.isEmpty(pw)){
             Toast.makeText(this, "Password를 입력해 주세요.", Toast.LENGTH_SHORT).show();
         }
-
-        if(check_validation(email, pw) == 0)
-            Toast.makeText(this, "비밀번호를 재설정해주세요.", Toast.LENGTH_SHORT).show();
+        check_validation(email, pw);
+//        if(check_validation(email, pw) == 0)
+//            Toast.makeText(this, "비밀번호를 재설정해주세요.", Toast.LENGTH_SHORT).show();
     }
     // 회원가입 -> Firebase authentification에 전달
     public void createUser(final String email, String password) {
@@ -199,26 +199,26 @@ public class JoinActivity extends AppCompatActivity {
         });
         return;
     }
-    public int check_validation(String email, String password) {
+    public void check_validation(String email, String password) {
         // 비밀번호 유효성 검사식1 : 숫자, 특수문자가 포함되어야 한다.
-        String val_symbol = "([0-9].*[!,@,#,^,&,*,(,)])|([!,@,#,^,&,*,(,)].*[0-9])";
-        // 비밀번호 유효성 검사식2 : 영문자 대소문자가 적어도 하나씩은 포함되어야 한다.
-        String val_alpha = "([a-z].*[A-Z])|([A-Z].*[a-z])";
-        // 정규표현식 컴파일
-        Pattern pattern_symbol = Pattern.compile(val_symbol);
-        Pattern pattern_alpha = Pattern.compile(val_alpha);
+//        String val_symbol = "([0-9].*[!,@,#,^,&,*,(,)])|([!,@,#,^,&,*,(,)].*[0-9])";
+//        // 비밀번호 유효성 검사식2 : 영문자 대소문자가 적어도 하나씩은 포함되어야 한다.
+//        String val_alpha = "([a-z].*[A-Z])|([A-Z].*[a-z])";
+//        // 정규표현식 컴파일
+//        Pattern pattern_symbol = Pattern.compile(val_symbol);
+//        Pattern pattern_alpha = Pattern.compile(val_alpha);
+//
+//        Matcher matcher_symbol = pattern_symbol.matcher(password);
+//        Matcher matcher_alpha = pattern_alpha.matcher(password);
 
-        Matcher matcher_symbol = pattern_symbol.matcher(password);
-        Matcher matcher_alpha = pattern_alpha.matcher(password);
-
-        if (matcher_symbol.find() && matcher_alpha.find()) {
+//        if (matcher_symbol.find() && matcher_alpha.find()) {
             // email과 password로 회원가입 진행
             createUser(email, password);
-            return 1;
-        }else {
-            Toast.makeText(this, "비밀번호로 부적절합니다", Toast.LENGTH_SHORT).show();
-            return 0;
-        }
+//            return 1;
+//        }else {
+//            Toast.makeText(this, "비밀번호로 부적절합니다", Toast.LENGTH_SHORT).show();
+//            return 0;
+//        }
     }
     public void onClick(View v){
         switch(v.getId()){
