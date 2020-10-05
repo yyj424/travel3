@@ -8,8 +8,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/topBar_id"
-        android:layout_width="415dp"
-        android:layout_height="80dp"
+        android:layout_width="0dp"
+        android:layout_height="90dp"
         android:background="#DBFFCC5C"
         app:layout_constraintBottom_toTopOf="@+id/body3"
         app:layout_constraintEnd_toEndOf="parent"
@@ -22,12 +22,11 @@
             android:layout_width="30dp"
             android:layout_height="30dp"
             android:layout_marginStart="24dp"
-            android:layout_marginLeft="24dp"
             android:layout_marginEnd="93dp"
-            android:layout_marginRight="93dp"
             android:onClick="onClick"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/textView16"
+            app:layout_constraintHorizontal_bias="0.156"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/s_arrow" />
@@ -37,7 +36,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/tmoney_bold"
-            android:text="아이디 찾기"
+            android:text="비밀번호 재설정 메일"
             android:textColor="#FFFFFF"
             android:textSize="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -48,8 +47,8 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/body3"
-        android:layout_width="409dp"
-        android:layout_height="775dp"
+        android:layout_width="0dp"
+        android:layout_height="682dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -74,9 +73,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
             android:layout_marginTop="32dp"
-            android:text="고객님의 "
+            android:text="고객님의 메일로"
             android:textColor="#000000"
             android:textSize="24dp"
             app:layout_constraintBottom_toTopOf="@+id/textView18"
@@ -90,9 +88,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginBottom="510dp"
-            android:text="아이디 찾기가 완료되었습니다."
+            android:layout_marginBottom="432dp"
+            android:text="비밀번호 재설정 메일을 보냈습니다."
             android:textColor="#000000"
             android:textSize="24dp"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -101,29 +98,33 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <TextView
-            android:id="@+id/textView19"
+            android:id="@+id/reMessage"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="32dp"
-            android:layout_marginLeft="32dp"
-            android:layout_marginBottom="448dp"
-            android:text="아이디 : "
-            android:textColor="#676565"
-            android:textSize="18dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent" />
-
-        <TextView
-            android:id="@+id/hiddenID"
-            android:layout_width="127dp"
-            android:layout_height="25dp"
-            android:layout_marginBottom="448dp"
-            android:textColor="#676565"
-            android:textSize="18dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="34dp"
+            android:layout_marginEnd="16dp"
+            android:layout_marginBottom="372dp"
+            android:onClick="onClick"
+            android:text="메일 재전송"
+            android:textColor="#000000"
+            android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.026"
-            app:layout_constraintStart_toEndOf="@+id/textView19"
-            tools:text="ID" />
+            app:layout_constraintStart_toEndOf="@+id/imageView6"
+            app:layout_constraintTop_toBottomOf="@+id/textView18" />
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_width="30dp"
+            android:layout_height="26dp"
+            android:layout_marginStart="260dp"
+            android:layout_marginTop="35dp"
+            android:layout_marginBottom="371dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView18"
+            app:srcCompat="@drawable/s_message_icon" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

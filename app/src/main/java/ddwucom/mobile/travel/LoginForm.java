@@ -37,15 +37,15 @@ public class LoginForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginform_main);
 
-//        Intent intent = new Intent(this, LoadingActivity.class);
-//        startActivity(intent);
-
-        findID = (TextView) findViewById(R.id.findID);
+        //로그인 화면에서의 '아이디 찾기' '비밀번호 재설정정'
+       findID = (TextView) findViewById(R.id.findID);
         findPW = (TextView) findViewById(R.id.findPW);
 
+        //상단바 '로그인' '회원가입'
         btnLogin = (Button) findViewById(R.id.btnLogin);
         btnJoin = (Button) findViewById(R.id.btnJoin);
 
+        //계정가져오기 & 데이터 베이스 가져오기
         firebaseAuth = FirebaseAuth.getInstance();
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference();
@@ -66,15 +66,8 @@ public class LoginForm extends AppCompatActivity {
             }
         });
 
-        findPW.setOnClickListener(new View.OnClickListener(){
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(getApplicationContext(),  FindIdActivity.class));
-            }
-        });
-
     }
-    private void userLogin(){
+    private void userLogin(){ //login
         String email = etEmail.getText().toString().trim();
         String password = etPW.getText().toString().trim();
 
