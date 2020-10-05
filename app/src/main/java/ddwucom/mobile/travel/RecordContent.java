@@ -1,23 +1,14 @@
 package ddwucom.mobile.travel;
 
 public class RecordContent {
-    String uid;
     String location;
     String imageFolderName;
     String content;
 
     public RecordContent() {
-        this.uid = null;
         this.location = null;
         this.imageFolderName = null;
         this.content = null;
-    }
-
-    public String getUid() {
-        return uid;
-    }
-    public void setUid(String uid) {
-        this.uid = uid;
     }
 
     public String getLocation() {

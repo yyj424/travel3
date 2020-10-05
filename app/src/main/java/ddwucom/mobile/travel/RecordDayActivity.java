@@ -1,8 +1,8 @@
 package ddwucom.mobile.travel;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
@@ -22,11 +22,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -37,10 +34,14 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 
 public class RecordDayActivity extends AppCompatActivity {
+
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
 
     LinearLayout addFolderLayout;
     ArrayAdapter<String> spinnerAdapter;
@@ -48,17 +49,19 @@ public class RecordDayActivity extends AppCompatActivity {
     List<String> items;
 
     EditText etRecordFolder;
+    EditText etRecordTitle;
     EditText etRecordDate;
     Calendar calendar;
     String dateFormat;
     SimpleDateFormat sdf;
+    Boolean isNew;
+    String recordKey;
 
     RecyclerView recyclerView;
     RecyclerView.Adapter recordDayAdapter;
     RecyclerView.LayoutManager layoutManager;
 
     List<RecordContent> recordContents;
-    FirebaseUser user;
     String currentUid;
 
     DatePickerDialog.OnDateSetListener recordDatePicker = new DatePickerDialog.OnDateSetListener() {
@@ -80,12 +83,17 @@ public class RecordDayActivity extends AppCompatActivity {
 
         addFolderLayout = (LinearLayout) View.inflate(this, R.layout.add_folder_layout, null);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        currentUid = user.getUid();
+        isNew = (boolean) getIntent().getSerializableExtra("isNew");
+        recordKey = (String) getIntent().getSerializableExtra("recordKey");
+        currentUid = (String) getIntent().getSerializableExtra("currentUid");
 
         etRecordDate = findViewById(R.id.etRecordDate);
+        etRecordTitle = findViewById(R.id.etRecordTitle);
         recyclerView = findViewById(R.id.record_day_recycler_view);
         spinner = findViewById(R.id.spRecordFolder);
+
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference("records/" + recordKey);
 
         items = new ArrayList<String>();
         items.add("폴더 선택하기");
@@ -177,25 +185,34 @@ public class RecordDayActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        })
-
-
-
-
-        ;
+        });
     }
 
-    public static class RecordContent {
-        String uid;
-        String location;
-        List<Uri> imageUriList;
-        String content;
-
-        public RecordContent() {
-            this.uid = null;
-            this.location = null;
-            this.imageUriList = null;
-            this.content = null;
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.btnAddRecordContent:
+                Intent intent = new Intent(this, AddRecordActivity.class);
+                intent.putExtra("recordKey", recordKey);
+                startActivity(intent);
+                break;
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        String title = etRecordTitle.getText().toString();
+        String date = etRecordDate.getText().toString();
+        int folderPos = spinner.getSelectedItemPosition();
+
+        if (title.length() == 0 || date.length() == 0|| folderPos < 2) {
+            Toast.makeText(this, "필수 항목을 입력하세요!", Toast.LENGTH_LONG).show();
+            return;
+        }
+
+        dbRef.child("uid").setValue(currentUid);
+        dbRef.child("recordDate").setValue(date);
+        dbRef.child("recordFolder").setValue(spinner.getSelectedItem().toString());
+        dbRef.child("recordTitle").setValue(title);
+        finish();
     }
 }

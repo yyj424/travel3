@@ -2,10 +2,11 @@ package ddwucom.mobile.travel;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Switch;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -14,12 +15,35 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.drawerlayout.widget.DrawerLayout;
 import com.google.android.material.navigation.NavigationView;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
 
 public class RecordMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+
+    private FirebaseDatabase database;
+    private DatabaseReference dbRef;
+    private FirebaseUser user;
+    private String currentUid;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_main);
+
+        // DB
+        database = FirebaseDatabase.getInstance();
+        dbRef = database.getReference();
+
+        // currentUser
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            currentUid = user.getUid();
+        }
+//        else {
+//            Toast.makeText(this, "로그인이 필요합니다!", Toast.LENGTH_SHORT).show();
+//        }
 
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -57,6 +81,10 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
         switch (v.getId()) {
             case R.id.btnAddRecord:
                 Intent intent = new Intent(this, RecordDayActivity.class);
+                String recordKey = dbRef.child("records").push().getKey();
+                intent.putExtra("recordKey", recordKey);
+                intent.putExtra("currentUid", currentUid);
+                intent.putExtra("isNew", true);
                 startActivity(intent);
                 break;
         }

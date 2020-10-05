@@ -15,8 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.annotations.NotNull;
@@ -52,9 +50,8 @@ public class AddRecordActivity extends Activity {
     EditText et_location;
     EditText et_content;
 
-    String folderName;
-
-    FirebaseUser user;
+    String imageFolderName;
+    String recordKey;
     String currentUid;
 
     @Override
@@ -64,8 +61,7 @@ public class AddRecordActivity extends Activity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        currentUid = user.getUid();
+        recordKey = (String) getIntent().getSerializableExtra("recordKey");
 
         selectedImageList = new ArrayList<>();
         dlUriList = new ArrayList<>();
@@ -78,7 +74,7 @@ public class AddRecordActivity extends Activity {
         et_content = findViewById(R.id.et_content);
 
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference();
+        dbRef = database.getReference("records");
     }
 
 
@@ -102,6 +98,20 @@ public class AddRecordActivity extends Activity {
                 // DTO 객체 생성
                 recordContent = new RecordContent();
 
+                String location = et_location.getText().toString();
+                String content = et_content.getText().toString();
+
+                if (content.length() == 0) {
+                    Toast.makeText(this, "내용을 입력하세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                // 객체에 이미지 외의 데이터 저장
+                if (location.length() != 0) {
+                    recordContent.setLocation(location);
+                }
+                recordContent.setContent(content);
+
                 if (selectedImageList.size() > 0) {
                     firebaseStorage = FirebaseStorage.getInstance();  Log.d("goeun", firebaseStorage.getReference().getName());
 //                mStorageRef = firebaseStorage.getReference(); Log.d("goeun", mStorageRef.getName());
@@ -109,11 +119,11 @@ public class AddRecordActivity extends Activity {
                     // 폴더명 지정
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
                     Date now = new Date();
-                    folderName = formatter.format(now) + "/";
+                    imageFolderName = formatter.format(now) + "/";
 
                     for (int i = 0; i < selectedImageList.size(); i++) { // 선택한 사진 개수만큼 반복
                         // storage에 사진 업로드
-                        mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + currentUid + "/" + folderName + selectedImageList.get(i).getLastPathSegment());
+                        mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + currentUid + "/" + imageFolderName + selectedImageList.get(i).getLastPathSegment());
                         mStorageRef.putFile(selectedImageList.get(i))
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -129,18 +139,13 @@ public class AddRecordActivity extends Activity {
                                 });
                     }
 
-                    recordContent.setImageFolderName(folderName);
+                    recordContent.setImageFolderName(imageFolderName);
                 }
 
-                // 객체에 이미지 외의 데이터 저장
-                String location = et_location.getText().toString();
-                String content = et_content.getText().toString();
-                recordContent.setLocation(location);
-                recordContent.setContent(content);
-                recordContent.setUid(currentUid);
-
                 // db에 recordContent 저장
-                dbRef.child("record_content_list").push().setValue(recordContent);
+//                dbRef.child("record_content_list").push().setValue(recordContent);
+                dbRef.child(recordKey).child("contents").push().setValue(recordContent);
+                finish();
                 break;
         }
     }
