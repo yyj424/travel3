@@ -85,11 +85,12 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="72dp"
             android:fontFamily="@font/tmoney_regular"
+            android:paddingTop="15px"
             android:text="가입했을 시 이메일을 입력해주세요."
             android:textColor="#000000"
             android:textSize="18dp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.43"
+            app:layout_constraintHorizontal_bias="0.453"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -97,7 +98,7 @@
             android:id="@+id/findPW_etEmail"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="308dp"
+            android:layout_marginBottom="312dp"
             android:background="@drawable/s_form2"
             android:ems="10"
             android:inputType="textPersonName"
@@ -108,6 +109,24 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/findPW_chEmail"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="281dp"
+            android:fontFamily="@font/tmoney_bold"
+            android:text="Email 확인"
+            android:textColor="#000000"
+            android:textColorHighlight="#CD2121"
+            android:textSize="16dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/findPW_etEmail"
+            app:layout_constraintVertical_bias="1.0" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout

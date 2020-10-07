@@ -21,7 +21,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 public class FoundIDActivity extends AppCompatActivity {
-    TextView reMessage;
+    TextView reMessage, msg_email;
 
     private static final String TAG = "sera";
     static String checkEmail;
@@ -36,8 +36,10 @@ public class FoundIDActivity extends AppCompatActivity {
         setContentView(R.layout.activity_found_id);
 
         reMessage = findViewById(R.id.reMessage);
+        msg_email = findViewById(R.id.msg_email);
 
         checkEmail = getIntent().getStringExtra("emailForCheck");
+        msg_email.setText(checkEmail);
     }
 
     public void onClick(View v) {

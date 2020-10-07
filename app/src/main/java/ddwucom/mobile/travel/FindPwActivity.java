@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,6 +24,7 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FindPwActivity extends AppCompatActivity {
     EditText etEmail;
+    TextView checkEmail;
 
     private static final String TAG = "sera";
     final int _CHECK = 1004;
@@ -37,11 +39,13 @@ public class FindPwActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_pw);
 
         etEmail = findViewById(R.id.findPW_etEmail);
+        checkEmail = findViewById(R.id.findPW_chEmail); //>>이메일 확인 글자..
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
+
     }
-    public void onClick (View v){
+    public void onClick (View v){ //화살표 눌렀을 때
         switch(v.getId()){
             case R.id.findPW_imgNext:
                 final String email = etEmail.getText().toString();
@@ -60,13 +64,9 @@ public class FindPwActivity extends AppCompatActivity {
                                             @Override
                                             public void onComplete(@NonNull Task<Void> task) {
                                                 if(task.isSuccessful()){
-//                                                    AlertDialog.Builder builder = new AlertDialog.Builder(FindPwActivity.this);
-//                                                    builder.setTitle("")
-//                                                            .setMessage("입력한 이메일\n '" + email + "' 로 비밀번호 재설정 메일을 보냈습니다.\n메일을 확인해 주세요. ")
-//                                                            .setPositiveButton("확인", null)
-//                                                            .show();
-
                                                     finish();
+
+                                                    //다음 페이지에서 출력할 email intent에 넣어서 보내기.
                                                     Intent intent = new Intent(FindPwActivity.this, FoundIDActivity.class);
                                                     intent.putExtra("emailForCheck", email);
                                                     startActivityForResult(intent, _CHECK);
@@ -94,7 +94,6 @@ public class FindPwActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.findPW_etEmail:
-                etEmail = findViewById(R.id.findPW_etEmail);
                 etEmail.setText("");
                 break;
         }
