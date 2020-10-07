@@ -136,6 +136,7 @@
         android:layout_marginTop="16dp"
         android:background="@drawable/s_btnlogin"
         android:fontFamily="@font/tmoney_regular"
+        android:onClick="onClick"
         android:paddingTop="10dp"
         android:text="로그인"
         android:textSize="18dp"

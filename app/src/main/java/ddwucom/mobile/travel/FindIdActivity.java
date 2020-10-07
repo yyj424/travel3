@@ -107,8 +107,9 @@ public class FindIdActivity extends AppCompatActivity {
                 finish();
                 startActivity(new Intent(getApplicationContext(),  LoginForm.class));
                 break;
-
-
+            case R.id.findID_etEmail:
+                etEmail.setText("");
+                break;
         }
     }
 }

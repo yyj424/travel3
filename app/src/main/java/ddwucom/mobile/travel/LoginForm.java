@@ -37,7 +37,7 @@ public class LoginForm extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.loginform_main);
 
-        //로그인 화면에서의 '아이디 찾기' '비밀번호 재설정정'
+        //로그인 화면에서의 '아이디 찾기' '비밀번호 재설정'
        findID = (TextView) findViewById(R.id.findID);
         findPW = (TextView) findViewById(R.id.findPW);
 
@@ -58,13 +58,6 @@ public class LoginForm extends AppCompatActivity {
         }
         etEmail = (EditText) findViewById(R.id.etEmailForm);
         etPW = (EditText) findViewById(R.id.etPwForm);
-
-        btnLogin.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                userLogin();
-            }
-        });
 
     }
     private void userLogin(){ //login
@@ -97,9 +90,11 @@ public class LoginForm extends AppCompatActivity {
     }
     public void onClick (View v){
         switch (v.getId()) {
-            case R.id.btnJoin:
-                Intent intent1 = new Intent(LoginForm.this, JoinActivity.class);
-                startActivity(intent1);
+            case R.id.etPwForm:
+                etPW.setText("");
+                break;
+            case R.id.etEmailForm:
+                etEmail.setText("");
                 break;
             case R.id.findID:
                 Intent intent2 = new Intent(this, FindIdActivity.class);
@@ -109,11 +104,12 @@ public class LoginForm extends AppCompatActivity {
                 Intent intent3 = new Intent(this, FindPwActivity.class);
                 startActivity(intent3);
                 break;
-            case R.id.etPwForm:
-                etPW.setText("");
-                break;
-            case R.id.etEmailForm:
-                etEmail.setText("");
+            case R.id.btnLogin:
+                 userLogin();
+                 break;
+            case R.id.btnJoin:
+                Intent intent1 = new Intent(LoginForm.this, JoinActivity.class);
+                startActivity(intent1);
                 break;
         }
     }
