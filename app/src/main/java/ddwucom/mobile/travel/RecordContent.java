@@ -1,9 +1,12 @@
 package ddwucom.mobile.travel;
 
+import java.util.List;
+
 public class RecordContent {
     String location;
     String imageFolderName;
     String content;
+    List<String> images;
 
     public RecordContent() {
         this.location = null;

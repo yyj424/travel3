@@ -62,6 +62,7 @@ public class AddRecordActivity extends Activity {
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
         recordKey = (String) getIntent().getSerializableExtra("recordKey");
+        currentUid = (String) getIntent().getSerializableExtra("currentUid");
 
         selectedImageList = new ArrayList<>();
         dlUriList = new ArrayList<>();
