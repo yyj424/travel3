@@ -16,6 +16,7 @@
         android:fontFamily="@font/tmoney_bold"
         android:gravity="center"
         android:inputType="textMultiLine"
+        android:lines="2"
         android:shadowColor="#FFFFFF"
         android:shadowDx="4"
         android:shadowDy="4"
