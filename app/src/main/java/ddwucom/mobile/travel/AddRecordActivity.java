@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -22,10 +23,13 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import org.w3c.dom.Text;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 
 import gun0912.tedimagepicker.builder.TedImagePicker;
@@ -76,8 +80,9 @@ public class AddRecordActivity extends Activity {
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("records");
-    }
 
+
+    }
 
     public void onClick(View v) {
         switch (v.getId()) {
@@ -96,6 +101,7 @@ public class AddRecordActivity extends Activity {
                 break;
             case R.id.btn_add_record:
                 Log.d("goeun", "btn_add_record");
+
                 // DTO 객체 생성
                 recordContent = new RecordContent();
 
@@ -115,20 +121,25 @@ public class AddRecordActivity extends Activity {
 
                 if (selectedImageList.size() > 0) {
                     firebaseStorage = FirebaseStorage.getInstance();  Log.d("goeun", firebaseStorage.getReference().getName());
-//                mStorageRef = firebaseStorage.getReference(); Log.d("goeun", mStorageRef.getName());
+                    mStorageRef = firebaseStorage.getReference(); Log.d("goeun", mStorageRef.getName());
 
                     // 폴더명 지정
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
                     Date now = new Date();
                     imageFolderName = formatter.format(now) + "/";
 
-                    for (int i = 0; i < selectedImageList.size(); i++) { // 선택한 사진 개수만큼 반복
+//                    for (int i = 0; i < selectedImageList.size(); i++) { // 선택한 사진 개수만큼 반복
+                    for (final Uri imageUri : selectedImageList) {
                         // storage에 사진 업로드
-                        mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + currentUid + "/" + imageFolderName + selectedImageList.get(i).getLastPathSegment());
-                        mStorageRef.putFile(selectedImageList.get(i))
+                        mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        mStorageRef.putFile(imageUri)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                                        String tmp =taskSnapshot.getStorage().getDownloadUrl().toString();
+                                        Log.d("goeun", "tmp: " + tmp);
+                                        dlUriList.add(tmp);
+                                        Log.d("goeun", String.valueOf(dlUriList.size()));
                                         Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
                                     }
                                 })
@@ -139,14 +150,15 @@ public class AddRecordActivity extends Activity {
                                     }
                                 });
                     }
-
-                    recordContent.setImageFolderName(imageFolderName);
+//                    ImageView iv = findViewById(R.id.btn_image);
+//                    iv.setImageURI(Uri.parse(dlUriList.get(0)));
+//                    recordContent.setImageFolderName(imageFolderName);
                 }
 
                 // db에 recordContent 저장
 //                dbRef.child("record_content_list").push().setValue(recordContent);
                 dbRef.child(recordKey).child("contents").push().setValue(recordContent);
-                finish();
+//                finish();
                 break;
         }
     }
