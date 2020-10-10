@@ -42,19 +42,19 @@ public class JoinActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private DatabaseReference dbRef;
-//    private FirebaseUser user;
 
     //user의 정보 저장할 객체 선언
     UserInfo userInfo;
     List userList;
-    static boolean isDoubleID = false, isSame = false; //isSame : 비밀번호 일치 여부에 사용되는 변수
+
+    static boolean isDoubleID = false, isSame = false, isChecked = false; //isSame : 비밀번호 일치 여부에 사용되는 변수
+                                                                          //isChecked : 중복체크했는지.
     static boolean isBlank= true; //필수요소가 blank인지 확인하는 변수
 
     EditText etName, etID, etEmail, etPhone, etPw, etPwCheck;
     Button btnOk;
     TextView errMSG;
-    String _id, name, email, phone, pw, currentUid;
-    String sort = "_id";
+    String email, pw;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,7 +66,6 @@ public class JoinActivity extends AppCompatActivity {
 
         userList = new ArrayList<>();
 
-        etName = (EditText)findViewById(R.id.join_etName);
         etID = (EditText)findViewById(R.id.join_etID);
         etEmail = (EditText)findViewById(R.id.join_etEmail);
         etPhone = (EditText)findViewById(R.id.join_etPhone);
@@ -80,25 +79,13 @@ public class JoinActivity extends AppCompatActivity {
 
         errMSG.setText("");
 
-        //닉네임 입력 EditText
-        etName.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                String name;
-                name = etName.getText().toString();
-                if(name.equals("닉네임을 입력해주세요.")){
-                    etName.setText("");
-                }
-            }
-        });
-
-        //Id입력 EditText
+        //nickname입력 EditText
         etID.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 String id;
                 id = etID.getText().toString();
-                if(id.equals("예) travel3Good")){
+                if(id.equals("입력 후 중복확인 해주세요.")){
                     etID.setText("");
                 }
             }
@@ -115,26 +102,34 @@ public class JoinActivity extends AppCompatActivity {
                 pw = etPw.getText().toString();
                 pw_chk = etPwCheck.getText().toString();
 
+                Log.d("sera", "pw : "+pw + "   pw_chk : " + pw_chk );
+
                 if(email.equals("") && (pw.equals("") || pw_chk.equals(""))){
                     // 이메일과 비밀번호나 비밀번호 확인이 공백인 경우
                     Log.d("sera", "이메일과 비밀번호나 비밀번호 확인이 공백인 경우" );
                     Toast.makeText(JoinActivity.this, "계정과 비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
+                    return;
                 }
 
-                if(!pw_chk.equals(pw)){
+                if(pw_chk.equals(pw)){
                     Log.d("sera", "isSame = true;" );
                     isSame = true;
+                    Log.d("sera", "isSame" + isSame);
                 }
                 if (!id.equals("") && !pw.equals("") && !pw_chk.equals("")) { //*******validation필요
                     // 이메일과 비밀번호가 공백이 아닌 경우 >> 회원가입 진행
                     Log.d("sera", "이메일과 비밀번호가 공백이 아닌 경우" );
                    isBlank = false;
-                    signUp();
-                }
+                    Log.d("sera", "isBlank" + isBlank);
+                   // signUp();
+                }else{return;}
 
-                if (isSame && !isBlank) { //*******validation필요
+                if (isSame && !isBlank && !isDoubleID && isChecked) { //*******validation필요
                     // 이메일과 비밀번호가 공백이 아닌 경우 >> 회원가입 진행
                     Log.d("sera", "validation" );
+                    if(!isChecked){
+                        Toast.makeText(JoinActivity.this, "중복확인을 해주세요.", Toast.LENGTH_SHORT).show();
+                    }
                     signUp();
                 }
             }
@@ -153,8 +148,6 @@ public class JoinActivity extends AppCompatActivity {
             Toast.makeText(this, "Password를 입력해 주세요.", Toast.LENGTH_SHORT).show();
         }
         check_validation(email, pw);
-//        if(check_validation(email, pw) == 0)
-//            Toast.makeText(this, "비밀번호를 재설정해주세요.", Toast.LENGTH_SHORT).show();
     }
     // 회원가입 -> Firebase authentification에 전달
     public void createUser(final String email, String password) {
@@ -167,6 +160,7 @@ public class JoinActivity extends AppCompatActivity {
                             Log.d("sera", "task Successful" );
                             if(!isDoubleID){
                                 Toast.makeText(JoinActivity.this, "아이디 중복확인 해주세요.", Toast.LENGTH_SHORT).show();
+                                return;
                             }
                             // 회원가입 성공
                             userInfo = new UserInfo();
@@ -228,6 +222,7 @@ public class JoinActivity extends AppCompatActivity {
                         break;
                     }
                 }
+                isChecked = true;
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
@@ -236,27 +231,21 @@ public class JoinActivity extends AppCompatActivity {
         });
         return;
     }
-    public void check_validation(String email, String password) {
-        // 비밀번호 유효성 검사식1 : 숫자, 특수문자가 포함되어야 한다.
-//        String val_symbol = "([0-9].*[!,@,#,^,&,*,(,)])|([!,@,#,^,&,*,(,)].*[0-9])";
-//        // 비밀번호 유효성 검사식2 : 영문자 대소문자가 적어도 하나씩은 포함되어야 한다.
-//        String val_alpha = "([a-z].*[A-Z])|([A-Z].*[a-z])";
-//        // 정규표현식 컴파일
-//        Pattern pattern_symbol = Pattern.compile(val_symbol);
-//        Pattern pattern_alpha = Pattern.compile(val_alpha);
-//
-//        Matcher matcher_symbol = pattern_symbol.matcher(password);
-//        Matcher matcher_alpha = pattern_alpha.matcher(password);
+    public static final Pattern VALID_PASSWOLD_REGEX_ALPHA_NUM
+            = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{6,16}$"); // 6자리 ~ 16자리까지 가능
 
-//        if (matcher_symbol.find() && matcher_alpha.find()) {
-            // email과 password로 회원가입 진행
+    public static boolean validatePassword(String pwStr) {
+        Matcher matcher = VALID_PASSWOLD_REGEX_ALPHA_NUM.matcher(pwStr);
+        return matcher.matches();
+    }
+    public void check_validation(String email, String password) {
         Log.d("sera", "check_validation" );
-            createUser(email, password);
-//            return 1;
-//        }else {
-//            Toast.makeText(this, "비밀번호로 부적절합니다", Toast.LENGTH_SHORT).show();
-//            return 0;
-//        }
+
+        if(!validatePassword(password))
+           Toast.makeText(JoinActivity.this, "비밀번호를 다시 설정해 주세요.", Toast.LENGTH_SHORT).show();
+       else{
+           createUser(email, password);
+       }
     }
     public void onClick(View v){
         switch(v.getId()){
