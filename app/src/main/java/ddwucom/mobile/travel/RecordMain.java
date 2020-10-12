@@ -34,7 +34,8 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
 
         // DB
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference();
+        dbRef = database.getReference("records");
+        //database.getReference("records").child(recordKey).child("contents").push();
 
         // currentUser
         user = FirebaseAuth.getInstance().getCurrentUser();
@@ -81,8 +82,9 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
         switch (v.getId()) {
             case R.id.btnAddRecord:
                 Intent intent = new Intent(this, RecordDayActivity.class);
-                String recordKey = dbRef.child("records").push().getKey();
-                intent.putExtra("recordKey", recordKey);
+                //String recordKey = dbRef.child("records").push();
+
+               // intent.putExtra("recordKey", recordKey);
                 intent.putExtra("currentUid", currentUid);
                 intent.putExtra("isNew", true);
                 startActivity(intent);

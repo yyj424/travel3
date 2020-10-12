@@ -7,7 +7,6 @@ import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -23,14 +22,12 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
-import org.w3c.dom.Text;
-
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
-
+import java.util.Map;
 
 import gun0912.tedimagepicker.builder.TedImagePicker;
 import gun0912.tedimagepicker.builder.listener.OnMultiSelectedListener;
@@ -48,8 +45,9 @@ public class AddRecordActivity extends Activity {
     RecordContent recordContent;
     AddRecordImageAdapter addRecordImageAdapter;
     ArrayList<Uri> selectedImageList;
-    ArrayList<String> dlUriList;
+    ArrayList<String> images;
     RecyclerView recyclerView;
+    //Map<String, String> images;
 
     EditText et_location;
     EditText et_content;
@@ -69,7 +67,8 @@ public class AddRecordActivity extends Activity {
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
 
         selectedImageList = new ArrayList<>();
-        dlUriList = new ArrayList<>();
+        images = new ArrayList<>();
+        //images = new HashMap<>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView = findViewById(R.id.add_record_img_list);
@@ -79,9 +78,8 @@ public class AddRecordActivity extends Activity {
         et_content = findViewById(R.id.et_content);
 
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("records");
-
-
+//        dbRef = database.getReference("records");
+        dbRef = database.getReference("records").child(recordKey).child("contents").push();
     }
 
     public void onClick(View v) {
@@ -131,16 +129,29 @@ public class AddRecordActivity extends Activity {
 //                    for (int i = 0; i < selectedImageList.size(); i++) { // 선택한 사진 개수만큼 반복
                     for (final Uri imageUri : selectedImageList) {
                         // storage에 사진 업로드
+
                         mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
                         mStorageRef.putFile(imageUri)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
                                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                                        String tmp =taskSnapshot.getStorage().getDownloadUrl().toString();
-                                        Log.d("goeun", "tmp: " + tmp);
-                                        dlUriList.add(tmp);
-                                        Log.d("goeun", String.valueOf(dlUriList.size()));
+                                        taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                            @Override
+                                            public void onSuccess(Uri uri) {
+                                                String tmp = uri.toString();
+                                                images.add(tmp);
+                                                Log.d("goeun", String.valueOf(images.size()));
+                                                if (images.size() == selectedImageList.size()) {
+                                                    dbRef.setValue(recordContent);
+                                                    dbRef.child("images").setValue(images);
+                                                    finish();
+                                                }
+                                            }
+                                        });
+
+                                        Log.d("goeun", String.valueOf(images.size()));
                                         Toast.makeText(getApplicationContext(), "업로드 완료!", Toast.LENGTH_SHORT).show();
+
                                     }
                                 })
                                 .addOnFailureListener(new OnFailureListener() {
@@ -150,15 +161,7 @@ public class AddRecordActivity extends Activity {
                                     }
                                 });
                     }
-//                    ImageView iv = findViewById(R.id.btn_image);
-//                    iv.setImageURI(Uri.parse(dlUriList.get(0)));
-//                    recordContent.setImageFolderName(imageFolderName);
                 }
-
-                // db에 recordContent 저장
-//                dbRef.child("record_content_list").push().setValue(recordContent);
-                dbRef.child(recordKey).child("contents").push().setValue(recordContent);
-//                finish();
                 break;
         }
     }
