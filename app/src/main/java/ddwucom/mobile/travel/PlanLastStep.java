@@ -3,6 +3,7 @@ package ddwucom.mobile.travel;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -67,12 +68,6 @@ public class PlanLastStep extends AppCompatActivity {
 
         placeList = new ArrayList<>();
 
-        Intent intent = getIntent();
-        if (intent != null) {
-        placeList = (ArrayList<MyCourse>) intent.getSerializableExtra("placeList");}
-        placeListAdapter = new PlaceListAdapter(this, placeList, onLongClickItem);
-        listview.setAdapter(placeListAdapter);
-
         stCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
             public void onDayClick(Date dateClicked) {
@@ -112,6 +107,14 @@ public class PlanLastStep extends AppCompatActivity {
                 enYM.setText(stdate.format(firstDayOfNewMonth));
             }
         });
+    }
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK && data != null) {
+            placeList = (ArrayList<MyCourse>) data.getSerializableExtra("placeList");
+            placeListAdapter = new PlaceListAdapter(this, placeList, onLongClickItem);
+            listview.setAdapter(placeListAdapter);
+        }
     }
 
     private View.OnLongClickListener onLongClickItem = new View.OnLongClickListener() {
