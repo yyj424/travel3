@@ -9,4 +9,8 @@
     <color name="ted_image_picker_primary">#CCFFCC5C</color>
     <color name="ted_image_picker_primary_pressed">#FFEEAD</color>
     <color name="xd_gray">#969191</color>
+    <color name="emerald">#AAD8B0</color>
+    <color name="lightCyan">#65E2CF</color>
+    <color name="coral">#FF706A</color>
+    <color name="lightYello">#FFCC5C</color>
 </resources>
