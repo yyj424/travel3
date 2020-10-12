@@ -116,7 +116,6 @@
             android:text="Emai을 입력하세요."
             android:textColor="#BDBDBD"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintHorizontal_bias="0.519"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/textView6" />
 
