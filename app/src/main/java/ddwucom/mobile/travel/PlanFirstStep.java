@@ -17,7 +17,7 @@ public class PlanFirstStep extends AppCompatActivity {
         public void onClick(View v) {
             switch (v.getId()) {
                 case R.id.y_alone:
-                    Intent intent = new Intent(PlanFirstStep.this, PlanSecondStep.class);
+                    Intent intent = new Intent(PlanFirstStep.this, PlanLastStep.class);
                     startActivity(intent);
                     break;
                 case R.id.y_together:

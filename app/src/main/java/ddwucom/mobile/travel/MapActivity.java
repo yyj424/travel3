@@ -44,19 +44,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class Map extends AppCompatActivity {
+public class MapActivity extends AppCompatActivity {
 
     String [] permission_list ={
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
-    private Marker currentMarker = null;
+    Marker currentMarker = null;
     LocationManager locationManager;
     GoogleMap map;
-    private RecyclerView listview;
-    private ArrayList<MyCourse> courseList = null;
-    private CourseListAdapter courseListAdapter;
+    RecyclerView listview;
+    ArrayList<MyCourse> courseList;
+    CourseListAdapter courseListAdapter;
     LatLng position;
     double latitude = 100.0;
     double longitude = 200.0;
@@ -80,7 +80,14 @@ public class Map extends AppCompatActivity {
         listview = findViewById(R.id.y_course_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
-        courseList = new ArrayList();
+
+        Intent intent = getIntent();
+        courseList = (ArrayList<MyCourse>) intent.getSerializableExtra("courseList");
+        if (courseList == null) {
+            courseList = new ArrayList<>();
+        }
+        courseListAdapter = new CourseListAdapter(this, courseList, onLongClickItem);
+        listview.setAdapter(courseListAdapter);
 
         String apiKey = getResources().getString(R.string.google_maps_key);
         if (!Places.isInitialized()) {
@@ -89,33 +96,34 @@ public class Map extends AppCompatActivity {
     }
 
     private void courseAdd() {
-        courseList.add(new MyCourse(i, placeName));
-        i++;
-        courseListAdapter = new CourseListAdapter(this, courseList, onClickItem);
+        courseList.add(new MyCourse(courseList.size() + 1, placeName));
+        courseListAdapter = new CourseListAdapter(this, courseList, onLongClickItem);
         listview.setAdapter(courseListAdapter);
     }
 
-    private View.OnClickListener onClickItem = new View.OnClickListener() {
+    private View.OnLongClickListener onLongClickItem = new View.OnLongClickListener() {
         @Override
-        public void onClick(View v) {
-            String str = (String) v.getTag();
-            Toast.makeText(Map.this, str, Toast.LENGTH_SHORT).show();
-        }//수정해야됨
+        public boolean onLongClick(View v) {
+            listview.removeView(v);
+            return false;
+        }
     };
 
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.y_placeSearch:
                 List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(Map.this);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(MapActivity.this);
                 startActivityForResult(intent, 100);
                 break;
             case R.id.y_courseAdd:
                 courseAdd();
                 break;
             case R.id.y_courseRegister:
-                Intent planIntent = new Intent(Map.this, PlanLastStep.class);
+                Intent planIntent = new Intent(MapActivity.this, PlanLastStep.class);
+                planIntent.putExtra("placeList", courseList);
                 startActivity(planIntent);
+
                 break;
         }
     }
@@ -132,7 +140,7 @@ public class Map extends AppCompatActivity {
             getMyLocation();
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
-            Toast.makeText(Map.this, status.getStatusMessage(), Toast.LENGTH_LONG).show();
+            Toast.makeText(MapActivity.this, status.getStatusMessage(), Toast.LENGTH_LONG).show();
         }
         else if (requestCode == 200 && resultCode == RESULT_OK) {
             courseAdd();
@@ -245,11 +253,11 @@ public class Map extends AppCompatActivity {
 
         //이전 측정 값이 있다면
         if(location1 != null) {
-            setMyLocation(location1);Log.d("yj","loca1");
+            setMyLocation(location1);
         }
         else {
             if(location2 != null) {
-                setMyLocation(location2);Log.d("yj","loca2");
+                setMyLocation(location2);
             }
         }
         //새로운 측정 값
@@ -294,17 +302,16 @@ public class Map extends AppCompatActivity {
         markerOptions.draggable(true);
         currentMarker = map.addMarker(markerOptions);
 
-        MarkerWindowAdapter customInfoWindow = new MarkerWindowAdapter(Map.this);
+        MarkerWindowAdapter customInfoWindow = new MarkerWindowAdapter(MapActivity.this);
         map.setInfoWindowAdapter(customInfoWindow);
         currentMarker.showInfoWindow();//되는지 확인
-        Log.d("yj", "윈도우");
 
         map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
             @Override
             public void onInfoWindowClick(Marker marker) {
-//                Intent intent = new Intent(Map.this ,ReviewList.class);
+//                Intent intent = new Intent(MapActivity.this ,ReviewList.class);
 //                startActivity(intent);
-                Intent intent = new Intent(Map.this, ReviewList.class);
+                Intent intent = new Intent(MapActivity.this, ReviewList.class);
                 startActivityForResult(intent, 200);
             }
         });

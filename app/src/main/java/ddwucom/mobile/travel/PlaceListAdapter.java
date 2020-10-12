@@ -10,13 +10,13 @@ import android.widget.TextView;
 import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
-public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.ViewHolder> {
+public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.ViewHolder> {
 
     private ArrayList<MyCourse> courseList;
     private Context context;
     private View.OnLongClickListener onLongClickItem;
 
-    public CourseListAdapter(Context context, ArrayList<MyCourse> courseList, View.OnLongClickListener onLongClickItem) {
+    public PlaceListAdapter(Context context, ArrayList<MyCourse> courseList, View.OnLongClickListener onLongClickItem) {
         this.context = context;
         this.courseList = courseList;
         this.onLongClickItem = onLongClickItem;
@@ -26,7 +26,7 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         // context 와 parent.getContext() 는 같다.
         View view = LayoutInflater.from(context)
-                .inflate(R.layout.courselist_adapter_view, parent, false);
+                .inflate(R.layout.placelist_adapter, parent, false);
 
         return new ViewHolder(view);
     }
@@ -48,7 +48,6 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
             return 0;
     }
 
-
     public class ViewHolder extends RecyclerView.ViewHolder {
 
         public TextView name;
@@ -56,8 +55,8 @@ public class CourseListAdapter extends RecyclerView.Adapter<CourseListAdapter.Vi
 
         public ViewHolder(View itemView) {
             super(itemView);
-            name = itemView.findViewById(R.id.y_course_name);
-            num = itemView.findViewById(R.id.y_course_num);
+            name = itemView.findViewById(R.id.y_placeName);
+            num = itemView.findViewById(R.id.y_placeNum);
         }
     }
 }

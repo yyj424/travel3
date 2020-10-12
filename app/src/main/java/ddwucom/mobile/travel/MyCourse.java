@@ -1,6 +1,8 @@
 package ddwucom.mobile.travel;
 
-public class MyCourse {
+import java.io.Serializable;
+
+public class MyCourse implements Serializable {
     private long _id;
     private String PlaceName;
 

@@ -99,21 +99,12 @@
         app:layout_constraintEnd_toStartOf="@+id/y_pickEndDate"
         app:layout_constraintTop_toBottomOf="@+id/y_etPlanName" />
 
-    <Spinner
-        android:id="@+id/daySpinner"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
-        android:layout_marginTop="15dp"
-        android:background="@drawable/y_day_n"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/y_pickStartDate" />
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/planList"
-        android:layout_width="350dp"
-        android:layout_height="600dp"
+        android:id="@+id/placeList"
+        android:layout_width="357dp"
+        android:layout_height="492dp"
         android:layout_marginTop="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/imageView16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.491"
         app:layout_constraintStart_toStartOf="parent"
@@ -127,6 +118,16 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:srcCompat="@drawable/y_bottombg" />
+
+    <Spinner
+        android:id="@+id/daySpinner"
+        android:layout_width="160dp"
+        android:layout_height="50dp"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/y_day_n"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/y_pickStartDate" />
 
     <ImageView
         android:id="@+id/y_save_plan"
@@ -142,8 +143,9 @@
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/y_EndCalendar"
         android:layout_width="255dp"
-        android:layout_height="230dp"
-        android:layout_marginEnd="33dp"
+        android:layout_height="250dp"
+        android:layout_marginTop="28dp"
+        android:layout_marginEnd="31dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         app:compactCalendarBackgroundColor="#AAD8B0"
@@ -159,7 +161,7 @@
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
         android:id="@+id/y_startCalendar"
         android:layout_width="255dp"
-        android:layout_height="230dp"
+        android:layout_height="250dp"
         android:layout_marginStart="125dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
@@ -171,6 +173,45 @@
         app:compactCalendarTextColor="#fff"
         app:compactCalendarTextSize="12sp"
         app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/stYM" />
+
+    <TextView
+        android:id="@+id/stYM"
+        android:layout_width="255dp"
+        android:layout_height="28dp"
+        android:background="#AAD8B0"
+        android:fontFamily="@font/tmoney_bold"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.801"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/y_pickStartDate" />
+
+    <TextView
+        android:id="@+id/enYM"
+        android:layout_width="255dp"
+        android:layout_height="28dp"
+        android:background="#AAD8B0"
+        android:fontFamily="@font/tmoney_bold"
+        android:gravity="center"
+        android:text="TextView"
+        android:textColor="#FFFFFF"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.801"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/y_pickEndDate" />
+
+    <ImageView
+        android:id="@+id/y_addPlace"
+        android:layout_width="68dp"
+        android:layout_height="72dp"
+        android:layout_marginEnd="12dp"
+        android:layout_marginBottom="12dp"
+        android:onClick="onClick"
+        app:layout_constraintBottom_toTopOf="@+id/imageView16"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/btn_green_add" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
