@@ -1,28 +1,27 @@
 package ddwucom.mobile.travel;
 
-public class MyCourse {
+import java.io.Serializable;
+
+public class MyCourse implements Serializable {
     private long _id;
     private String PlaceName;
+    private String memo;
 
-    public MyCourse(long _id, String PlaceName)
-    {
+    public MyCourse() {
+    }
+
+    public MyCourse(long _id, String placeName, String memo) {
         this._id = _id;
-        this.PlaceName = PlaceName;
+        this.PlaceName = placeName;
+        this.memo = memo;
     }
 
     public long get_id() {
         return _id;
     }
-
-    public void set_id(long _id) {
-        this._id = _id;
-    }
-
     public String getPlaceName() {
         return PlaceName;
     }
-
-    public void setPlaceName(String placeName) {
-        PlaceName = placeName;
-    }
+    public String getMemo() { return memo; }
+    public void setMemo(String memo) { this.memo = memo; }
 }

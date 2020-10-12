@@ -48,7 +48,7 @@ public class PlanSecondStep extends AppCompatActivity {
                     Toast.makeText(PlanSecondStep.this, "여행지를 선택하세요", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                Intent intent = new Intent(PlanSecondStep.this, Map.class);
+                Intent intent = new Intent(PlanSecondStep.this, MapActivity.class);
                 startActivity(intent);
                 break;
         }
