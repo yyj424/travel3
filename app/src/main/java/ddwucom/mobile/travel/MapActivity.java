@@ -96,7 +96,7 @@ public class MapActivity extends AppCompatActivity {
     }
 
     private void courseAdd() {
-        courseList.add(new MyCourse(courseList.size() + 1, placeName));
+        courseList.add(new MyCourse(courseList.size() + 1, placeName, null));
         courseListAdapter = new CourseListAdapter(this, courseList, onLongClickItem);
         listview.setAdapter(courseListAdapter);
     }
@@ -122,8 +122,8 @@ public class MapActivity extends AppCompatActivity {
             case R.id.y_courseRegister:
                 Intent planIntent = new Intent(MapActivity.this, PlanLastStep.class);
                 planIntent.putExtra("placeList", courseList);
-                startActivity(planIntent);
-
+                setResult(RESULT_OK, planIntent);
+                finish();
                 break;
         }
     }

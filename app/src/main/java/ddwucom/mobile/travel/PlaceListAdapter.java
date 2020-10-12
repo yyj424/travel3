@@ -4,6 +4,7 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -35,9 +36,11 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
     public void onBindViewHolder(ViewHolder holder, int position) {
         String num = Long.valueOf(courseList.get(position).get_id()).toString();
         String name = courseList.get(position).getPlaceName();
+        String memo = courseList.get(position).getMemo();
 
         holder.num.setText(num);
         holder.name.setText(name);
+        holder.memo.setText(memo);
     }
 
     @Override
@@ -52,11 +55,13 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
 
         public TextView name;
         public TextView num;
+        public EditText memo;
 
         public ViewHolder(View itemView) {
             super(itemView);
             name = itemView.findViewById(R.id.y_placeName);
             num = itemView.findViewById(R.id.y_placeNum);
+            memo = itemView.findViewById(R.id.y_placeMemo);
         }
     }
 }
