@@ -25,9 +25,7 @@ import com.google.firebase.storage.UploadTask;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import gun0912.tedimagepicker.builder.TedImagePicker;
 import gun0912.tedimagepicker.builder.listener.OnMultiSelectedListener;
@@ -47,7 +45,6 @@ public class AddRecordActivity extends Activity {
     ArrayList<Uri> selectedImageList;
     ArrayList<String> images;
     RecyclerView recyclerView;
-    //Map<String, String> images;
 
     EditText et_location;
     EditText et_content;
@@ -68,7 +65,6 @@ public class AddRecordActivity extends Activity {
 
         selectedImageList = new ArrayList<>();
         images = new ArrayList<>();
-        //images = new HashMap<>();
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         recyclerView = findViewById(R.id.add_record_img_list);
@@ -78,7 +74,6 @@ public class AddRecordActivity extends Activity {
         et_content = findViewById(R.id.et_content);
 
         database = FirebaseDatabase.getInstance();
-//        dbRef = database.getReference("records");
         dbRef = database.getReference("records").child(recordKey).child("contents").push();
     }
 

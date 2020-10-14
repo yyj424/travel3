@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -31,12 +32,14 @@ import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.rd.PageIndicatorView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 public class RecordDayActivity extends AppCompatActivity {
     private StorageReference storageRef;
@@ -58,6 +61,9 @@ public class RecordDayActivity extends AppCompatActivity {
     SimpleDateFormat sdf;
     Boolean isNew;
     String recordKey;
+    String title;
+    String date;
+    int folderPos;
 
     RecyclerView recyclerView;
     RecyclerView.Adapter recordDayAdapter;
@@ -69,7 +75,6 @@ public class RecordDayActivity extends AppCompatActivity {
     DatePickerDialog.OnDateSetListener recordDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
         public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-
             calendar.set(Calendar.YEAR, year);
             calendar.set(Calendar.MONTH, month);
             calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -85,9 +90,16 @@ public class RecordDayActivity extends AppCompatActivity {
 
         addFolderLayout = (LinearLayout) View.inflate(this, R.layout.add_folder_layout, null);
 
+        database = FirebaseDatabase.getInstance();
+
         isNew = (boolean) getIntent().getSerializableExtra("isNew");
-        recordKey = (String) getIntent().getSerializableExtra("recordKey");
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
+        if (isNew) {
+            recordKey = database.getReference("records").push().getKey();
+        }
+        else {
+            recordKey = (String) getIntent().getSerializableExtra("recordKey");
+        }
 
         etRecordDate = findViewById(R.id.etRecordDate);
         etRecordTitle = findViewById(R.id.etRecordTitle);
@@ -96,9 +108,11 @@ public class RecordDayActivity extends AppCompatActivity {
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageRef = firebaseStorage.getReference("record_images");
-        database = FirebaseDatabase.getInstance();
-        dbRefRecord = database.getReference("records/" + recordKey);
+
+        recordContents = new ArrayList<>();
+
         dbRefFolder = database.getReference("folders");
+        dbRefRecord = database.getReference("records/" + recordKey);
 
         // 폴더 추가 관리(수정, 삭제 구현 할말?)
         mgrRecordFolder();
@@ -115,30 +129,6 @@ public class RecordDayActivity extends AppCompatActivity {
             }
         });
 
-        // DB 접근
-
-
-//        dbRefRecord.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                Query query = snapshot.getRef().child("uid").equalTo(currentUid);
-//
-//                if (recordContentDB != null) {
-//                    // 일기 리스트
-//                    recyclerView.setHasFixedSize(true);
-//                    layoutManager = new LinearLayoutManager(this);
-//                    recyclerView.setLayoutManager(layoutManager);
-//
-//                    recordDayAdapter = new RecordDayActivity(recordContent);
-//                    recyclerView.setAdapter(recordDayAdapter)
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        });
 
     }
 
@@ -216,6 +206,16 @@ public class RecordDayActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btnAddRecordContent:
+                title = etRecordTitle.getText().toString();
+                date = etRecordDate.getText().toString();
+                folderPos = spinner.getSelectedItemPosition();
+
+                if (title.matches("") || date.matches("") || folderPos < 2) {
+                    Toast.makeText(this, "필수 항목을 입력하세요!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+                saveRecordInDB();
+
                 Intent intent = new Intent(this, AddRecordActivity.class);
                 intent.putExtra("currentUid", currentUid);
                 intent.putExtra("recordKey", recordKey);
@@ -226,24 +226,65 @@ public class RecordDayActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        dbRefRecord = database.getReference("records/" + recordKey);
-        String title = etRecordTitle.getText().toString();
-        String date = etRecordDate.getText().toString();
-        int folderPos = spinner.getSelectedItemPosition();
+        title = etRecordTitle.getText().toString();
+        date = etRecordDate.getText().toString();
+        folderPos = spinner.getSelectedItemPosition();
 
-        if (recordContents == null && title.length() == 0 && date.length() == 0 && folderPos < 2) {
+        if (title.matches("") && date.matches("") && folderPos < 2) {
             finish();
+            return;
         }
 
-        if (recordContents != null && (title.length() == 0 || date.length() == 0|| folderPos < 2)) {
+        if (title.matches("") || date.matches("") || folderPos < 2) {
             Toast.makeText(this, "필수 항목을 입력하세요!", Toast.LENGTH_LONG).show();
             return;
         }
 
+        saveRecordInDB();
+        finish();
+    }
+
+    public void saveRecordInDB() {
         dbRefRecord.child("uid").setValue(currentUid);
         dbRefRecord.child("recordDate").setValue(date);
         dbRefRecord.child("recordFolder").setValue(spinner.getSelectedItem().toString());
         dbRefRecord.child("recordTitle").setValue(title);
-        finish();
+    }
+
+    public void getRecordContents() {
+        recordDayAdapter = new RecordDayAdapter(recordContents);
+//        dbRefRecord.addChildEventListener(new ChildEventListener() {
+//            @Override
+//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//                Map<String, String> map = (Map) snapshot.getValue();
+//                recyclerView.setAdapter(recordDayAdapter);
+//
+//                for (DataSnapshot s : snapshot.getChildren()) {
+//                    RecordContent board = s.getValue(RecordContent.class);
+//                    listAdapter.addItem(board.getTitle(), board.getDate(), board.getName());
+//
+//                }
+//            }
+//
+//            @Override
+//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+//
+//            }
+//
+//            @Override
+//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(@NonNull DatabaseError error) {
+//
+//            }
+//        })
     }
 }
