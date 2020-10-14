@@ -4,31 +4,24 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,6 +52,7 @@ public class ReviewForm extends AppCompatActivity {
 
     String folderName;
     String uid;
+    String pid;
     Double finalRating;
 
     @Override
@@ -67,7 +61,7 @@ public class ReviewForm extends AppCompatActivity {
         setContentView(R.layout.review_write_form);
 
         final TextView ratingView = findViewById(R.id.y_rating);
-        reviewContent = findViewById(R.id.y_reivewContent);
+        reviewContent = findViewById(R.id.y_etReviewContent);
         listview = findViewById(R.id.y_RimageList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
@@ -81,6 +75,8 @@ public class ReviewForm extends AppCompatActivity {
         sbView3 = findViewById(R.id.y_sbView3);
         sbView4 = findViewById(R.id.y_sbView4);
         RatingBar ratingBar = findViewById(R.id.ratingBar);
+        Intent intent = getIntent();
+        pid = intent.getStringExtra("placeId");
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -141,7 +137,7 @@ public class ReviewForm extends AppCompatActivity {
                 // 폴더명 지정
                 long now = System.currentTimeMillis();
                 Date date = new Date(now);
-                SimpleDateFormat sdfNow = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                SimpleDateFormat sdfNow = new SimpleDateFormat("yy/MM/dd");
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
@@ -164,6 +160,9 @@ public class ReviewForm extends AppCompatActivity {
                 long score3 = Long.parseLong(sbView3.getText().toString());
                 long score4 = Long.parseLong(sbView4.getText().toString());
 
+                myReview.setUserId(uid);
+                myReview.setPid(pid);
+                myReview.setDate(sdfNow.format(date));
                 myReview.setRating(rating);
                 myReview.setContent(content);
                 myReview.setScore1(score1);
@@ -174,8 +173,7 @@ public class ReviewForm extends AppCompatActivity {
                 // db에 recordContent 저장
                 databaseReference.child("review_content_list").push().setValue(myReview);
 
-//                Intent intent = new Intent(ReviewForm.this, ReviewList.class);
-//                startActivity(intent);
+                finish();
                 break;
         }
     }
