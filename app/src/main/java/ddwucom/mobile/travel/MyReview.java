@@ -1,12 +1,10 @@
 package ddwucom.mobile.travel;
 
-import android.net.Uri;
-
-import java.util.ArrayList;
-
 public class MyReview {
-    //id
+    private String pid;
+    private String userId;
     private double rating;
+    private String date;
     private String content;
 
     private long score1;
@@ -15,7 +13,9 @@ public class MyReview {
     private long score4;
 
     public MyReview() {
+        this.userId = "";
         this.rating = 0.0;
+        this.date = "";
         this.content = "";
         this.score1 = 0;
         this.score2 = 0;
@@ -24,8 +24,11 @@ public class MyReview {
     }
 
 
-    public MyReview(double rating, String content, long score1, long score2, long score3, long score4) {
+    public MyReview(String pid, String userId, double rating, String date, String content, long score1, long score2, long score3, long score4) {
+        this.pid = pid;
+        this.userId = userId;
         this.rating = rating;
+        this.date = date;
         this.content = content;
         this.score1 = score1;
         this.score2 = score2;
@@ -33,12 +36,28 @@ public class MyReview {
         this.score4 = score4;
     }
 
-    public double getRating() {
-        return rating;
+    public String getPid() {
+        return pid;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
+    public void setPid(String pid) {
+        this.pid = pid;
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getContent() {
@@ -47,6 +66,14 @@ public class MyReview {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public double getRating() {
+        return rating;
+    }
+
+    public void setRating(double rating) {
+        this.rating = rating;
     }
 
     public long getScore1() {

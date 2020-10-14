@@ -64,7 +64,7 @@ public class MapActivity extends AppCompatActivity {
     String address;
     Location location1;
     Location location2;
-    int i = 1;
+    String pid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,7 +112,7 @@ public class MapActivity extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.y_placeSearch:
-                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME);
+                List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ID);
                 Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(MapActivity.this);
                 startActivityForResult(intent, 100);
                 break;
@@ -133,6 +133,7 @@ public class MapActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 100 && resultCode == RESULT_OK) {
             Place place = Autocomplete.getPlaceFromIntent(data);
+            pid = place.getId();
             longitude = place.getLatLng().longitude;
             latitude = place.getLatLng().latitude;
             placeName = place.getName();
@@ -312,7 +313,8 @@ public class MapActivity extends AppCompatActivity {
 //                Intent intent = new Intent(MapActivity.this ,ReviewList.class);
 //                startActivity(intent);
                 Intent intent = new Intent(MapActivity.this, ReviewList.class);
-                startActivityForResult(intent, 200);
+                intent.putExtra("placeId", pid);
+                startActivityForResult(intent, 200);//???????????????이거 왜썼지
             }
         });
 

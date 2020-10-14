@@ -81,13 +81,52 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/y_reviewListImage" />
 
-    <ImageView
-        android:id="@+id/imageView22"
+    <TextView
+        android:id="@+id/cleanliness"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
+        android:layout_marginStart="36dp"
         android:layout_marginTop="8dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="00"
+        android:textColor="#676666"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/y_reviewContent"
-        app:srcCompat="@drawable/y_categorybar" />
+        app:layout_constraintTop_toBottomOf="@+id/y_reviewContent" />
+
+    <TextView
+        android:id="@+id/costEffectiveness"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="00"
+        android:textColor="#676666"
+        app:layout_constraintStart_toEndOf="@+id/cleanliness"
+        app:layout_constraintTop_toBottomOf="@+id/y_reviewContent" />
+
+    <TextView
+        android:id="@+id/vibe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="00"
+        android:textColor="#676666"
+        app:layout_constraintStart_toEndOf="@+id/costEffectiveness"
+        app:layout_constraintTop_toBottomOf="@+id/y_reviewContent" />
+
+    <TextView
+        android:id="@+id/accessibility"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginTop="8dp"
+        android:fontFamily="@font/tmoney_regular"
+        android:text="00"
+        android:textColor="#676666"
+        app:layout_constraintStart_toEndOf="@+id/vibe"
+        app:layout_constraintTop_toBottomOf="@+id/y_reviewContent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
