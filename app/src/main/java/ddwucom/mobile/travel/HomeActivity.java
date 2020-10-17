@@ -3,9 +3,11 @@ package ddwucom.mobile.travel;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.PorterDuff;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -18,6 +20,9 @@ public class HomeActivity extends AppCompatActivity {
     Button btnLogout;
     ImageView btnHome, btnGroup, btnCourse, btnMap;
     private FirebaseAuth firebaseAuth;
+    boolean [] clicked = {true, false, false, false};
+    int [] btn_names = {R.id.btn_home, R.id.btn_friends, R.id.btn_course, R.id.btn_map};
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -34,8 +39,8 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
-        Drawable tempImg, tempRes;
-        Bitmap tmpBitmap, tmpBitmapRes;
+//        Drawable tempImg, tempRes;
+//        Bitmap tmpBitmap, tmpBitmapRes;
         switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
 //
 //            case R.id.btnLogout:
@@ -48,65 +53,43 @@ public class HomeActivity extends AppCompatActivity {
 //                }
 //                break;
             case R.id.btn_home:
-                tempImg = btnHome.getDrawable();
-                tempRes = HomeActivity.this.getResources().getDrawable(R.drawable.home_icon_yellow);
-                tmpBitmap = ((BitmapDrawable)tempImg).getBitmap();
-                tmpBitmapRes = ((BitmapDrawable)tempRes).getBitmap();
-
-                if(tmpBitmap.equals(tmpBitmapRes)) {
-                    btnHome.setImageResource(R.drawable.home_icon_grey);
-                    //로직 수행
-                }else{
                     btnHome.setImageResource(R.drawable.home_icon_yellow);
-                    //로직 수행
-                }
+                    btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                    btnCourse.setImageResource(R.drawable.course_icon_grey);
+                    btnMap.setImageResource(R.drawable.map_icon_grey);
+
+//                tempImg = btnHome.getDrawable();
+//                tempRes = HomeActivity.this.getResources().getDrawable(R.drawable.home_icon_yellow);
+//                tmpBitmap = ((BitmapDrawable)tempImg).getBitmap();
+//                tmpBitmapRes = ((BitmapDrawable)tempRes).getBitmap();
+//
+//                if(tmpBitmap.equals(tmpBitmapRes)) {
+//                    btnHome.setImageResource(R.drawable.home_icon_grey);
+//                    //로직 수행
+//                }else{
+//                    btnHome.setImageResource(R.drawable.home_icon_yellow);
+//                    //로직 수행
+//                }
                 break;
             case R.id.btn_friends:
-                tempImg = btnGroup.getDrawable();
-                tempRes = HomeActivity.this.getResources().getDrawable(R.drawable.friends_icon_yellow);
-                tmpBitmap = ((BitmapDrawable)tempImg).getBitmap();
-                tmpBitmapRes = ((BitmapDrawable)tempRes).getBitmap();
-
-                if(tmpBitmap.equals(tmpBitmapRes)) {
-                    btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                    //로직 수행
-                }else{
-                    btnGroup.setImageResource(R.drawable.friends_icon_yellow);
-                    //로직 수행
-                }
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
                 break;
             case R.id.btn_course:
-                tempImg = btnCourse.getDrawable();
-                tempRes = HomeActivity.this.getResources().getDrawable(R.drawable.course_icon_yellow);
-                tmpBitmap = ((BitmapDrawable)tempImg).getBitmap();
-                tmpBitmapRes = ((BitmapDrawable)tempRes).getBitmap();
-
-                if(tmpBitmap.equals(tmpBitmapRes)) {
-                    btnCourse.setImageResource(R.drawable.course_icon_grey);
-                    //로직 수행
-                }else{
-                    btnCourse.setImageResource(R.drawable.course_icon_yellow);
-                    //로직 수행
-                }
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_yellow);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
                 break;
             case R.id.btn_map:
-                tempImg = btnMap.getDrawable();
-                tempRes = HomeActivity.this.getResources().getDrawable(R.drawable.map_icon_yellow);
-                tmpBitmap = ((BitmapDrawable)tempImg).getBitmap();
-                tmpBitmapRes = ((BitmapDrawable)tempRes).getBitmap();
-
-                if(tmpBitmap.equals(tmpBitmapRes)) {
-                    btnMap.setImageResource(R.drawable.map_icon_grey);
-                    //로직 수행
-                }else{
-                    btnMap.setImageResource(R.drawable.map_icon_yellow);
-                    //로직 수행
-                }
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_yellow);
                 break;
-
         }
     }
-    public void changeImage(){
 
-    }
 }

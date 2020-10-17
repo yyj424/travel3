@@ -60,6 +60,7 @@
             android:layout_marginTop="18dp"
             android:text="휴대전화"
             android:textColor="#000000"
+            app:layout_constraintBottom_toTopOf="@+id/join_etPhone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.113"
             app:layout_constraintStart_toStartOf="parent"
