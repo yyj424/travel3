@@ -24,8 +24,7 @@ public class MyReview {
     }
 
 
-    public MyReview(String pid, String userId, double rating, String date, String content, long score1, long score2, long score3, long score4) {
-        this.pid = pid;
+    public MyReview(String userId, double rating, String date, String content, long score1, long score2, long score3, long score4) {
         this.userId = userId;
         this.rating = rating;
         this.date = date;

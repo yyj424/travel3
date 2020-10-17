@@ -252,7 +252,7 @@ public class RecordDayActivity extends AppCompatActivity {
     }
 
     public void getRecordContents() {
-        recordDayAdapter = new RecordDayAdapter(recordContents);
+        //recordDayAdapter = new RecordDayAdapter(recordContents);
 //        dbRefRecord.addChildEventListener(new ChildEventListener() {
 //            @Override
 //            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {

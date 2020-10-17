@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,9 +15,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import com.google.android.libraries.places.api.model.Place;
 import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 
 public class ReviewList extends AppCompatActivity {
@@ -23,7 +32,21 @@ public class ReviewList extends AppCompatActivity {
     private ArrayList<MyReview> reviewList;
     private ReviewListAdapter adapter;
     private ListView listView;
+    private FirebaseDatabase firebaseDatabase;
+    private DatabaseReference databaseReference;
+
+    String uid;
     String pid;
+    double rating;
+    String date;
+    String content;
+    long score1;
+    long score2;
+    long score3;
+    long score4;
+    double total = 0.0;
+    TextView cnt;
+    TextView rv;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,14 +57,47 @@ public class ReviewList extends AppCompatActivity {
         pid = intent.getStringExtra("placeId");
         reviewList = new ArrayList<>();
 
-//        reviewList.add(new MyReview(1, "user1", (float) 3.5, "20/10/14", "리 뷰 내 용1", 10, 20, 30, 40));
-//        reviewList.add(new MyReview(2, "user2", (float) 5.0, "20/10/15", "리 뷰 내 용2", 11, 22, 33, 44));
-//        reviewList.add(new MyReview(3, "user3", (float) 2.5, "20/10/16", "리 뷰 내 용3", 01, 02, 03, 04));
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
 
-        adapter = new ReviewListAdapter(this, R.layout.reviewlist_adapter_view, reviewList);
+        cnt = findViewById(R.id.y_review_cnt);
+        rv = findViewById(R.id.y_rvAvg);
 
+        databaseReference = firebaseDatabase.getReference("review_content_list");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    if (s.child("pid").getValue().toString().equals(pid)) {
+                        uid = s.child("userId").getValue().toString();
+                        rating = Double.parseDouble(String.valueOf(s.child("rating").getValue()));
+                        total += rating;
+                        content = s.child("content").getValue().toString();
+                        date = s.child("date").getValue().toString();
+                        score1 = (long) s.child("score1").getValue();
+                        score2 = (long) s.child("score2").getValue();
+                        score3 = (long) s.child("score3").getValue();
+                        score4 = (long) s.child("score4").getValue();
+                        reviewList.add(new MyReview(uid, rating, date, content, score1, score2, score3, score4));
+                    }
+                }
+                adapter = new ReviewListAdapter(ReviewList.this, R.layout.reviewlist_adapter_view, reviewList);
+                listView = findViewById(R.id.y_review_list);
+                listView.setAdapter(adapter);
+                cnt.setText(String.valueOf(adapter.getCount()));
+                rv.setText(String.format("%.1f", total / adapter.getCount()));
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        adapter = new ReviewListAdapter(ReviewList.this, R.layout.reviewlist_adapter_view, reviewList);
         listView = findViewById(R.id.y_review_list);
         listView.setAdapter(adapter);
+
+        cnt.setText("0");
+        rv.setText("0");
     }
 
     public void onClick(View v) {
@@ -49,7 +105,7 @@ public class ReviewList extends AppCompatActivity {
             case R.id.y_review_write:
                 Intent intent = new Intent(ReviewList.this, ReviewForm.class);
                 intent.putExtra("placeId", pid);
-                startActivity(intent);
+                startActivityForResult(intent, 100);
                 break;
             case R.id.y_add_course:
                 Intent resultIntent = new Intent();

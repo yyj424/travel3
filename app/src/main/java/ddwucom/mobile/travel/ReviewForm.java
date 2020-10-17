@@ -4,6 +4,7 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.RatingBar;
@@ -11,6 +12,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,8 +20,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 
@@ -27,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import gun0912.tedimagepicker.builder.TedImagePicker;
 import gun0912.tedimagepicker.builder.listener.OnMultiSelectedListener;
@@ -49,11 +56,16 @@ public class ReviewForm extends AppCompatActivity {
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
+    private DatabaseReference dbRef;
 
-    String folderName;
     String uid;
     String pid;
-    Double finalRating;
+    double finalRating;
+    String content;
+    long score1;
+    long score2;
+    long score3;
+    long score4;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -82,7 +94,7 @@ public class ReviewForm extends AppCompatActivity {
             @Override
             public void onRatingChanged(RatingBar ratingBar, float rating, boolean fromUser) {
                 ratingView.setText(String.valueOf(rating));
-                finalRating = (double)rating;
+                finalRating = rating;
             }
         });
 
@@ -92,7 +104,7 @@ public class ReviewForm extends AppCompatActivity {
         seekBarListener(seekbar4, sbView4);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReferenceFromUrl("https://travel3-262be.firebaseio.com/");
+        databaseReference = firebaseDatabase.getReference();
     }
 
     public void seekBarListener(SeekBar sb, final TextView tv) {
@@ -135,9 +147,6 @@ public class ReviewForm extends AppCompatActivity {
                 firebaseStorage = FirebaseStorage.getInstance();
 
                 // 폴더명 지정
-                long now = System.currentTimeMillis();
-                Date date = new Date(now);
-                SimpleDateFormat sdfNow = new SimpleDateFormat("yy/MM/dd");
 
                 FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
                 if (user != null) {
@@ -145,33 +154,52 @@ public class ReviewForm extends AppCompatActivity {
                     uid = user.getUid();
                 } else {
                     // No user is signed in
-                    Toast.makeText(getApplicationContext(), "유저 없음", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "유저 없음", Toast.LENGTH_LONG).show();
                 }
-                folderName = uid;
 
                 // DTO 객체 생성
                 MyReview myReview = new MyReview();
 
                 // 객체에 데이터 저장
-                double rating = finalRating;
-                String content = reviewContent.getText().toString();
-                long score1 = Long.parseLong(sbView1.getText().toString());
-                long score2 = Long.parseLong(sbView2.getText().toString());
-                long score3 = Long.parseLong(sbView3.getText().toString());
-                long score4 = Long.parseLong(sbView4.getText().toString());
+                content = reviewContent.getText().toString();
+                score1 = Long.parseLong(sbView1.getText().toString());
+                score2 = Long.parseLong(sbView2.getText().toString());
+                score3 = Long.parseLong(sbView3.getText().toString());
+                score4 = Long.parseLong(sbView4.getText().toString());
 
-                myReview.setUserId(uid);
-                myReview.setPid(pid);
-                myReview.setDate(sdfNow.format(date));
-                myReview.setRating(rating);
-                myReview.setContent(content);
-                myReview.setScore1(score1);
-                myReview.setScore2(score2);
-                myReview.setScore3(score3);
-                myReview.setScore4(score4);
+                dbRef  = firebaseDatabase.getReference("user_list");
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot s : snapshot.getChildren()) {
+                            if (s.child("uid").getValue().toString().equals(uid)) {
+                                MyReview myReview = new MyReview();
+                                myReview.setUserId(s.child("nickname").getValue().toString());
+                                myReview.setPid(pid);
+                                long now = System.currentTimeMillis();
+                                Date date = new Date(now);
+                                SimpleDateFormat sdfNow = new SimpleDateFormat("yy/MM/dd");
+                                myReview.setDate(sdfNow.format(date));
+                                myReview.setRating(finalRating);
+                                myReview.setContent(content);
+                                myReview.setScore1(score1);
+                                myReview.setScore2(score2);
+                                myReview.setScore3(score3);
+                                myReview.setScore4(score4);
 
-                // db에 recordContent 저장
-                databaseReference.child("review_content_list").push().setValue(myReview);
+                                // db에 recordContent 저장
+                                databaseReference.child("review_content_list").push().setValue(myReview);
+
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
 
                 finish();
                 break;
