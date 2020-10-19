@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:attrs="http://schemas.android.com/tools"
+    xmlns:card="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#00FFFFFF">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cvRecordDay"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#00FFFFFF"
+        card:cardCornerRadius="10dp"
+        card:cardUseCompatPadding="true">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="#00FFFFFF"
+            android:orientation="horizontal">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="164dp"
+                android:layout_height="match_parent">
+
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/vpRecordImage"
+                    android:layout_width="match_parent"
+                    android:layout_height="186dp"
+                    card:layout_constraintStart_toStartOf="parent"
+                    card:layout_constraintTop_toTopOf="parent">
+                </androidx.viewpager.widget.ViewPager>
+
+                <com.rd.PageIndicatorView
+                    android:id="@+id/pivRecordImage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    attrs:piv_animationType="scale"
+                    attrs:piv_dynamicCount="true"
+                    attrs:piv_interactiveAnimation="true"
+                    attrs:piv_padding="12dp"
+                    attrs:piv_radius="8dp"
+                    attrs:piv_selectedColor="@color/gray_50"
+                    attrs:piv_unselectedColor="@color/gray_300"
+                    attrs:piv_viewPager="@id/vpRecordImage"
+                    card:layout_constraintBottom_toBottomOf="parent"
+                    card:layout_constraintEnd_toEndOf="parent"
+                    card:layout_constraintStart_toStartOf="parent"
+                    card:piv_animationType="fill"
+                    card:piv_dynamicCount="true"
+                    card:piv_interactiveAnimation="true"
+                    card:piv_radius="5dp"
+                    card:piv_selectedColor="@color/lightYello" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/tvRecordContent"
+                    android:layout_width="match_parent"
+                    android:layout_height="154dp"
+                    android:background="#FFFFFF"
+                    android:fontFamily="@font/tmoney_regular"
+                    android:gravity="top|left"
+                    android:includeFontPadding="false"
+                    android:lineSpacingExtra="0sp"
+                    android:padding="10dp"
+                    android:scrollbars="horizontal"
+                    android:textColor="#000000"
+                    card:layout_constraintEnd_toEndOf="parent"
+                    card:layout_constraintStart_toStartOf="parent"
+                    card:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/tvRecordLocation"
+                    android:layout_width="match_parent"
+                    android:layout_height="32dp"
+                    android:background="#FFFFFF"
+                    android:fontFamily="@font/tmoney_regular"
+                    android:gravity="center|left"
+                    android:includeFontPadding="false"
+                    android:paddingLeft="25dp"
+                    android:paddingRight="5dp"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    card:layout_constraintTop_toBottomOf="@+id/tvRecordContent" />
+
+                <ImageView
+                    android:id="@+id/imageView22"
+                    android:layout_width="13dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:adjustViewBounds="true"
+                    card:layout_constraintBottom_toBottomOf="@+id/tvRecordLocation"
+                    card:layout_constraintStart_toStartOf="@+id/tvRecordLocation"
+                    card:layout_constraintTop_toTopOf="@+id/tvRecordLocation"
+                    card:srcCompat="@drawable/g_location_icon" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </androidx.cardview.widget.CardView>
+
+</RelativeLayout>
