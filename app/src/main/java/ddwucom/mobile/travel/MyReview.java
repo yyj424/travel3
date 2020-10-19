@@ -1,8 +1,11 @@
 package ddwucom.mobile.travel;
 
+import java.util.List;
+
 public class MyReview {
     private String pid;
     private String userId;
+    List<String> reviewImages;
     private double rating;
     private String date;
     private String content;
@@ -14,6 +17,7 @@ public class MyReview {
 
     public MyReview() {
         this.userId = "";
+        this.reviewImages = null;
         this.rating = 0.0;
         this.date = "";
         this.content = "";
@@ -24,8 +28,9 @@ public class MyReview {
     }
 
 
-    public MyReview(String userId, double rating, String date, String content, long score1, long score2, long score3, long score4) {
+    public MyReview(String userId, List<String> reviewImages, double rating, String date, String content, long score1, long score2, long score3, long score4) {
         this.userId = userId;
+        this.reviewImages = reviewImages;
         this.rating = rating;
         this.date = date;
         this.content = content;
@@ -33,6 +38,14 @@ public class MyReview {
         this.score2 = score2;
         this.score3 = score3;
         this.score4 = score4;
+    }
+
+    public List<String> getReviewImages() {
+        return reviewImages;
+    }
+
+    public void setReviewImages(List<String> reviewImages) {
+        this.reviewImages = reviewImages;
     }
 
     public String getPid() {

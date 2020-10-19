@@ -11,32 +11,28 @@ import android.widget.ImageView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
-
-import gun0912.tedimagepicker.builder.TedImagePicker;
-import gun0912.tedimagepicker.builder.listener.OnMultiSelectedListener;
 
 
-public class ReviewImageAdapter extends RecyclerView.Adapter<ReviewImageAdapter.ViewHolder> {
+public class ReviewFormImageAdapter extends RecyclerView.Adapter<ReviewFormImageAdapter.ViewHolder> {
 
     private ArrayList<Uri> ImageList = null;
     private Context context;
 
-    public ReviewImageAdapter(Context context, ArrayList<Uri> ImageList) {
+    public ReviewFormImageAdapter(Context context, ArrayList<Uri> ImageList) {
         this.context = context;
         this.ImageList = ImageList;
     }
 
     @Override
-    public ReviewImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public ReviewFormImageAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.reviewimage_adapter_view, parent, false);
 
-        return new ReviewImageAdapter.ViewHolder(view);
+        return new ReviewFormImageAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(ReviewImageAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(ReviewFormImageAdapter.ViewHolder holder, final int position) {
         Uri uri = ImageList.get(position);
 
         holder.Rimage.setImageURI(uri);

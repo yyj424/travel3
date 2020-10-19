@@ -18,22 +18,21 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
 import gun0912.tedimagepicker.builder.TedImagePicker;
 import gun0912.tedimagepicker.builder.listener.OnMultiSelectedListener;
@@ -49,14 +48,16 @@ public class ReviewForm extends AppCompatActivity {
     TextView sbView2;
     TextView sbView3;
     TextView sbView4;
-    ReviewImageAdapter reviewImageAdapter;
+    ReviewFormImageAdapter reviewFormImageAdapter;
     ArrayList<Uri> ImageList = null;
+    ArrayList<String> reviewImages = null;
 
     private StorageReference storageReference;
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private DatabaseReference dbRef;
+    private DatabaseReference userDBRef;
+    private DatabaseReference imageDBRef;
 
     String uid;
     String pid;
@@ -66,6 +67,7 @@ public class ReviewForm extends AppCompatActivity {
     long score2;
     long score3;
     long score4;
+    String folderName;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -78,6 +80,7 @@ public class ReviewForm extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         listview.setLayoutManager(layoutManager);
         ImageList = new ArrayList();
+        reviewImages = new ArrayList();
         seekbar1 = findViewById(R.id.seekBar1);
         seekbar2 = findViewById(R.id.seekBar2);
         seekbar3 = findViewById(R.id.seekBar3);
@@ -134,41 +137,32 @@ public class ReviewForm extends AppCompatActivity {
                             @Override
                             public void onSelected(List<? extends Uri> list) {
                                 ImageList.addAll(list);
-                                reviewImageAdapter = new ReviewImageAdapter(ReviewForm.this, ImageList);
-                                listview.setAdapter(reviewImageAdapter);
+                                reviewFormImageAdapter = new ReviewFormImageAdapter(ReviewForm.this, ImageList);
+                                listview.setAdapter(reviewFormImageAdapter);
                             }
                         });
                 break;
             case R.id.y_reviewRegister:
+                if (ImageList.size() == 0) {
+                    Toast.makeText(this, "이미지를 업로드 해야합니다.", Toast.LENGTH_LONG).show();
+                    Log.d("yyj", "이미지 없음");
+                    return;
+                }
                 final ProgressDialog progressDialog = new ProgressDialog(this);
                 progressDialog.setTitle("리뷰 업로드 중");
                 progressDialog.show();
 
-                firebaseStorage = FirebaseStorage.getInstance();
-
-                // 폴더명 지정
-
-                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                if (user != null) {
-                    // User is signed in
-                    uid = user.getUid();
-                } else {
-                    // No user is signed in
-                    Toast.makeText(getApplicationContext(), "유저 없음", Toast.LENGTH_LONG).show();
-                }
-
-                // DTO 객체 생성
-                MyReview myReview = new MyReview();
-
                 // 객체에 데이터 저장
+                Intent intent = getIntent();
+                uid = intent.getStringExtra("uid");
                 content = reviewContent.getText().toString();
                 score1 = Long.parseLong(sbView1.getText().toString());
                 score2 = Long.parseLong(sbView2.getText().toString());
                 score3 = Long.parseLong(sbView3.getText().toString());
                 score4 = Long.parseLong(sbView4.getText().toString());
 
-                dbRef  = firebaseDatabase.getReference("user_list");
-                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                userDBRef = firebaseDatabase.getReference("user_list");
+                userDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         for (DataSnapshot s : snapshot.getChildren()) {
@@ -187,9 +181,8 @@ public class ReviewForm extends AppCompatActivity {
                                 myReview.setScore3(score3);
                                 myReview.setScore4(score4);
 
-                                // db에 recordContent 저장
-                                databaseReference.child("review_content_list").push().setValue(myReview);
-
+                                reviewRegister(myReview);
+                                finish();
                                 break;
                             }
                         }
@@ -200,9 +193,48 @@ public class ReviewForm extends AppCompatActivity {
 
                     }
                 });
-
-                finish();
                 break;
+        }
+    }
+
+    public void reviewRegister(final MyReview myReview) {
+        firebaseStorage = FirebaseStorage.getInstance();  Log.d("yyj", firebaseStorage.getReference().getName());
+        storageReference = firebaseStorage.getReference(); Log.d("yyj", storageReference.getName());
+
+        // 폴더명 지정
+        SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
+        Date now = new Date();
+        folderName = formatter.format(now) + "/";
+
+//                    for (int i = 0; i < selectedImageList.size(); i++) { // 선택한 사진 개수만큼 반복
+        for (final Uri imageUri : ImageList) {
+            // storage에 사진 업로드
+
+            storageReference = firebaseStorage.getReference().child("review_images/" + uid + "/" + folderName + imageUri.getLastPathSegment());
+            storageReference.putFile(imageUri)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                            taskSnapshot.getStorage().getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                                @Override
+                                public void onSuccess(Uri uri) {
+                                    String tmp = uri.toString();
+                                    reviewImages.add(tmp);
+                                    Log.d("yyj", String.valueOf(reviewImages.size()));
+                                    if (reviewImages.size() == ImageList.size()) {
+                                        myReview.setReviewImages(reviewImages);
+                                        databaseReference.child("review_content_list").push().setValue(myReview);
+                                    }
+                                }
+                            });
+                        }
+                    })
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Toast.makeText(getApplicationContext(), "업로드 실패!", Toast.LENGTH_LONG).show();
+                        }
+                    });
         }
     }
 }
