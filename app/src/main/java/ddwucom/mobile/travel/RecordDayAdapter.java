@@ -68,7 +68,6 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
         holder.tvContent.setText(recordItems.get(position).getContent());
         holder.tvContent.setMovementMethod(new ScrollingMovementMethod());
 
-        출처: https://digapps.tistory.com/entry/안드로이드-TextView-스크롤-넣기 [Dig Apps]
         images = recordItems.get(position).getImages();
         RecordPagerAdapter recordPagerAdapter = new RecordPagerAdapter(context, images);
         holder.pivRecordImage.setCount(images.size());

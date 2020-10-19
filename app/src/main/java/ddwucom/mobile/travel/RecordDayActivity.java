@@ -66,7 +66,6 @@ public class RecordDayActivity extends AppCompatActivity {
     String recordKey;
     String title;
     String date;
-    int isAddImage;
     int folderPos;
 
     RecyclerView recyclerView;
