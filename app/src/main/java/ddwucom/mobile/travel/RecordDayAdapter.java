@@ -1,18 +1,20 @@
 package ddwucom.mobile.travel;
 
-import android.os.Handler;
+import android.content.Context;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.bumptech.glide.Glide;
 import com.rd.PageIndicatorView;
 
 import java.util.HashMap;
@@ -21,8 +23,8 @@ import java.util.List;
 public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.ViewHolder> {
     private final String TAG = "RecordDayAdapter";
 
+    private Context context;
     private List<RecordContent> recordItems;
-    private FragmentManager fragmentManager;
 
     List<String> images;
     HashMap<Integer, Integer> mViewPagerState = new HashMap<>();
@@ -43,9 +45,9 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
         }
     }
 
-    public RecordDayAdapter(FragmentManager fragmentManager, List<RecordContent> recordItems) {
+    public RecordDayAdapter(Context context, List<RecordContent> recordItems) {
+        this.context = context;
         this.recordItems = recordItems;
-        this.fragmentManager = fragmentManager;
     }
 
     @Override
@@ -58,24 +60,17 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-//        Handler delayHandler = new Handler();
-//        delayHandler.postDelayed(new Runnable() {
-//            @Override
-//            public void run() {
-//                // TODO
-//                Log.d("plz", "이제 안 기다려");
-//            }
-//        }, 10000);
-
-
         Log.d("plz", holder.toString());
         Log.d("plz", holder.tvContent.toString());
         Log.d("plz", recordItems.get(position).getLocation());
 
         holder.tvLocation.setText(recordItems.get(position).getLocation());
         holder.tvContent.setText(recordItems.get(position).getContent());
-        RecordPagerAdapter recordPagerAdapter = new RecordPagerAdapter(fragmentManager);
+        holder.tvContent.setMovementMethod(new ScrollingMovementMethod());
+
+        출처: https://digapps.tistory.com/entry/안드로이드-TextView-스크롤-넣기 [Dig Apps]
         images = recordItems.get(position).getImages();
+        RecordPagerAdapter recordPagerAdapter = new RecordPagerAdapter(context, images);
         holder.pivRecordImage.setCount(images.size());
         holder.vpRecordImage.setAdapter(recordPagerAdapter);
         holder.vpRecordImage.setId(position + 1);
@@ -95,7 +90,6 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
         if (mViewPagerState.containsKey(position)) {
             holder.vpRecordImage.setCurrentItem(mViewPagerState.get(position));
         }
-        Log.d("goeun", recordItems.get(position).getContent());
     }
 
     @Override
@@ -112,23 +106,50 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
             return 0;
     }
 
-    public class RecordPagerAdapter extends FragmentPagerAdapter {
-        public RecordPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
+    public class RecordPagerAdapter extends PagerAdapter {
+        private Context context;
+        private List<String> images;
 
-        @Override
-        public Fragment getItem(int position) {
-            return RecordImageFragment.newInstance(images.get(position));
+        public RecordPagerAdapter(Context context, List<String> images) {
+            super();
+            this.context = context;
+            this.images = images;
         }
 
         @Override
         public int getCount() {
-            if (images != null) {
-                return images.size();
+            return images.size();
+        }
+
+        @Override
+        public int getItemPosition(@NonNull Object object) {
+            return POSITION_NONE;
+        }
+
+        @Override
+        public boolean isViewFromObject(@NonNull View view, @NonNull Object object) {
+            return view == object;
+        }
+
+        @Override
+        public void destroyItem(@NonNull ViewGroup container, int position, @NonNull Object object) {
+            container.removeView((View) object);
+        }
+
+        @Override
+        public Object instantiateItem(@NonNull ViewGroup container, int position) {
+            View v = null;
+            if (context != null) {
+                LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                v = inflater.inflate(R.layout.record_image_view, container, false);
             }
-            else
-                return 0;
+            ImageView iv = v.findViewById(R.id.ivRecordDayImage);
+            Glide.with(context)
+                    .load(images.get(position))
+                    .into(iv);
+
+            container.addView(v);
+            return v;
         }
     }
 }

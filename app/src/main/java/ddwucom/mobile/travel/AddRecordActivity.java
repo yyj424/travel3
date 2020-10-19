@@ -136,8 +136,8 @@ public class AddRecordActivity extends Activity {
                                                 images.add(tmp);
                                                 Log.d("goeun", String.valueOf(images.size()));
                                                 if (images.size() == selectedImageList.size()) {
+                                                    recordContent.setImages(images);
                                                     dbRef.setValue(recordContent);
-                                                    dbRef.child("images").setValue(images);
                                                     Log.d("goeun", "이미지 저장 끝~");
                                                     finish();
                                                 }
@@ -156,6 +156,10 @@ public class AddRecordActivity extends Activity {
                                     }
                                 });
                     }
+                }
+                else {
+                    dbRef.setValue(recordContent);
+                    finish();
                 }
                 break;
         }

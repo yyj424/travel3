@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -70,7 +72,7 @@ public class RecordDayActivity extends AppCompatActivity {
     RecyclerView recyclerView;
     RecordDayAdapter recordDayAdapter;
     LinearLayoutManager layoutManager;
-    
+
     List<RecordContent> recordContents;
     String currentUid;
 
@@ -98,8 +100,7 @@ public class RecordDayActivity extends AppCompatActivity {
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
         if (isNew) {
             recordKey = database.getReference("records").push().getKey();
-        }
-        else {
+        } else {
             recordKey = (String) getIntent().getSerializableExtra("recordKey");
         }
         // 임시!! RecordMain 구현시 꼭 지워야함
@@ -112,7 +113,7 @@ public class RecordDayActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recordContents = new ArrayList<>();
-        recordDayAdapter = new RecordDayAdapter(getSupportFragmentManager(), recordContents);
+        recordDayAdapter = new RecordDayAdapter(this, recordContents);
         recyclerView.setAdapter(recordDayAdapter);
 
         spinner = findViewById(R.id.spRecordFolder);
@@ -141,7 +142,8 @@ public class RecordDayActivity extends AppCompatActivity {
                 }
 
                 @Override
-                public void onCancelled(@NonNull DatabaseError error) {}
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
             });
         }
 
@@ -174,13 +176,20 @@ public class RecordDayActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
         // spinner에 데이터 추가하기
@@ -215,19 +224,20 @@ public class RecordDayActivity extends AppCompatActivity {
                             .setNegativeButton("CANCEL", null);
                     alertDialog = builder.create();
                     if (addFolderLayout.getParent() != null) {
-                        ((ViewGroup)addFolderLayout.getParent()).removeView(addFolderLayout);
+                        ((ViewGroup) addFolderLayout.getParent()).removeView(addFolderLayout);
                     }
                     alertDialog.show();
                     alertDialog.getWindow().setLayout(1200, 750);
 
                     TextView textView = alertDialog.findViewById(android.R.id.message);
-                    Typeface face = Typeface.createFromAsset(getAssets(),"fonts/tmoney_regular.ttf");
+                    Typeface face = Typeface.createFromAsset(getAssets(), "fonts/tmoney_regular.ttf");
                     textView.setTypeface(face);
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
     }
 
@@ -307,21 +317,22 @@ public class RecordDayActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
-        });
-    }
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//        if (resultCode == RESULT_OK) {
-//
-//        }
-//    }
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
+    }
 }
