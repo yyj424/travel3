@@ -114,7 +114,6 @@ public class AddRecordActivity extends Activity {
 
                 if (selectedImageList.size() > 0) {
                     firebaseStorage = FirebaseStorage.getInstance();  Log.d("goeun", firebaseStorage.getReference().getName());
-                    mStorageRef = firebaseStorage.getReference(); Log.d("goeun", mStorageRef.getName());
 
                     // 폴더명 지정
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -125,7 +124,7 @@ public class AddRecordActivity extends Activity {
                     for (final Uri imageUri : selectedImageList) {
                         // storage에 사진 업로드
 
-                        mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        mStorageRef = firebaseStorage.getReference().child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
                         mStorageRef.putFile(imageUri)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -139,6 +138,7 @@ public class AddRecordActivity extends Activity {
                                                 if (images.size() == selectedImageList.size()) {
                                                     dbRef.setValue(recordContent);
                                                     dbRef.child("images").setValue(images);
+                                                    Log.d("goeun", "이미지 저장 끝~");
                                                     finish();
                                                 }
                                             }
