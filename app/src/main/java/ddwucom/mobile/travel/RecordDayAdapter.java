@@ -41,7 +41,6 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
             tvContent = itemView.findViewById(R.id.tvRecordContent);
             tvLocation = itemView.findViewById(R.id.tvRecordLocation);
             pivRecordImage = itemView.findViewById(R.id.pivRecordImage);
-            Log.d("plz", tvContent.toString());
         }
     }
 
@@ -60,11 +59,10 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
-        Log.d("plz", holder.toString());
-        Log.d("plz", holder.tvContent.toString());
-        Log.d("plz", recordItems.get(position).getLocation());
+        if (recordItems.get(position).getLocation() != null) {
+            holder.tvLocation.setText(recordItems.get(position).getLocation());
+        }
 
-        holder.tvLocation.setText(recordItems.get(position).getLocation());
         holder.tvContent.setText(recordItems.get(position).getContent());
         holder.tvContent.setMovementMethod(new ScrollingMovementMethod());
 
@@ -110,7 +108,6 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
         private List<String> images;
 
         public RecordPagerAdapter(Context context, List<String> images) {
-            super();
             this.context = context;
             this.images = images;
         }

@@ -89,6 +89,7 @@
         android:id="@+id/record_day_recycler_view"
         android:layout_width="409dp"
         android:layout_height="645dp"
+        android:overScrollMode="never"
         android:padding="13dp"
         android:paddingTop="15dp"
         android:scrollbars="vertical"
