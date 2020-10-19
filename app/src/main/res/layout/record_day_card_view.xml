@@ -28,9 +28,9 @@
                     android:id="@+id/vpRecordImage"
                     android:layout_width="match_parent"
                     android:layout_height="186dp"
+                    android:overScrollMode="never"
                     card:layout_constraintStart_toStartOf="parent"
-                    card:layout_constraintTop_toTopOf="parent">
-                </androidx.viewpager.widget.ViewPager>
+                    card:layout_constraintTop_toTopOf="parent"></androidx.viewpager.widget.ViewPager>
 
                 <com.rd.PageIndicatorView
                     android:id="@+id/pivRecordImage"
@@ -61,7 +61,7 @@
 
                 <TextView
                     android:id="@+id/tvRecordContent"
-                    android:layout_width="match_parent"
+                    android:layout_width="fill_parent"
                     android:layout_height="154dp"
                     android:background="#FFFFFF"
                     android:fontFamily="@font/tmoney_regular"
@@ -69,10 +69,8 @@
                     android:includeFontPadding="false"
                     android:lineSpacingExtra="0sp"
                     android:padding="10dp"
-                    android:scrollbars="vertical"
                     android:textColor="#000000"
                     card:layout_constraintEnd_toEndOf="parent"
-                    card:layout_constraintStart_toStartOf="parent"
                     card:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
@@ -87,6 +85,8 @@
                     android:paddingRight="5dp"
                     android:textColor="#000000"
                     android:textSize="12sp"
+                    card:layout_constraintEnd_toEndOf="parent"
+                    card:layout_constraintStart_toStartOf="parent"
                     card:layout_constraintTop_toBottomOf="@+id/tvRecordContent" />
 
                 <ImageView
