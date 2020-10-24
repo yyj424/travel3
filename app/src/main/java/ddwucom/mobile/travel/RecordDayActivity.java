@@ -6,14 +6,15 @@ import android.content.Intent;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -25,9 +26,8 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
 
-import com.google.android.gms.tasks.Task;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -58,6 +58,7 @@ public class RecordDayActivity extends AppCompatActivity {
     Spinner spinner;
     List<String> folders;
 
+    ImageButton btnAddRecordContent;
     EditText etRecordFolder;
     EditText etRecordTitle;
     EditText etRecordDate;
@@ -108,6 +109,8 @@ public class RecordDayActivity extends AppCompatActivity {
         recordKey = "-MJarmh2RX8AUNA-r6j_";
         isNew = false;
 
+        btnAddRecordContent = findViewById(R.id.btnAddRecordContent);
+        spinner = findViewById(R.id.spRecordFolder);
         etRecordDate = findViewById(R.id.etRecordDate);
         etRecordTitle = findViewById(R.id.etRecordTitle);
         recyclerView = findViewById(R.id.record_day_recycler_view);
@@ -116,8 +119,6 @@ public class RecordDayActivity extends AppCompatActivity {
         recordContents = new ArrayList<>();
         recordDayAdapter = new RecordDayAdapter(this, recordContents);
         recyclerView.setAdapter(recordDayAdapter);
-
-        spinner = findViewById(R.id.spRecordFolder);
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageRef = firebaseStorage.getReference("record_images");
@@ -130,7 +131,6 @@ public class RecordDayActivity extends AppCompatActivity {
 
         // 일기 가져오기
         getRecordContents();
-
 
         if (!isNew) {
             dbRefRecord.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -160,7 +160,23 @@ public class RecordDayActivity extends AppCompatActivity {
             }
         });
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    // 아래로 스크롤
+                    btnAddRecordContent.setVisibility(View.INVISIBLE);
+                    btnAddRecordContent.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.fade_out));
+                } else if (dy < 0) {
+                    // 위로 스크롤
+                    btnAddRecordContent.setVisibility(View.VISIBLE);
+                    btnAddRecordContent.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.fade_in));
+                }
 
+            }
+        });
     }
 
     // 폴더 관리

@@ -1,8 +1,8 @@
 package ddwucom.mobile.travel;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.method.ScrollingMovementMethod;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -57,6 +57,7 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
         return viewHolder;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (recordItems.get(position).getLocation() != null) {

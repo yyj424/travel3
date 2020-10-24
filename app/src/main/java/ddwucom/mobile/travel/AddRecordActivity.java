@@ -3,10 +3,13 @@ package ddwucom.mobile.travel;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +51,7 @@ public class AddRecordActivity extends Activity {
 
     EditText et_location;
     EditText et_content;
+    TextView tvContentCnt;
 
     String imageFolderName;
     String recordKey;
@@ -72,9 +76,31 @@ public class AddRecordActivity extends Activity {
 
         et_location = findViewById(R.id.et_location);
         et_content = findViewById(R.id.et_content);
+        tvContentCnt = findViewById(R.id.tvRecordContentCnt);
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("records").child(recordKey).child("contents").push();
+
+        setContentCnt();
+    }
+
+    public void setContentCnt() {
+        et_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String input = et_content.getText().toString();
+                tvContentCnt.setText(input.length() + " / 140");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     public void onClick(View v) {
