@@ -3,10 +3,13 @@ package ddwucom.mobile.travel;
 import android.app.Activity;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -48,6 +51,7 @@ public class AddRecordActivity extends Activity {
 
     EditText et_location;
     EditText et_content;
+    TextView tvContentCnt;
 
     String imageFolderName;
     String recordKey;
@@ -72,9 +76,31 @@ public class AddRecordActivity extends Activity {
 
         et_location = findViewById(R.id.et_location);
         et_content = findViewById(R.id.et_content);
+        tvContentCnt = findViewById(R.id.tvRecordContentCnt);
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("records").child(recordKey).child("contents").push();
+
+        setContentCnt();
+    }
+
+    public void setContentCnt() {
+        et_content.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                String input = et_content.getText().toString();
+                tvContentCnt.setText(input.length() + " / 140");
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
     }
 
     public void onClick(View v) {
@@ -114,7 +140,6 @@ public class AddRecordActivity extends Activity {
 
                 if (selectedImageList.size() > 0) {
                     firebaseStorage = FirebaseStorage.getInstance();  Log.d("goeun", firebaseStorage.getReference().getName());
-                    mStorageRef = firebaseStorage.getReference(); Log.d("goeun", mStorageRef.getName());
 
                     // 폴더명 지정
                     SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
@@ -125,7 +150,7 @@ public class AddRecordActivity extends Activity {
                     for (final Uri imageUri : selectedImageList) {
                         // storage에 사진 업로드
 
-                        mStorageRef = firebaseStorage.getReferenceFromUrl("gs://travel3-262be.appspot.com").child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        mStorageRef = firebaseStorage.getReference().child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
                         mStorageRef.putFile(imageUri)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -137,8 +162,9 @@ public class AddRecordActivity extends Activity {
                                                 images.add(tmp);
                                                 Log.d("goeun", String.valueOf(images.size()));
                                                 if (images.size() == selectedImageList.size()) {
+                                                    recordContent.setImages(images);
                                                     dbRef.setValue(recordContent);
-                                                    dbRef.child("images").setValue(images);
+                                                    Log.d("goeun", "이미지 저장 끝~");
                                                     finish();
                                                 }
                                             }
@@ -156,6 +182,10 @@ public class AddRecordActivity extends Activity {
                                     }
                                 });
                     }
+                }
+                else {
+                    dbRef.setValue(recordContent);
+                    finish();
                 }
                 break;
         }

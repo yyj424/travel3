@@ -4,14 +4,17 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Typeface;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -21,18 +24,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
-import com.rd.PageIndicatorView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,6 +43,8 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class RecordDayActivity extends AppCompatActivity {
     private StorageReference storageRef;
@@ -53,6 +58,7 @@ public class RecordDayActivity extends AppCompatActivity {
     Spinner spinner;
     List<String> folders;
 
+    ImageButton btnAddRecordContent;
     EditText etRecordFolder;
     EditText etRecordTitle;
     EditText etRecordDate;
@@ -66,9 +72,9 @@ public class RecordDayActivity extends AppCompatActivity {
     int folderPos;
 
     RecyclerView recyclerView;
-    RecyclerView.Adapter recordDayAdapter;
-    RecyclerView.LayoutManager layoutManager;
-    
+    RecordDayAdapter recordDayAdapter;
+    LinearLayoutManager layoutManager;
+
     List<RecordContent> recordContents;
     String currentUid;
 
@@ -96,26 +102,51 @@ public class RecordDayActivity extends AppCompatActivity {
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
         if (isNew) {
             recordKey = database.getReference("records").push().getKey();
-        }
-        else {
+        } else {
             recordKey = (String) getIntent().getSerializableExtra("recordKey");
         }
+        // 임시!! RecordMain 구현시 꼭 지워야함
+        recordKey = "-MJarmh2RX8AUNA-r6j_";
+        isNew = false;
 
+        btnAddRecordContent = findViewById(R.id.btnAddRecordContent);
+        spinner = findViewById(R.id.spRecordFolder);
         etRecordDate = findViewById(R.id.etRecordDate);
         etRecordTitle = findViewById(R.id.etRecordTitle);
         recyclerView = findViewById(R.id.record_day_recycler_view);
-        spinner = findViewById(R.id.spRecordFolder);
+        layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recordContents = new ArrayList<>();
+        recordDayAdapter = new RecordDayAdapter(this, recordContents);
+        recyclerView.setAdapter(recordDayAdapter);
 
         firebaseStorage = FirebaseStorage.getInstance();
         storageRef = firebaseStorage.getReference("record_images");
-
-        recordContents = new ArrayList<>();
 
         dbRefFolder = database.getReference("folders");
         dbRefRecord = database.getReference("records/" + recordKey);
 
         // 폴더 추가 관리(수정, 삭제 구현 할말?)
         mgrRecordFolder();
+
+        // 일기 가져오기
+        getRecordContents();
+
+        if (!isNew) {
+            dbRefRecord.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    Map<String, Object> data = (Map) snapshot.getValue();
+                    etRecordDate.setText(data.get("recordDate").toString());
+                    spinner.setSelection(folders.indexOf(data.get("recordFolder").toString()));
+                    etRecordTitle.setText(data.get("recordTitle").toString());
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+                }
+            });
+        }
 
         // 날짜
         calendar = Calendar.getInstance();
@@ -129,7 +160,23 @@ public class RecordDayActivity extends AppCompatActivity {
             }
         });
 
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    // 아래로 스크롤
+                    btnAddRecordContent.setVisibility(View.INVISIBLE);
+                    btnAddRecordContent.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.fade_out));
+                } else if (dy < 0) {
+                    // 위로 스크롤
+                    btnAddRecordContent.setVisibility(View.VISIBLE);
+                    btnAddRecordContent.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.fade_in));
+                }
 
+            }
+        });
     }
 
     // 폴더 관리
@@ -146,13 +193,20 @@ public class RecordDayActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+
             @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {}
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
         });
 
         // spinner에 데이터 추가하기
@@ -187,19 +241,20 @@ public class RecordDayActivity extends AppCompatActivity {
                             .setNegativeButton("CANCEL", null);
                     alertDialog = builder.create();
                     if (addFolderLayout.getParent() != null) {
-                        ((ViewGroup)addFolderLayout.getParent()).removeView(addFolderLayout);
+                        ((ViewGroup) addFolderLayout.getParent()).removeView(addFolderLayout);
                     }
                     alertDialog.show();
                     alertDialog.getWindow().setLayout(1200, 750);
 
                     TextView textView = alertDialog.findViewById(android.R.id.message);
-                    Typeface face = Typeface.createFromAsset(getAssets(),"fonts/tmoney_regular.ttf");
+                    Typeface face = Typeface.createFromAsset(getAssets(), "fonts/tmoney_regular.ttf");
                     textView.setTypeface(face);
                 }
             }
 
             @Override
-            public void onNothingSelected(AdapterView<?> parent) { }
+            public void onNothingSelected(AdapterView<?> parent) {
+            }
         });
     }
 
@@ -252,39 +307,52 @@ public class RecordDayActivity extends AppCompatActivity {
     }
 
     public void getRecordContents() {
-        //recordDayAdapter = new RecordDayAdapter(recordContents);
-//        dbRefRecord.addChildEventListener(new ChildEventListener() {
-//            @Override
-//            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//                Map<String, String> map = (Map) snapshot.getValue();
-//                recyclerView.setAdapter(recordDayAdapter);
-//
-//                for (DataSnapshot s : snapshot.getChildren()) {
-//                    RecordContent board = s.getValue(RecordContent.class);
-//                    listAdapter.addItem(board.getTitle(), board.getDate(), board.getName());
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-//
-//            }
-//
-//            @Override
-//            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-//
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError error) {
-//
-//            }
-//        })
+        dbRefRecord.child("contents").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Map<String, Object> data = (Map) snapshot.getValue();
+                String location = null;
+                if (data.get("location") != null) {
+                    location = data.get("location").toString();
+                }
+                String content = data.get("content").toString();
+                List<String> images = new ArrayList<String>();
+                if (data.get("images") != null) {
+                    String strImages = data.get("images").toString();
+                    Log.d("goeun", strImages);
+                    String regex = "\\b(https?|ftp|file)://[-a-zA-Z0-9+&@#/%?=~_|!:,.;]*[-a-zA-Z0-9+&@#/%=~_|]";
+                    Pattern p = Pattern.compile(regex);
+                    Matcher matcher = p.matcher(strImages);
+                    while (matcher.find()) {
+                        images.add(matcher.group(0));
+                    }
+                }
+                else {
+                    images.add(Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.g_no_image_icon).toString());
+                }
+                recordContents.add(new RecordContent(location, content, images));
+
+                Log.d("goeun", String.valueOf(recordContents.size()));
+                recordDayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+            }
+        });
+
+
     }
 }
