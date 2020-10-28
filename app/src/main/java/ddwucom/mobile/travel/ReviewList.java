@@ -104,9 +104,6 @@ public class ReviewList extends AppCompatActivity {
         adapter = new ReviewListAdapter(ReviewList.this, R.layout.reviewlist_adapter_view, reviewList);
         listView = findViewById(R.id.y_review_list);
         listView.setAdapter(adapter);
-
-        cnt.setText("0");
-        rv.setText("0");
     }
 
     public void onClick(View v) {
