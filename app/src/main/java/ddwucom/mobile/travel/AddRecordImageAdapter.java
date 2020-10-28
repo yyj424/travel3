@@ -68,7 +68,7 @@ public class AddRecordImageAdapter extends RecyclerView.Adapter<AddRecordImageAd
 
         public ViewHolder(View itemView) {
             super(itemView);
-            imageView = itemView.findViewById(R.id.img_record);
+            imageView = itemView.findViewById(R.id.ivRecord);
             drawable = (GradientDrawable) context.getDrawable(R.drawable.background_rounding);
             imageView.setBackground(drawable);
             imageView.setClipToOutline(true);

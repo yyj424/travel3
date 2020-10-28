@@ -106,8 +106,8 @@ public class RecordDayActivity extends AppCompatActivity {
             recordKey = (String) getIntent().getSerializableExtra("recordKey");
         }
         // 임시!! RecordMain 구현시 꼭 지워야함
-        recordKey = "-MJarmh2RX8AUNA-r6j_";
-        isNew = false;
+        //recordKey = "-MJarmh2RX8AUNA-r6j_";
+        //isNew = false;
 
         btnAddRecordContent = findViewById(R.id.btnAddRecordContent);
         spinner = findViewById(R.id.spRecordFolder);
@@ -182,32 +182,9 @@ public class RecordDayActivity extends AppCompatActivity {
     // 폴더 관리
     public void mgrRecordFolder() {
         folders = new ArrayList<String>();
-        folders.add("폴더 선택하기");
-        folders.add("폴더 추가하기");
 
         // 처음 실행 시 데이터 가져옴, 변경될 시 변경된 데이터만 가져옴(!! 수정 삭제 구현 할말 !!)
-        dbRefFolder.child(currentUid).child("folderNames").addChildEventListener(new ChildEventListener() {
-            @Override
-            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                folders.add((String) snapshot.getValue());
-            }
-
-            @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-            }
-
-            @Override
-            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-            }
-        });
+        folders.addAll(getIntent().getStringArrayListExtra("folders"));
 
         // spinner에 데이터 추가하기
         spinnerAdapter = new ArrayAdapter<>(this, R.layout.record_spinner_item, folders);
@@ -234,6 +211,7 @@ public class RecordDayActivity extends AppCompatActivity {
                                     } else {
                                         dbRefFolder.child(currentUid).child("uid").setValue(currentUid);
                                         dbRefFolder.child(currentUid).child("folderNames").push().setValue(addFolderName);
+                                        folders.add(addFolderName);
                                         spinnerAdapter.notifyDataSetChanged();
                                     }
                                 }
@@ -241,6 +219,7 @@ public class RecordDayActivity extends AppCompatActivity {
                             .setNegativeButton("CANCEL", null);
                     alertDialog = builder.create();
                     if (addFolderLayout.getParent() != null) {
+                        ((ViewGroup) addFolderLayout.getParent()).removeView(addFolderLayout);
                         ((ViewGroup) addFolderLayout.getParent()).removeView(addFolderLayout);
                     }
                     alertDialog.show();
@@ -270,7 +249,6 @@ public class RecordDayActivity extends AppCompatActivity {
                     return;
                 }
                 saveRecordInDB();
-
                 Intent intent = new Intent(this, AddRecordActivity.class);
                 intent.putExtra("currentUid", currentUid);
                 intent.putExtra("recordKey", recordKey);

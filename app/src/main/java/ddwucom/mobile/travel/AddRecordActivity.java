@@ -18,8 +18,12 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
@@ -56,6 +60,7 @@ public class AddRecordActivity extends Activity {
     String imageFolderName;
     String recordKey;
     String currentUid;
+    boolean imgFlag ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,14 +87,31 @@ public class AddRecordActivity extends Activity {
         dbRef = database.getReference("records").child(recordKey).child("contents").push();
 
         setContentCnt();
+        checkThumbnail();
+    }
+
+    public void checkThumbnail() {
+        DatabaseReference checkThumbnail = database.getReference("records").child(recordKey);
+        checkThumbnail.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                if (snapshot.hasChild("thumbnailImg")) {
+                    imgFlag = true;
+                }
+                else {
+                    imgFlag = false;
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {}
+        });
     }
 
     public void setContentCnt() {
         et_content.addTextChangedListener(new TextWatcher() {
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -98,8 +120,7 @@ public class AddRecordActivity extends Activity {
             }
 
             @Override
-            public void afterTextChanged(Editable s) {
-            }
+            public void afterTextChanged(Editable s) {}
         });
     }
 
@@ -159,6 +180,11 @@ public class AddRecordActivity extends Activity {
                                             @Override
                                             public void onSuccess(Uri uri) {
                                                 String tmp = uri.toString();
+                                                if (!imgFlag) {
+                                                    DatabaseReference recordRef = database.getReference("records").child(recordKey);
+                                                    recordRef.child("thumbnailImg").setValue(tmp);
+                                                    imgFlag = true;
+                                                }
                                                 images.add(tmp);
                                                 Log.d("goeun", String.valueOf(images.size()));
                                                 if (images.size() == selectedImageList.size()) {
