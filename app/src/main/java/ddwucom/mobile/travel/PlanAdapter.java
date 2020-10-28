@@ -36,7 +36,7 @@ public class PlanAdapter extends BaseAdapter {
 
     @Override
     public long getItemId(int position) {
-        return myPlanList.get(position).get_id();
+        return myPlanList.get(position).getUid();
     }
 
     @Override

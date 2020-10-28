@@ -1,6 +1,8 @@
 package ddwucom.mobile.travel;
 
 import android.content.Context;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,7 +35,7 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
     }
 
     @Override
-    public void onBindViewHolder(ViewHolder holder, int position) {
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
         String num = Long.valueOf(courseList.get(position).get_id()).toString();
         String name = courseList.get(position).getPlaceName();
         String memo = courseList.get(position).getMemo();
@@ -41,6 +43,22 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
         holder.num.setText(num);
         holder.name.setText(name);
         holder.memo.setText(memo);
+        holder.memo.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+               courseList.get(position).setMemo(s.toString());
+            }
+        });
     }
 
     @Override

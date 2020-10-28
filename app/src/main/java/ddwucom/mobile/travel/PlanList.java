@@ -29,8 +29,8 @@ public class PlanList extends AppCompatActivity {
         PlanList = new ArrayList<MyPlan>();
         sPlanList = new ArrayList<MyPlan>();
 
-        PlanList.add( new MyPlan(1, "일산 여행", "2020.09.05", "2020.09.05"));
-        PlanList.add( new MyPlan(2, "동덕여대", "2020.09.10", "2020.09.11"));
+       // PlanList.add( new MyPlan(1, "일산 여행", "2020.09.05", "2020.09.05"));
+        //PlanList.add( new MyPlan(2, "동덕여대", "2020.09.10", "2020.09.11"));
         sPlanList.addAll(PlanList);
         planAdapter = new PlanAdapter(this, R.layout.planlist_adapter_view, sPlanList);
 

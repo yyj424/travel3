@@ -1,25 +1,30 @@
 package ddwucom.mobile.travel;
 
+import java.util.List;
+
 public class MyPlan {
-    private long _id;
+    private String uid;
     private String PlanName;
     private String StartDate;
     private String EndDate;
+    List<String> daysList;
 
-    public MyPlan(long _id, String planName, String startDate, String endDate) {
-        this._id = _id;
-        PlanName = planName;
-        StartDate = startDate;
-        EndDate = endDate;
+    public MyPlan() {}
 
+    public MyPlan(String uid, String planName, String startDate, String endDate, List<String> daysList) {
+        this.uid = uid;
+        this.PlanName = planName;
+        this.StartDate = startDate;
+        this.EndDate = endDate;
+        this.daysList = daysList;
     }
 
-    public long get_id() {
-        return _id;
+    public String getUid() {
+        return uid;
     }
 
-    public void set_id(long _id) {
-        this._id = _id;
+    public void setUid(String uid) {
+        this.uid = uid;
     }
 
     public String getPlanName() {
@@ -44,5 +49,13 @@ public class MyPlan {
 
     public void setEndDate(String endDate) {
         EndDate = endDate;
+    }
+
+    public List<String> getDaysList() {
+        return daysList;
+    }
+
+    public void setDaysList(List<String> daysList) {
+        this.daysList = daysList;
     }
 }

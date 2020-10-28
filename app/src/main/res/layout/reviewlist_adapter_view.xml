@@ -9,7 +9,10 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <androidx.viewpager.widget.ViewPager
             android:id="@+id/y_rvImgVP"
@@ -23,15 +26,17 @@
             android:id="@+id/y_rvImgPic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            app:layout_constraintBottom_toBottomOf="@+id/y_rvImgVP"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:piv_selectedColor="#FFFFFF"
-            app:piv_unselectedColor="#969191"
+            app:piv_unselectedColor="#C1BFBF"
+            attrs:piv_animationType="scale"
+            attrs:piv_dynamicCount="true"
+            attrs:piv_interactiveAnimation="true"
             attrs:piv_padding="12dp"
             attrs:piv_radius="8dp" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -44,10 +49,54 @@
         app:layout_constraintStart_toStartOf="parent">
 
         <TextView
+            android:id="@+id/textView51"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/tmoney_regular"
+            android:text="점"
+            android:textColor="#5A5656"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/costEffectiveness" />
+
+        <TextView
+            android:id="@+id/textView52"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/tmoney_regular"
+            android:text="점"
+            android:textColor="#5A5656"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/vibe" />
+
+        <TextView
+            android:id="@+id/textView49"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/tmoney_regular"
+            android:text="점"
+            android:textColor="#5A5656"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/accessibility" />
+
+        <TextView
+            android:id="@+id/textView50"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="5dp"
+            android:fontFamily="@font/tmoney_regular"
+            android:text="점"
+            android:textColor="#5A5656"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/cleanliness" />
+
+        <TextView
             android:id="@+id/textView46"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
+            android:layout_marginStart="45dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/tmoney_regular"
             android:text="청결도"
@@ -71,25 +120,25 @@
             android:id="@+id/textView47"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/tmoney_regular"
             android:text="가성비"
             android:textColor="#5A5656"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/cleanliness" />
+            app:layout_constraintStart_toEndOf="@+id/textView50" />
 
         <TextView
             android:id="@+id/textView48"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/tmoney_regular"
             android:text="접근성"
             android:textColor="#5A5656"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/vibe" />
+            app:layout_constraintStart_toEndOf="@+id/textView52" />
 
         <TextView
             android:id="@+id/y_userId"
@@ -198,13 +247,14 @@
             android:id="@+id/textView31"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="15dp"
+            android:layout_marginStart="5dp"
             android:layout_marginBottom="5dp"
             android:fontFamily="@font/tmoney_regular"
             android:text="분위기"
             android:textColor="#5A5656"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/costEffectiveness" />
+            app:layout_constraintStart_toEndOf="@+id/textView51" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -37,4 +37,10 @@
 <!--        <item>#ff5f21</item>-->
 <!--        <item>#ffb541</item>-->
 <!--    </string-array>-->
+    <string-array name="nameList">
+        <item>sera</item>
+        <item>yyj</item>
+        <item>gogo</item>
+        <item>lilly</item>
+    </string-array>
 </resources>
