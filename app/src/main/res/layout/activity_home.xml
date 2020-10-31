@@ -106,6 +106,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="115dp"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="2dp"
                 android:overScrollMode="never" />
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -147,8 +149,9 @@
                 android:id="@+id/rvHomeRecord"
                 android:layout_width="match_parent"
                 android:layout_height="190dp"
-                android:overScrollMode="never"
-                android:scrollbars="horizontal">
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="2dp"
+                android:overScrollMode="never">
 
             </androidx.recyclerview.widget.RecyclerView>
 
@@ -186,6 +189,8 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_marginStart="18dp"
+                android:layout_marginTop="2dp"
                 android:overScrollMode="never"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent" />

@@ -68,7 +68,7 @@ public class HomeActivity extends AppCompatActivity {
         folders = new ArrayList<>();
         recordList = new ArrayList<>();
         recordAdapter = new RecordAdapter(this, recordList);
-        rvHomeRecord.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, true));
+        rvHomeRecord.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvHomeRecord.setAdapter(recordAdapter);
         mgrRecords();
     }
