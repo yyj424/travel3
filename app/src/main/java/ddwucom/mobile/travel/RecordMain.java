@@ -1,5 +1,6 @@
 package ddwucom.mobile.travel;
 
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -7,13 +8,17 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.AnimationUtils;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -25,9 +30,14 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 public class RecordMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -38,9 +48,25 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
     private String currentUid;
 
     RecordAdapter recordAdapter;
+    ArrayAdapter<String> folderAdapter;
     ArrayList<String> folders;
     List<Record> recordList;
+    Spinner spinner;
     RecyclerView recyclerView;
+    ImageButton btnAddRecord;
+    Calendar calendar;
+    String dateFormat;
+    SimpleDateFormat sdf;
+
+    DatePickerDialog.OnDateSetListener recordDatePicker = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+            calendar.set(Calendar.YEAR, year);
+            calendar.set(Calendar.MONTH, month);
+            calendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+            selectDate(sdf.format(calendar.getTime()));
+        }
+    };
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -50,44 +76,28 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
         // DB
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("records");
-        //database.getReference("records").child(recordKey).child("contents").push();
 
         // currentUser
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             currentUid = user.getUid();
         }
-        Log.d("goeun", currentUid);
-//        else {
-//            Toast.makeText(this, "로그인이 필요합니다!", Toast.LENGTH_SHORT).show();
-//        }
-
-        mgrRecordFolder();
 
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(null);
 
-        DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
+        // 날짜
+        calendar = Calendar.getInstance();
+        dateFormat = "yyyy-MM-dd";
+        sdf = new SimpleDateFormat(dateFormat, Locale.KOREA);
 
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_btn);
-
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-
-        getRecords();
-
+        folders = new ArrayList<>();
         recordList = new ArrayList<>();
+        btnAddRecord = findViewById(R.id.btnAddRecord);
         recyclerView = findViewById(R.id.record_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
         recordAdapter = new RecordAdapter(this, recordList);
-//        recordAdapter.setClickListener(this);
         recyclerView.setAdapter(recordAdapter);
 
         recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {
@@ -103,15 +113,154 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
                 startActivity(intent);
             }
         });
+
+        recyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
+            @Override
+            public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+                if (dy > 0) {
+                    // 아래로 스크롤
+                    btnAddRecord.setVisibility(View.INVISIBLE);
+                    btnAddRecord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.fade_out));
+                } else if (dy < 0) {
+                    // 위로 스크롤
+                    btnAddRecord.setVisibility(View.VISIBLE);
+                    btnAddRecord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                            R.anim.fade_in));
+                }
+
+            }
+        });
+    }
+
+    public void onMenuItemClick(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.btnRecordDate:
+                new DatePickerDialog(this, R.style.DialogTheme, recordDatePicker, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).show();
+                break;
+        }
+    }
+
+    public void selectDate(final String date) {
+        recordList.clear();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference("records");
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s:snapshot.getChildren()) {
+                    Log.d("goeun", "k"
+                            +s.getKey());
+                    Map<String, Object> data = (Map) s.getValue();
+                    Log.d("goeun", "rf" +data);
+                    if (data.get("recordDate").equals(date) && data.get("uid").equals(currentUid)) {
+                        String key = s.getKey();
+                        Log.d("goeun", key);
+                        String recordTitle = null;
+                        if (data.get("recordTitle") != null) {
+                            recordTitle = data.get("recordTitle").toString();
+                        }
+                        String recordDate = null;
+                        if (data.get("recordDate") != null) {
+                            recordDate = data.get("recordDate").toString();
+                        }
+                        String thumbnailImg = null;
+                        if (data.get("thumbnailImg") != null) {
+                            thumbnailImg = data.get("thumbnailImg").toString();
+                        }
+                        else {
+                            thumbnailImg = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.g_no_image_icon).toString();
+                        }
+                        Log.d("goeun", key + thumbnailImg + recordTitle + recordDate);
+                        recordList.add(new Record(key, thumbnailImg, recordTitle, recordDate));
+                        Collections.sort(recordList, new Record.SortByDate());
+
+                        Log.d("goeun", String.valueOf(recordList.size()));
+                        recordAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
+    public void selectFolder(final String folder) {
+        Log.d("goeun", "ff" + folder);
+        recordList.clear();
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference dbRef = database.getReference("records");
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s:snapshot.getChildren()) {
+                    Log.d("goeun", "k"
+                            +s.getKey());
+                    Map<String, Object> data = (Map) s.getValue();
+                    Log.d("goeun", "rf" +data);
+                    if (data.get("recordFolder").equals(folder) && data.get("uid").equals(currentUid)) {
+                        String key = s.getKey();
+                        Log.d("goeun", key);
+                        String recordTitle = null;
+                        if (data.get("recordTitle") != null) {
+                            recordTitle = data.get("recordTitle").toString();
+                        }
+                        String recordDate = null;
+                        if (data.get("recordDate") != null) {
+                            recordDate = data.get("recordDate").toString();
+                        }
+                        String thumbnailImg = null;
+                        if (data.get("thumbnailImg") != null) {
+                            thumbnailImg = data.get("thumbnailImg").toString();
+                        }
+                        else {
+                            thumbnailImg = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.g_no_image_icon).toString();
+                        }
+                        Log.d("goeun", key + thumbnailImg + recordTitle + recordDate);
+                        recordList.add(new Record(key, thumbnailImg, recordTitle, recordDate));
+                        Collections.sort(recordList, new Record.SortByDate());
+
+                        Log.d("goeun", String.valueOf(recordList.size()));
+                        recordAdapter.notifyDataSetChanged();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     // 폴더 관리
     public void mgrRecordFolder() {
         DatabaseReference dbRefFolder = database.getReference("folders");
+        folders.clear();
+        folders.add("전체");
 
-        folders = new ArrayList<String>();
-        folders.add("폴더 선택하기");
-        folders.add("폴더 추가하기");
+        folderAdapter = new ArrayAdapter<>(this, R.layout.record_spinner_item, folders);
+        spinner = findViewById(R.id.spRecordMainFolder);
+        spinner.setAdapter(folderAdapter);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                if (position == 0) {
+                    getRecords();
+                }
+                else {
+                    selectFolder(spinner.getSelectedItem().toString());
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
 
         // 처음 실행 시 데이터 가져옴, 변경될 시 변경된 데이터만 가져옴(!! 수정 삭제 구현 할말 !!)
         dbRefFolder.child(currentUid).child("folderNames").addChildEventListener(new ChildEventListener() {
@@ -136,9 +285,12 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
+
+
     }
 
     public void getRecords() {
+        recordList.clear();
         FirebaseDatabase database = FirebaseDatabase.getInstance();
         DatabaseReference dbRef = database.getReference("records");
         dbRef.addChildEventListener(new ChildEventListener() {
@@ -163,7 +315,9 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
                     else {
                         thumbnailImg = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.g_no_image_icon).toString();
                     }
+                    Log.d("goeun", key + thumbnailImg + recordTitle + recordDate);
                     recordList.add(new Record(key, thumbnailImg, recordTitle, recordDate));
+                    Collections.sort(recordList, new Record.SortByDate());
 
                     Log.d("goeun", String.valueOf(recordList.size()));
                     recordAdapter.notifyDataSetChanged();
@@ -171,7 +325,9 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
             }
 
             @Override
-            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                Log.d("goeun", snapshot.getValue().toString());
+            }
 
             @Override
             public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
@@ -182,6 +338,8 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
+
+
     }
 
     @Override
@@ -194,6 +352,15 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.activity_record_calendar, menu);
         return true;
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mgrRecordFolder();
+        //getRecords();
+
+        recordAdapter.notifyDataSetChanged();
     }
 
     public void onClick(View v) {

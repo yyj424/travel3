@@ -157,7 +157,7 @@ public class AddRecordActivity extends Activity {
                 if (location.length() != 0) {
                     recordContent.setLocation(location);
                 }
-                recordContent.setContent(content);
+                recordContent.setContent(content.replaceAll(System.getProperty("line.separator"),""));
 
                 if (selectedImageList.size() > 0) {
                     firebaseStorage = FirebaseStorage.getInstance();  Log.d("goeun", firebaseStorage.getReference().getName());

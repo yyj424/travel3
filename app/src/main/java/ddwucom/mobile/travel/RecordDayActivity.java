@@ -27,7 +27,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -105,9 +104,6 @@ public class RecordDayActivity extends AppCompatActivity {
         } else {
             recordKey = (String) getIntent().getSerializableExtra("recordKey");
         }
-        // 임시!! RecordMain 구현시 꼭 지워야함
-        //recordKey = "-MJarmh2RX8AUNA-r6j_";
-        //isNew = false;
 
         btnAddRecordContent = findViewById(R.id.btnAddRecordContent);
         spinner = findViewById(R.id.spRecordFolder);
@@ -181,10 +177,13 @@ public class RecordDayActivity extends AppCompatActivity {
 
     // 폴더 관리
     public void mgrRecordFolder() {
-        folders = new ArrayList<String>();
+        folders = new ArrayList<>();
 
+        folders.add("폴더 선택하기");
+        folders.add("폴더 추가하기");
         // 처음 실행 시 데이터 가져옴, 변경될 시 변경된 데이터만 가져옴(!! 수정 삭제 구현 할말 !!)
         folders.addAll(getIntent().getStringArrayListExtra("folders"));
+        folders.remove("전체");
 
         // spinner에 데이터 추가하기
         spinnerAdapter = new ArrayAdapter<>(this, R.layout.record_spinner_item, folders);
@@ -219,7 +218,6 @@ public class RecordDayActivity extends AppCompatActivity {
                             .setNegativeButton("CANCEL", null);
                     alertDialog = builder.create();
                     if (addFolderLayout.getParent() != null) {
-                        ((ViewGroup) addFolderLayout.getParent()).removeView(addFolderLayout);
                         ((ViewGroup) addFolderLayout.getParent()).removeView(addFolderLayout);
                     }
                     alertDialog.show();
@@ -278,10 +276,23 @@ public class RecordDayActivity extends AppCompatActivity {
     }
 
     public void saveRecordInDB() {
-        dbRefRecord.child("uid").setValue(currentUid);
-        dbRefRecord.child("recordDate").setValue(date);
-        dbRefRecord.child("recordFolder").setValue(spinner.getSelectedItem().toString());
-        dbRefRecord.child("recordTitle").setValue(title);
+        Record record = new Record();
+        record.setUid(currentUid);
+        Log.d("goeun", record.getUid());
+        record.setRecordTitle(title);
+        Log.d("goeun", record.getRecordTitle());
+        record.setRecordDate(date);
+        Log.d("goeun", record.getRecordDate());
+        record.setRecordFolder(spinner.getSelectedItem().toString());
+        Log.d("goeun", record.getRecordFolder());
+        if (isNew) {
+            dbRefRecord.setValue(record);
+            isNew = false;
+        }
+        else {
+            dbRefRecord.updateChildren(record.toMap());
+        }
+        Log.d("goeun", "저장완료");
     }
 
     public void getRecordContents() {
