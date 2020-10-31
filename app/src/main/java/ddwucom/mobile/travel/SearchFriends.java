@@ -3,7 +3,6 @@ package ddwucom.mobile.travel;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -16,9 +15,9 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 
-import java.io.ObjectStreamField;
 import java.util.ArrayList;
 
 public class SearchFriends extends AppCompatActivity {
@@ -27,7 +26,6 @@ public class SearchFriends extends AppCompatActivity {
 
     ArrayList<String> nicknameList;
     ArrayList<String> arr;
-
 
     MyFriendsAdapter myAdapter;
     ListView lvFriends;
@@ -53,12 +51,17 @@ public class SearchFriends extends AppCompatActivity {
         etSearchFriends = findViewById(R.id.et_search);
         //lvFriends.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
 
-        Log.d("sera", "out of for-each" + arr.toString());
+        //Log.d("sera", "out of for-each" + arr.toString());
 
-        myAdapter = new MyFriendsAdapter(SearchFriends.this, R.layout.search_friends_adpter, arr);
-        //myAdapter = new MyFriendsAdapter(SearchFriends.this, R.layout.search_friends_adpter, nameList);
-        lvFriends = findViewById(R.id.lv_friends);
-        lvFriends.setAdapter(myAdapter);
+//        myAdapter = new MyFriendsAdapter(SearchFriends.this, R.layout.search_friends_adpter, arr);
+//        //myAdapter = new MyFriendsAdapter(SearchFriends.this, R.layout.search_friends_adpter, nameList);
+//        lvFriends = findViewById(R.id.lv_friends);
+//        lvFriends.setAdapter(myAdapter);
+//        Query query = dbRef.child("user_list").child("nickname");
+//        query.
+
+
+
     }
     public void onClick(View v){
         switch(v.getId()){
