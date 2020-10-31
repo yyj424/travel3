@@ -53,7 +53,7 @@ public class MyFriendsAdapter extends BaseAdapter {
             holder = (MyFriendsAdapter.ViewHolder) convertView.getTag();
         }
         holder.name.setText(myDataList.get(pos));
-        //holder.isAdd.setClickable(false);
+        holder.isAdd.setClickable(true);
         //holder.isAdd.set
         return convertView;
     }

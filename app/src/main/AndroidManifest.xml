@@ -38,11 +38,11 @@
 
         <activity android:name=".ChangePWActivity"/>
 
-            <activity android:name=".SearchFriends">
+        <activity android:name=".SearchFriends">
                 <intent-filter>
                     <action android:name="android.intent.action.MAIN" />
                 </intent-filter>
-            </activity>
+        </activity>
 
         <activity android:name=".PlanList" />
         <activity android:name=".PlanFirstStep"/>
