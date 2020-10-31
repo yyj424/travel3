@@ -108,13 +108,22 @@ public class JoinActivity extends AppCompatActivity {
                     // 이메일과 비밀번호나 비밀번호 확인이 공백인 경우
                     Log.d("sera", "이메일과 비밀번호나 비밀번호 확인이 공백인 경우" );
                     Toast.makeText(JoinActivity.this, "계정과 비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
-                    return;
+//                    if(email.equals("")) {
+//                        Toast.makeText(JoinActivity.this, "계정을 입력하세요.", Toast.LENGTH_LONG).show();
+//                    }else if(pw.equals("")){
+//                        Toast.makeText(JoinActivity.this, "비밀번호를 입력하세요.", Toast.LENGTH_LONG).show();
+//                    }else if(pw.equals("")){
+//                        Toast.makeText(JoinActivity.this, "비밀번호 확인해주세요", Toast.LENGTH_LONG).show();
+//                    }
                 }
 
                 if(pw_chk.equals(pw)){
                     Log.d("sera", "isSame = true;" );
                     isSame = true;
                     Log.d("sera", "isSame" + isSame);
+                }else{
+                    Toast.makeText(JoinActivity.this, "비밀번호가 일치하지 않습니다. 확인해주세요", Toast.LENGTH_LONG).show();
+                    return;
                 }
                 if (!id.equals("") && !pw.equals("") && !pw_chk.equals("")) { //*******validation필요
                     // 이메일과 비밀번호가 공백이 아닌 경우 >> 회원가입 진행
@@ -122,14 +131,11 @@ public class JoinActivity extends AppCompatActivity {
                    isBlank = false;
                     Log.d("sera", "isBlank" + isBlank);
                    // signUp();
-                }else{return;}
-
+                }
+                Log.d("sera", "isBlank : " + isBlank + "isSame : " + isSame + "isDoubleID : "+ isDoubleID + "isChecked : " + isChecked);
                 if (isSame && !isBlank && !isDoubleID && isChecked) { //*******validation필요
                     // 이메일과 비밀번호가 공백이 아닌 경우 >> 회원가입 진행
                     Log.d("sera", "validation" );
-                    if(!isChecked){
-                        Toast.makeText(JoinActivity.this, "중복확인을 해주세요.", Toast.LENGTH_SHORT).show();
-                    }
                     signUp();
                 }
             }
@@ -156,12 +162,12 @@ public class JoinActivity extends AppCompatActivity {
                 .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful() && !isDoubleID) {
+                        if (task.isSuccessful()) {
                             Log.d("sera", "task Successful" );
-                            if(!isDoubleID){
-                                Toast.makeText(JoinActivity.this, "아이디 중복확인 해주세요.", Toast.LENGTH_SHORT).show();
-                                return;
-                            }
+//                            if(!isDoubleID){
+//                                Toast.makeText(JoinActivity.this, "아이디 중복확인 해주세요.", Toast.LENGTH_SHORT).show();
+//                                return;
+//                            }
                             // 회원가입 성공
                             userInfo = new UserInfo();
 
@@ -189,24 +195,29 @@ public class JoinActivity extends AppCompatActivity {
                                     })
                                     .show();
 
-                            } else {// 회원가입 실패
+                            }
+                        else {// 회원가입 실패
                             Log.d("sera", "not Succesful" );
                                 if(!task.isSuccessful()){
                                     Log.d("sera", "회원가입 실패 - 시스템 회원가입 오류");
-                                    errMSG.setText(R.string.error);
+                                    errMSG.setText("회원가입 실패 - 시스템 회원가입 오류");
                                     Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
                                 else if(!isDoubleID){
                                     Log.d("sera", "회원가입 실패 - 중복확인");
-                                    errMSG.setText(R.string.error);
+                                    errMSG.setText("회원가입 실패 - 중복확인");
                                     Toast.makeText(JoinActivity.this, "회원가입 실패", Toast.LENGTH_SHORT).show();
+                                    return;
                                 }
                         }
                     }
                 });
     }
-    public void checkId(){
+    public void checkId(){ //중복체크 버튼 누르면
         //userList의 DB내용 가져오기...
+        Log.d("sera", "중복 CLick11!!");
+        isChecked = true;
         dbRef  = database.getReference("user_list");
 
         dbRef.addValueEventListener(new ValueEventListener() {
@@ -219,22 +230,26 @@ public class JoinActivity extends AppCompatActivity {
                     if(etNickname.equals(snapshot.child("nickname").getValue().toString())) {
                         Toast.makeText(JoinActivity.this, "중복된 아이디 입니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
                         isDoubleID = true;
-                        break;
+                        return;
                     }
                 }
-                isChecked = true;
+                //체크를 했고, 중복된 아이디가 아니다.
+                if(!isDoubleID && isChecked){
+                    Log.d("sera", "체크를 했고, 중복된 아이디가 아니다. isChecked: " + isChecked + "isDoubled : "+ isDoubleID);
+                    isDoubleID = false;
+                }
+                Toast.makeText(JoinActivity.this, "사용가능한 아이디 입니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {
 
             }
         });
-        return;
     }
     public static final Pattern VALID_PASSWOLD_REGEX_ALPHA_NUM
             = Pattern.compile("^[a-zA-Z0-9!@.#$%^&*?_~]{6,16}$"); // 6자리 ~ 16자리까지 가능
 
-    public static boolean validatePassword(String pwStr) {
+    public static boolean validatePassword(String pwStr) { //비번유효성 검사
         Matcher matcher = VALID_PASSWOLD_REGEX_ALPHA_NUM.matcher(pwStr);
         return matcher.matches();
     }
