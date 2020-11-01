@@ -2,10 +2,12 @@ package ddwucom.mobile.travel;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Map;
 
 public class SearchFriends extends AppCompatActivity {
     private FirebaseDatabase database;
@@ -56,22 +59,50 @@ public class SearchFriends extends AppCompatActivity {
         Log.d("sera", "dbRef가져오기" + dbRef);
 
         Log.d("sera", "버튼 리스너 전.." );
-        btn_searchFriends.setOnClickListener(new View.OnClickListener(){
+
+        myAdapter = new MyFriendsAdapter(this, R.layout.search_friends_adpter, nicknameList);
+        lvFriends = findViewById(R.id.lv_friends);
+        lvFriends.setAdapter(myAdapter);
+
+        etSearchFriends.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
-            public void onClick(View v) {
-                Log.d("sera", "버튼 리스너 Click!!1" );
-                //Log.d("sera", "  "+  nicknameList.get(0).toString() + nicknameList.get(1).toString());
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
-                        //nicknameList = new ArrayList<>();
-                        Log.d("sera", "CLick22!!");
-                        //String etNickname = etID.getText().toString();
+                        String searchFriends = etSearchFriends.getText().toString();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
-                            Log.d("sera", "ValueEventListener : " + snapshot.child("nickname").getValue());
-                            if (etSearchFriends.equals(snapshot.child("nickname").getValue().toString())) {
-                                nicknameList.add(snapshot.child("nickname").getValue().toString());
-                                Log.d("sera", nicknameList.get(0).toString());
+                            Map<String, Object> data = (Map) snapshot.getValue();
+                            if (searchFriends.equals(data.get("nickname").toString())) {
+                                nicknameList.add(data.get("nickname").toString());
+                                myAdapter.notifyDataSetChanged();
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+                        Log.w("sera", "loadPost:onCancelled", error.toException());
+                    }
+                });
+
+                return true;
+            }
+        });
+
+        btn_searchFriends.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                Log.d("sera", "버튼 리스너 Click!!" );
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        String searchFriends = etSearchFriends.getText().toString();
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Map<String, Object> data = (Map) snapshot.getValue();
+                            if (searchFriends.equals(data.get("nickname").toString())) {
+                                nicknameList.add(data.get("nickname").toString());
+                                myAdapter.notifyDataSetChanged();
                             }
                         }
                     }
@@ -80,21 +111,6 @@ public class SearchFriends extends AppCompatActivity {
                         Log.w("sera", "loadPost:onCancelled", error.toException());
                     }
                 });
-
-
-//                dbRef.addValueEventListener(new ValueEventListener() {
-//                    @Override
-//
-//                });
-                Log.d("sera", "버튼 리스너 Click!!2" );
-                myAdapter = new MyFriendsAdapter(SearchFriends.this, R.layout.search_friends_adpter, nicknameList);
-                Log.d("sera", "버튼 리스너 Click!!3" );
-                //myAdapter = new MyFriendsAdapter(SearchFriends.this, R.layout.search_friends_adpter, nameList);
-                lvFriends = findViewById(R.id.lv_friends);
-                Log.d("sera", "버튼 리스너 Click!!4" );
-                lvFriends.setAdapter(myAdapter);
-                Log.d("sera", "버튼 리스너 Click!!5" );
-
             }
         });
         Log.d("sera", "버튼 리스너 후.." );

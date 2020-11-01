@@ -40,23 +40,25 @@ public class MyFriendsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup viewGroup) {
         final int pos = position;
-        MyFriendsAdapter.ViewHolder holder;
+        ViewHolder holder;
 
         if (convertView == null) {
             convertView = layoutInflater.inflate(layout, viewGroup, false);
 
-            holder = new MyFriendsAdapter.ViewHolder();
-            holder.name = (TextView) convertView.findViewById(R.id.tv_name);
-            holder.isAdd = (CheckBox) convertView.findViewById(R.id.tv_is_add);
+            holder = new ViewHolder();
+            holder.name = convertView.findViewById(R.id.tv_name);
+            holder.isAdd = convertView.findViewById(R.id.tv_is_add);
             convertView.setTag(holder);
         } else {
-            holder = (MyFriendsAdapter.ViewHolder) convertView.getTag();
+            holder = (ViewHolder) convertView.getTag();
         }
+
         holder.name.setText(myDataList.get(pos));
         holder.isAdd.setClickable(true);
         //holder.isAdd.set
         return convertView;
     }
+
     static class ViewHolder {
         TextView name;
         CheckBox isAdd;
