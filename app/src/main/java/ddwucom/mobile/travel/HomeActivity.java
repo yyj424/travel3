@@ -18,10 +18,14 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -39,6 +43,9 @@ public class HomeActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private FirebaseAuth firebaseAuth;
     private String currentUid;
+    private DrawerLayout drawerLayout;
+    private View drawerView;
+
     boolean [] clicked = {true, false, false, false};
     int [] btn_names = {R.id.btn_home, R.id.btn_friends, R.id.btn_course, R.id.btn_map};
 
@@ -58,6 +65,28 @@ public class HomeActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         currentUid = firebaseAuth.getCurrentUser().getUid();
 
+        //햄버거 버튼 누르면 상세정보 사이드바
+//        drawerLayout = findViewById(R.id.drawer_layout);
+//        drawerView = findViewById(R.id.nv_inside);
+        Toolbar toolbar = findViewById(R.id.toolbar2);
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(null);
+
+        drawerLayout = findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                HomeActivity.this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout.addDrawerListener(toggle);
+        toggle.syncState();
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_bnt);
+
+        NavigationView navigationView = findViewById(R.id.nv_view);
+        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) HomeActivity.this);
+
+
+        //drawerLayout.addDrawerListener(listener);
 
         btnHome = findViewById(R.id.btn_home);
         btnGroup = findViewById(R.id.btn_friends);
@@ -72,6 +101,24 @@ public class HomeActivity extends AppCompatActivity {
         rvHomeRecord.setAdapter(recordAdapter);
         mgrRecords();
     }
+//    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
+//        @Override
+//        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+//            Log.d("sera", "hello");
+//        }
+//
+//        @Override
+//        public void onDrawerOpened(@NonNull View drawerView) {
+//        }
+//
+//        @Override
+//        public void onDrawerClosed(@NonNull View drawerView) {
+//        }
+//
+//        @Override
+//        public void onDrawerStateChanged(int newState) {
+//        }
+//    };
 
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
 //        Drawable tempImg, tempRes;
@@ -92,19 +139,6 @@ public class HomeActivity extends AppCompatActivity {
                     btnGroup.setImageResource(R.drawable.friends_icon_grey);
                     btnCourse.setImageResource(R.drawable.course_icon_grey);
                     btnMap.setImageResource(R.drawable.map_icon_grey);
-
-//                tempImg = btnHome.getDrawable();
-//                tempRes = HomeActivity.this.getResources().getDrawable(R.drawable.home_icon_yellow);
-//                tmpBitmap = ((BitmapDrawable)tempImg).getBitmap();
-//                tmpBitmapRes = ((BitmapDrawable)tempRes).getBitmap();
-//
-//                if(tmpBitmap.equals(tmpBitmapRes)) {
-//                    btnHome.setImageResource(R.drawable.home_icon_grey);
-//                    //로직 수행
-//                }else{
-//                    btnHome.setImageResource(R.drawable.home_icon_yellow);
-//                    //로직 수행
-//                }
                 break;
             case R.id.btn_friends:
                 btnHome.setImageResource(R.drawable.home_icon_grey);
@@ -131,6 +165,9 @@ public class HomeActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.tvReviewAll:
+                break;
+            case R.id.btn_menu:
+                drawerLayout.openDrawer(drawerView);
                 break;
         }
     }

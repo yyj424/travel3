@@ -11,30 +11,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="20dp"
         android:layout_marginEnd="8dp"
-        android:layout_marginBottom="8dp"
-        android:fontFamily="@font/tmoney_bold"
+        android:layout_marginBottom="20dp"
+        android:fontFamily="@font/tmoney_regular"
         android:text="TextView"
         android:textColor="#000000"
-        android:textSize="20dp"
+        android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <CheckBox
-        android:id="@+id/tv_is_add"
-        android:layout_width="25dp"
-        android:layout_height="25dp"
+    <ImageButton
+        android:id="@+id/btnDeleteMember"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginEnd="24dp"
-        android:background="@drawable/friends_checkbox"
-        android:button="@android:color/transparent"
-        android:focusable="auto"
+        android:background="@drawable/delete_friend"
+        android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/tv_name"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/delete_friend" />
 </androidx.constraintlayout.widget.ConstraintLayout>
