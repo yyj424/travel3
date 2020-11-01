@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
+import com.google.android.gms.common.util.ArrayUtils;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -28,9 +29,12 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.lang.reflect.Array;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -50,19 +54,21 @@ public class PlanLastStep extends AppCompatActivity {
     long start;
     long end;
     List<String> Day;
-    ArrayList<String> keyList;
+    Map<String, Object> keyList;
     private RecyclerView listview;
     private ArrayList<MyCourse> placeList = null;
     PlaceListAdapter placeListAdapter;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
-    private DatabaseReference dayDBRef;
-    private DatabaseReference userDBRef;
     private DatabaseReference planDBRef;
     private DatabaseReference dayListDBRef;
+    private DatabaseReference getPlanDBRef;
     String uid;
     long t;
+    int pos = 0;
+    String key;
+    String pname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -103,8 +109,59 @@ public class PlanLastStep extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listview.setLayoutManager(layoutManager);
 
+        Intent intent = getIntent();
+        pname = (String) intent.getSerializableExtra("pname");
+
+            if(pname == null) {
+                planDBRef = databaseReference.child("plan_list").push();
+            }
+            else {
+                planDBRef = firebaseDatabase.getReference("plan_list");
+                planDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        for (DataSnapshot s : snapshot.getChildren()) {
+                            if (s.child("uid").getValue().toString().equals(uid) && s.child("planName").getValue().toString().equals(pname)) {
+                                planName.setText(pname);
+                                stDate.setText(s.child("startDate").getValue().toString());
+                                enDate.setText(s.child("endDate").getValue().toString());
+                                Log.d("yyj", String.valueOf(s.child("daysList").getValue()));
+                                ArrayList<String> daysList = (ArrayList<String>) s.child("daysList").getValue();
+                                for (int i = 0; i < daysList.size(); i++) {
+                                    keyList.put(String.valueOf(i), daysList.get(i));
+                                }
+                                SimpleDateFormat transFormat = new SimpleDateFormat("yyyy.MM.dd");
+                                try {
+                                    Date sdate = transFormat.parse(stDate.getText().toString());
+                                    Date edate = transFormat.parse(enDate.getText().toString());
+                                    long days = (edate.getTime() - sdate.getTime()) / (1000 * 60 * 60 * 24);
+                                    if (stDate.length() != 0 && enDate.length() != 0) {
+                                        Day = new ArrayList<>();
+                                        for (int i = 0; i <= days; i++) {
+                                            Day.add("Day " + (i + 1));
+                                        }
+                                        SpinnerAdapter adapter = new SpinnerAdapter(PlanLastStep.this, Day);
+                                        daySpinner.setAdapter(adapter);
+                                        daySpinner.setOnItemSelectedListener(daySelectedListener);
+                                    }
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                planDBRef = s.getRef();
+                                break;
+                            }
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
+
         placeList = new ArrayList<>();
-        keyList = new ArrayList<>();
+        keyList = new HashMap<>();
 
         stCalendar.setListener(new CompactCalendarView.CompactCalendarViewListener() {
             @Override
@@ -136,7 +193,6 @@ public class PlanLastStep extends AppCompatActivity {
                     for (int i = 0; i <= days; i++) {
                         Day.add("Day " + (i + 1));
                     }
-                    //spinnerClick(daySpinner, Day);
                     SpinnerAdapter adapter = new SpinnerAdapter(PlanLastStep.this, Day);
                     daySpinner.setAdapter(adapter);
                     daySpinner.setOnItemSelectedListener(daySelectedListener);
@@ -155,111 +211,54 @@ public class PlanLastStep extends AppCompatActivity {
         public void onItemSelected(AdapterView<?> spinner, View container,
                                    final int position, long id) {
             long ct = System.currentTimeMillis();
-            if (ct - t > 200) {
-                planDBRef = firebaseDatabase.getReference("plan_list");
+            if ((ct - t)*1000 > 0.00001) {
+                Log.d("yyj", "<<<<<<<<<<<스피너 클릭!!!!!! : " + position + " 번째자리, Day : " + (position+1) +" >>>>>>>>>>>>>");
                 dayListDBRef = firebaseDatabase.getReference("days_list");
-                // if(planDBRef != null) {//plandb가 있다면 읽어올것임 //그거에 대한 daydb를 찾아올것임
-                planDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                    @Override
-                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        int cnt = 0;
-                        int i = 0;
-                        int pos = position;
-                        for (DataSnapshot s : snapshot.getChildren()) {
-                            if (s.child("uid").getValue().toString().equals(uid) && s.child("planName").getValue().toString().equals(planName.getText().toString())) {
-                                dayDBRef = s.child("dayList").getRef();//나중에 수정할 떄 쓸 수 있을수도있어서
-                                placeList.clear();
-                                Log.d("yyj", "리스트 클리어");
-//                                for (DataSnapshot ds : s.child("dayList").getChildren()) {
-//                                    //ds.child가 days_List에 저장된 애랑 비교해서 가져오기
-//                                    if (cnt == pos) {
-//                                        Log.d("yyj", "cnt == pos");
-//                                        Map<String, Object> map = (Map) ds.getValue();
-//                                        for (Map.Entry<String, Object> entry : map.entrySet()) {
-//                                            placeList.add(new MyCourse(i + 1, entry.getKey(), (String) entry.getValue()));
-//                                            i++;
-//                                            Log.d("yyj", "리스트에 추가됨 : " + i + "번째");
-//                                        }
-//                                        break;
-//                                    }
-//                                    cnt++;
-//                                }
-                                break;
-                            }
-                        }
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-                dayListDBRef.addChildEventListener(new ChildEventListener() {
-                    @Override
-                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                        int i = 0;
-                        if(keyList.size() > 0) {
+                Log.d("yyj", "리스트 사이즈!!!!!" + String.valueOf(placeList.size()));
+                Log.d("yyj", "contains Key!!!!!  : " + String.valueOf(keyList.containsKey(String.valueOf(position))) + "***키가 있는지 없는지***");
+                if (keyList.containsKey(String.valueOf(position))) {//키리스트에 지금 누른 값이 있으면 디비를 불러올것임
+                    dayListDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            int i = 1;
                             for (DataSnapshot s : snapshot.getChildren()) {
-                                Log.d("yyj", "day스냅샷 for문 안");
-                                if (s.getKey() == keyList.get(i)) {
-                                    Log.d("yyj", "if 키리스트 0" + keyList.get(i) + "이랑 s.getKey값이 같으면" + s.getKey());
+                                if (s.getKey().equals(keyList.get(String.valueOf(position)))) {
                                     Map<String, Object> map = (Map) s.getValue();
-                                    Log.d("yyj", "리스트 추가 끝");
                                     for (Map.Entry<String, Object> entry : map.entrySet()) {
-                                        Log.d("yyj", "DAY 맵 값" + entry.getKey() + ", " + (String) entry.getValue());
-                                        placeList.add(new MyCourse(i + 1, entry.getKey(), (String) entry.getValue()));
+                                        placeList.add(new MyCourse(i, entry.getKey(), (String) entry.getValue()));
                                         Log.d("yyj", "리스트에 추가됨 : " + i + "번째");
+                                        i++;
                                     }
-                                    i++;
+                                    break;
                                 }
                             }
+
+                            Log.d("yyj", "리스트 추가 끝");
+                            placeListAdapter = new PlaceListAdapter(PlanLastStep.this, placeList, onLongClickItem);
+                            Log.d("yyj", "어댑터 리스트생성");
+                            listview.setAdapter(placeListAdapter);
+                            Log.d("yyj", "어댑터 셋팅");
                         }
-                        Log.d("yyj", "리스트 추가 끝");
-                        placeListAdapter = new PlaceListAdapter(PlanLastStep.this, placeList, onLongClickItem);
-                        Log.d("yyj", "어댑터 리스트생성");
-                        listview.setAdapter(placeListAdapter);
-                        Log.d("yyj", "어댑터 셋팅");
-                    }
 
-                    @Override
-                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
 
-                    }
-
-                    @Override
-                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
-
-                    }
-
-                    @Override
-                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-
-                    }
-
-                    @Override
-                    public void onCancelled(@NonNull DatabaseError error) {
-
-                    }
-                });
-
-                if (planName.getText() != null && placeList.size() > 0) {
-                    addkey();
-                    MyPlan plan = new MyPlan();
-                    plan.setUid(uid);
-                    plan.setPlanName(planName.getText().toString());
-                    plan.setStartDate(stDate.getText().toString());
-                    plan.setEndDate(enDate.getText().toString());
-                    plan.setDaysList(keyList);
-                    databaseReference.child("plan_list").push().setValue(plan);
-                    Log.d("yyj", "plan db 푸시");
+                        }
+                    });
+                    daysValue();
+                    plan();
                 }
-                //daydb에서 수정하고 싶을떄
-                //daydb에서 삭제하고 싶을때
-                //daydb에서 추가하고 싶을때
-                //  }
-                // else {//맨처음에 plandb가 없으니까 선택한 day 값이랑 plandb내용 추가함
-
-                //  }
+                else {
+                    Log.d("yyj", "else문 들어왔음");
+                    if (planName.getText() != null && placeList.size() > 0) {
+                        daysValue();
+                        plan();
+                    }
+                }
+                pos = position;
+                placeList.clear();
+                placeListAdapter = new PlaceListAdapter(PlanLastStep.this, placeList, onLongClickItem);
+                listview.setAdapter(placeListAdapter);
             }
         }
         @Override
@@ -267,15 +266,31 @@ public class PlanLastStep extends AppCompatActivity {
         }
     };
 
-    @SuppressLint("RestrictedApi")
-    public void addkey() {
+    public void plan() {
+        if (placeList.size() > 0) {
+            MyPlan plan = new MyPlan();
+            plan.setUid(uid);
+            plan.setPlanName(planName.getText().toString());
+            plan.setStartDate(stDate.getText().toString());
+            plan.setEndDate(enDate.getText().toString());
+            plan.setDaysList(keyList);
+            planDBRef.setValue(plan);
+        }
+    }
+
+    public void daysValue() {
         Map<String, Object> day = new HashMap<>();
         for (int i = 0; i < placeList.size(); i++) {
             day.put(placeList.get(i).getPlaceName(), placeList.get(i).getMemo());
         }
-        final String key = databaseReference.child("days_list").push().getKey();Log.d("yyj", "데이 리스트 푸시");
-        databaseReference.child("days_list").child(key).updateChildren(day);Log.d("yyj", String.valueOf(databaseReference.child("days_list").getPath()));
-        keyList.add(key);
+        if(keyList.containsKey(String.valueOf(pos)))//키가 있을때
+            key = (String) keyList.get(String.valueOf(pos));
+        else {
+            key = databaseReference.child("days_list").push().getKey();
+            Log.d("yyj", "데이 리스트 푸시");
+            keyList.put(String.valueOf(pos), key);
+        }
+        databaseReference.child("days_list").child(key).updateChildren(day);
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -295,35 +310,6 @@ public class PlanLastStep extends AppCompatActivity {
         }
     };
 
-//    public void spinnerClick(Spinner spinner, List list) {
-//        spinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                userDBRef = firebaseDatabase.getReference("user_list");
-//                userDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
-//                    @Override
-//                    public void onDataChange(@NonNull DataSnapshot snapshot) {
-//                        for (DataSnapshot s : snapshot.getChildren()) {
-//                            if (s.child("uid").getValue().toString().equals(uid)) {
-//                                MyDay day = new MyDay();
-//                                day.setDay();
-//                                break;
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onCancelled(@NonNull DatabaseError error) {
-//
-//                    }
-//                });
-//
-//            }
-//        });
-//        SpinnerAdapter adapter = new SpinnerAdapter(PlanLastStep.this, list);
-//        spinner.setAdapter(adapter);
-//    }
-
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.y_pickStartDate:
@@ -335,9 +321,16 @@ public class PlanLastStep extends AppCompatActivity {
                 enYM.setVisibility(View.VISIBLE);
                 break;
             case R.id.y_save_plan:
-//                Intent intent = new Intent(PlanLastStep.this, MapActivity.class);
-//                startActivity(intent);
-                Toast.makeText(PlanLastStep.this, "계획 저장 완료!", Toast.LENGTH_SHORT).show();
+                if (planName.getText() != null && placeList.size() > 0) {
+                    daysValue();
+                    plan();
+                    Toast.makeText(PlanLastStep.this, "계획 저장 완료!", Toast.LENGTH_SHORT).show();
+                    Intent planListintent = new Intent(PlanLastStep.this, PlanList.class);
+                    startActivity(planListintent);
+                    finish();
+                }
+                else
+                    Toast.makeText(PlanLastStep.this, "계획을 제대로 완성하세요!", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.y_addPlace:
                 Intent intent = new Intent(PlanLastStep.this, MapActivity.class);

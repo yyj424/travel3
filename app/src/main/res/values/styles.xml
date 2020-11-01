@@ -19,4 +19,9 @@
         <item name="android:fontFamily">@font/tmoney_regular</item>
         <item name="colorAccent">@color/colorFolder</item>
     </style>
+
+    <style name="searchText" parent="Theme.AppCompat">
+        <item name="android:editTextColor">@color/xd_gray</item>
+        <item name="android:fontFamily">@font/tmoney_regular</item>
+    </style>
 </resources>

@@ -1,17 +1,24 @@
 package ddwucom.mobile.travel;
 
 import java.util.List;
+import java.util.Map;
 
 public class MyPlan {
     private String uid;
     private String PlanName;
     private String StartDate;
     private String EndDate;
-    List<String> daysList;
+    Map<String, Object> daysList;
 
     public MyPlan() {}
 
-    public MyPlan(String uid, String planName, String startDate, String endDate, List<String> daysList) {
+    public MyPlan(String planName, String startDate, String endDate) {
+        PlanName = planName;
+        StartDate = startDate;
+        EndDate = endDate;
+    }
+
+    public MyPlan(String uid, String planName, String startDate, String endDate, Map<String, Object> daysList) {
         this.uid = uid;
         this.PlanName = planName;
         this.StartDate = startDate;
@@ -51,11 +58,11 @@ public class MyPlan {
         EndDate = endDate;
     }
 
-    public List<String> getDaysList() {
+    public Map<String, Object> getDaysList() {
         return daysList;
     }
 
-    public void setDaysList(List<String> daysList) {
+    public void setDaysList(Map<String, Object> daysList) {
         this.daysList = daysList;
     }
 }

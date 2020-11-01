@@ -1,17 +1,29 @@
 package ddwucom.mobile.travel;
 
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.SearchView;
+import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
 import java.util.ArrayList;
+import java.util.List;
 
 public class PlanList extends AppCompatActivity {
 
@@ -20,6 +32,12 @@ public class PlanList extends AppCompatActivity {
     private ArrayList<MyPlan> PlanList = null;
     private ArrayList<MyPlan> sPlanList = null;
     SearchView searchView;
+    FirebaseDatabase firebaseDatabase;
+    DatabaseReference databaseReference;
+    String uid;
+    String planName;
+    String start;
+    String end;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,21 +47,42 @@ public class PlanList extends AppCompatActivity {
         PlanList = new ArrayList<MyPlan>();
         sPlanList = new ArrayList<MyPlan>();
 
-       // PlanList.add( new MyPlan(1, "일산 여행", "2020.09.05", "2020.09.05"));
-        //PlanList.add( new MyPlan(2, "동덕여대", "2020.09.10", "2020.09.11"));
-        sPlanList.addAll(PlanList);
-        planAdapter = new PlanAdapter(this, R.layout.planlist_adapter_view, sPlanList);
+        firebaseDatabase = FirebaseDatabase.getInstance();
+        databaseReference = firebaseDatabase.getReference();
 
-        listView = (ListView)findViewById(R.id.y_planList);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        uid = user.getUid();
         searchView = findViewById(R.id.y_searchView);
+        listView = findViewById(R.id.y_planList);
 
-        listView.setAdapter(planAdapter);
+        databaseReference = firebaseDatabase.getReference("plan_list");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    if (s.child("uid").getValue().toString().equals(uid)) {
+                        planName = s.child("planName").getValue().toString();
+                        start = s.child("startDate").getValue().toString();
+                        end = s.child("endDate").getValue().toString();
+                        PlanList.add(new MyPlan(planName, start, end));
+                    }
+                }
+                sPlanList.addAll(PlanList);
+                planAdapter = new PlanAdapter(PlanList.this, R.layout.planlist_adapter_view, sPlanList);
+                listView.setAdapter(planAdapter);
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Intent intent = new Intent(this, );
-                //startActivity(intent);
+                Intent intent = new Intent(PlanList.this, PlanLastStep.class);
+                intent.putExtra("pname", planName);
+                startActivity(intent);
             }
         });
 
@@ -55,7 +94,7 @@ public class PlanList extends AppCompatActivity {
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                search(newText);
+                if (newText != null) {search(newText);}
                 return false;
             }
         });
@@ -66,6 +105,7 @@ public class PlanList extends AppCompatActivity {
             case R.id.y_addPlan:
                 Intent intent = new Intent(PlanList.this, PlanFirstStep.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.y_removePlan:
                 
