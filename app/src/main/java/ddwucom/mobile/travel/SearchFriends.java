@@ -135,7 +135,7 @@ public class SearchFriends extends AppCompatActivity {
                 myAdapter.notifyDataSetChanged();
                 break;
             case R.id.btn_make_room:
-                dbGroup.setValue(members);
+                dbGroup.child("members").setValue(members);
                 break;
         }
     }
