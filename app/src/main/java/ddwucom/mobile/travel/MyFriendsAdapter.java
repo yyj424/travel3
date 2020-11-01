@@ -5,7 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.CheckBox;
+import android.widget.ImageButton;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -13,23 +13,22 @@ import java.util.ArrayList;
 public class MyFriendsAdapter extends BaseAdapter {
     private Context context;
     private int layout;
-    private ArrayList<String> myDataList;
-   //private String[] myDataList;
+    private ArrayList<UserInfo> memberList;
     private LayoutInflater layoutInflater;
 
-    public MyFriendsAdapter(Context context, int layout, ArrayList myDataList) {
+    public MyFriendsAdapter(Context context, int layout, ArrayList<UserInfo> memberList) {
         this.context = context;
         this.layout = layout;
-        this.myDataList = myDataList;
+        this.memberList = memberList;
         layoutInflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
     @Override
     public int getCount() {
-        return myDataList.size();
+        return memberList.size();
     }
     @Override
     public Object getItem(int pos) {
-        return myDataList.get(pos);
+        return memberList.get(pos);
     }
 
     @Override
@@ -47,20 +46,19 @@ public class MyFriendsAdapter extends BaseAdapter {
 
             holder = new ViewHolder();
             holder.name = convertView.findViewById(R.id.tv_name);
-            holder.isAdd = convertView.findViewById(R.id.tv_is_add);
+            holder.btnDeleteMember = convertView.findViewById(R.id.btnDeleteMember);
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        holder.name.setText(myDataList.get(pos));
-        holder.isAdd.setClickable(true);
-        //holder.isAdd.set
+        holder.name.setText(memberList.get(pos).getNickname());
+
         return convertView;
     }
 
     static class ViewHolder {
         TextView name;
-        CheckBox isAdd;
+        ImageButton btnDeleteMember;
     }
 }

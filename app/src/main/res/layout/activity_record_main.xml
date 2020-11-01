@@ -18,7 +18,7 @@
             android:id="@+id/toolBar"
             android:layout_width="match_parent"
             android:layout_height="70.19dp"
-            android:background="@drawable/g_record_top"
+            android:background="@drawable/record_top"
             app:buttonGravity="center_vertical" />
 
     </com.google.android.material.appbar.AppBarLayout>
