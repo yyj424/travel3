@@ -27,15 +27,11 @@ public class SearchFriends extends AppCompatActivity {
     private DatabaseReference dbRef;
 
     ArrayList<String> nicknameList;
-   static ArrayList<String> arr;
-
     MyFriendsAdapter myAdapter;
     ListView lvFriends;
-    Button btn_addRoom;
-    Button btn_searchFriends;
-    EditText etSearchFriends;
 
-    static boolean isClicked = false;
+    Button btn_addRoom, btn_searchFriends;
+    EditText etSearchFriends;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
