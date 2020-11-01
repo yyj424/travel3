@@ -107,9 +107,6 @@ public class PlanList extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 break;
-            case R.id.y_removePlan:
-                
-                break;
         }
     }
 
