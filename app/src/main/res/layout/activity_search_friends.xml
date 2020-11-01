@@ -51,7 +51,7 @@
             android:drawableLeft="@drawable/search_icon_div"
             android:drawablePadding="15dp"
             android:fontFamily="@font/tmoney_regular"
-            android:hint="닉네임을 입력하세요."
+            android:hint="닉네임을 입력하세요"
             android:imeOptions="actionSearch"
             android:includeFontPadding="false"
             android:inputType="textPersonName"
