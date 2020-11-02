@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="나의 정보">
+        <menu>
+            <item
+                android:id="@+id/menu_phone"
+                android:title="Mobile"/>
+            <item
+                android:id="@+id/menu_email"
+                android:title="Email"/>
+        </menu>
+    </item>
+    <item android:title="나의 계정">
+        <menu>
+            <item
+                android:id="@+id/menu_logout"
+                android:title="로그아웃"
+                />
+            <item
+                android:id="@+id/menu_signout"
+                android:title="회원 탈퇴"/>
+        </menu>
+     </item>
+<!--    <item android:title="서비스 설정">-->
+<!--        <menu>-->
+<!--        <item-->
+<!--            android:id="@+id/menu_accessGps"-->
+<!--            android:title="위치서비스 활성화"/>-->
+<!--        </menu>-->
+<!--    </item>-->
+
+</menu>

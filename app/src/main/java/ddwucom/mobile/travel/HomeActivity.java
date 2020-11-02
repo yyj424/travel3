@@ -36,6 +36,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     private FirebaseAuth firebaseAuth;
     private String currentUid;
 
+    Toolbar toolbar;
+    DrawerLayout drawerLayout;
+    ActionBarDrawerToggle toggle;
 //    boolean [] clicked = {true, false, false, false};
 //    int [] btn_names = {R.id.btn_home, R.id.btn_friends, R.id.btn_course, R.id.btn_map};
 
@@ -60,22 +63,41 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         btnMap = findViewById(R.id.btn_map);
 
         //햄버거 버튼 누르면 상세정보 사이드바
-//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
-//        //getSupportActionBar().setTitle("please");
+        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        //getSupportActionBar().setTitle("please");
+
+        drawerLayout = (DrawerLayout)findViewById(R.id.drawer);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//            @Override
+//            public void onDrawerSlide(View drawerView, float slideOffset) {
+//                super.onDrawerSlide(drawerView, slideOffset);
+//            }
 //
-//        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer);
-//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-//                HomeActivity.this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//        drawerLayout.addDrawerListener(toggle);
-//        toggle.syncState();
+//            @Override
+//            public void onDrawerOpened(View drawerView) {
+//                super.onDrawerOpened(drawerView);
+//            }
 //
-//        drawerLayout.addDrawerListener(toggle);
-////        getSupportActionBar().setHomeButtonEnabled(true);
-////        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-////        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_bnt);
-//        NavigationView navigationView = findViewById(R.id.nv_view);
-//        navigationView.setNavigationItemSelectedListener(this);
+//            @Override
+//            public void onDrawerClosed(View drawerView) {
+//                super.onDrawerClosed(drawerView);
+//            }
+//
+//            @Override
+//            public void onDrawerStateChanged(int newState) {
+//                super.onDrawerStateChanged(newState);
+//            }
+//        }
+
+        Log.d("sera", "toggle : "+toggle);
+        drawerLayout.addDrawerListener(toggle);
+        //toggle.syncState();
+//        getSupportActionBar().setHomeButtonEnabled(true);
+//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_bnt);
+        NavigationView navigationView = findViewById(R.id.nv_view);
+        navigationView.setNavigationItemSelectedListener(this);
 
         rvHomeRecord = findViewById(R.id.rvHomeRecord);
         folders = new ArrayList<>();
@@ -108,7 +130,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //    }
 //    @Override
 //    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
+//         Handle navigation view item clicks here.
 //        int id = item.getItemId();
 //
 //        if (id == R.id.nav_camera) {
@@ -124,29 +146,28 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 //        } else if (id == R.id.nav_send) {
 //
 //        }
-//
 //        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 //        drawer.closeDrawer(GravityCompat.START);
-        //return true;
+//        return true;
 //    }
-//    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
-//        @Override
-//        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-//            Log.d("sera", "hello");
-//        }
-//
-//        @Override
-//        public void onDrawerOpened(@NonNull View drawerView) {
-//        }
-//
-//        @Override
-//        public void onDrawerClosed(@NonNull View drawerView) {
-//        }
-//
-//        @Override
-//        public void onDrawerStateChanged(int newState) {
-//        }
-//    };
+    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
+        @Override
+        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+            Log.d("sera", "hello");
+        }
+
+        @Override
+        public void onDrawerOpened(@NonNull View drawerView) {
+        }
+
+        @Override
+        public void onDrawerClosed(@NonNull View drawerView) {
+        }
+
+        @Override
+        public void onDrawerStateChanged(int newState) {
+        }
+    };
 
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
 //        Drawable tempImg, tempRes;
