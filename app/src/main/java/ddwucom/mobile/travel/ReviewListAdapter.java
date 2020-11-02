@@ -2,6 +2,7 @@ package ddwucom.mobile.travel;
 
 import android.content.Context;
 import android.net.Uri;
+import android.text.method.ScrollingMovementMethod;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager2.widget.ViewPager2;
@@ -20,85 +22,107 @@ import com.bumptech.glide.Glide;
 import com.rd.PageIndicatorView;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
-public class ReviewListAdapter extends BaseAdapter {
+public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.ViewHolder> {
     private Context context;
     private int layout;
     private ArrayList<MyReview> myReviewList;
     private LayoutInflater layoutInflater;
     private rvImagePagerAdapter adapter;
+    HashMap<Integer, Integer> mViewPagerState = new HashMap<>();
 
-    public ReviewListAdapter(Context context, int layout, ArrayList<MyReview> myReviewList) {
-        this.context = context;
-        this.layout = layout;
-        this.myReviewList = myReviewList;
-        layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-    }
+    public static class ViewHolder extends RecyclerView.ViewHolder {
+        ViewPager viewPager;
+        PageIndicatorView pageIndicatorView;
+        TextView userId;
+        RatingBar ratingbar;
+        TextView ratingview;
+        TextView date;
+        TextView content;
+        TextView score1;
+        TextView score2;
+        TextView score3;
+        TextView score4;
 
-    @Override
-    public int getCount() {
-        return myReviewList.size();
-    }
-
-    @Override
-    public Object getItem(int position) {
-        return myReviewList.get(position);
-    }
-
-    @Override
-    public long getItemId(int position) {
-        return Long.parseLong(myReviewList.get(position).getUserId());
-    }
-
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
-        final int pos = position;
-
-        if (convertView == null) {
-            convertView = layoutInflater.inflate(layout, parent, false);
+        public ViewHolder(View itemView) {
+            super(itemView);Log.d("yyj","viewholder");
+            viewPager = itemView.findViewById(R.id.y_rvImgVP);
+            pageIndicatorView = itemView.findViewById(R.id.y_rvImgPic);
+            userId = itemView.findViewById(R.id.y_userId);
+            ratingbar = itemView.findViewById(R.id.rL_ratingBar);
+            ratingview = itemView.findViewById(R.id.rL_rbView);
+            date = itemView.findViewById(R.id.y_rLDate);
+            content = itemView.findViewById(R.id.y_reviewContent);
+            score1 = itemView.findViewById(R.id.cleanliness);
+            score2 = itemView.findViewById(R.id.costEffectiveness);
+            score3 = itemView.findViewById(R.id.vibe);
+            score4 = itemView.findViewById(R.id.accessibility);
         }
+    }
 
-        ViewPager viewPager = convertView.findViewById(R.id.y_rvImgVP);
-        final PageIndicatorView pageIndicatorView = convertView.findViewById(R.id.y_rvImgPic);
-        TextView userId = convertView.findViewById(R.id.y_userId);
-        RatingBar ratingbar = convertView.findViewById(R.id.rL_ratingBar);
-        TextView ratingview = convertView.findViewById(R.id.rL_rbView);
-        TextView date = convertView.findViewById(R.id.y_rLDate);
-        TextView content = convertView.findViewById(R.id.y_reviewContent);
-        TextView score1 = convertView.findViewById(R.id.cleanliness);
-        TextView score2 = convertView.findViewById(R.id.costEffectiveness);
-        TextView score3 = convertView.findViewById(R.id.vibe);
-        TextView score4 = convertView.findViewById(R.id.accessibility);
+    public ReviewListAdapter(Context context, ArrayList<MyReview> myReviewList) {
+        this.context = context;
+        this.myReviewList = myReviewList;Log.d("yyj","리뷰 리스트 생성자");
+    }
 
-        adapter = new rvImagePagerAdapter(context, myReviewList.get(pos).getReviewImages());
-        viewPager.setAdapter(adapter);
-        pageIndicatorView.setCount(myReviewList.get(pos).getReviewImages().size());
-        viewPager.setId(position + 1);
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.reviewlist_adapter_view, parent, false);
+        // set the view's size, margins, paddings and layout parameters
+        ViewHolder viewHolder = new ViewHolder(v);Log.d("yyj","뷰홀더 만들기");
+        return viewHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+        Log.d("yyj","bind>>>>>>>>>>>>>>>>>>>");
+        holder.userId.setText(myReviewList.get(position).getUserId());
+        holder.ratingbar.setRating((float) myReviewList.get(position).getRating());
+        holder.ratingview.setText(String.valueOf(myReviewList.get(position).getRating()));
+        holder.date.setText(myReviewList.get(position).getDate());
+        holder.content.setText(myReviewList.get(position).getContent());
+        holder.score1.setText(String.valueOf(myReviewList.get(position).getScore1()));
+        holder.score2.setText(String.valueOf(myReviewList.get(position).getScore2()));
+        holder.score3.setText(String.valueOf(myReviewList.get(position).getScore3()));
+        holder.score4.setText(String.valueOf(myReviewList.get(position).getScore4()));
+
+        Log.d("yyj", "position: "+String.valueOf(position)); Log.d("yyj", String.valueOf(myReviewList.get(position).getReviewImages().size()));
+
+        adapter = new rvImagePagerAdapter(context, myReviewList.get(position).getReviewImages());
+        holder.pageIndicatorView.setCount(myReviewList.get(position).getReviewImages().size());
+        holder.viewPager.setAdapter(adapter);
+        holder.viewPager.setId(position + 1);
+        holder.viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {}
 
             @Override
             public void onPageSelected(int position) {
-                pageIndicatorView.setSelection(position);
+                holder.pageIndicatorView.setSelection(position);
             }
 
             @Override
             public void onPageScrollStateChanged(int state) {}
         });
 
-        userId.setText(myReviewList.get(pos).getUserId());
-        ratingbar.setRating((float) myReviewList.get(pos).getRating());
-        ratingview.setText(String.valueOf(myReviewList.get(pos).getRating()));
-        date.setText(myReviewList.get(pos).getDate());
-        content.setText(myReviewList.get(pos).getContent());
-        score1.setText(String.valueOf(myReviewList.get(pos).getScore1()));
-        score2.setText(String.valueOf(myReviewList.get(pos).getScore2()));
-        score3.setText(String.valueOf(myReviewList.get(pos).getScore3()));
-        score4.setText(String.valueOf(myReviewList.get(pos).getScore4()));
+        if (mViewPagerState.containsKey(position)) {Log.d("yyj", "키있음"+mViewPagerState.get(position));
+            holder.viewPager.setCurrentItem(mViewPagerState.get(position));
+        }
+    }
 
-        return convertView;
+    public void onViewRecycled(ViewHolder holder) {Log.d("yyj","recycled");
+        mViewPagerState.put(holder.getAdapterPosition(), holder.viewPager.getCurrentItem());Log.d("yyj", "키넣음");
+        super.onViewRecycled(holder);
+    }
+
+    @Override
+    public int getItemCount() {
+        if (myReviewList != null)
+            return myReviewList.size();
+        else
+            return 0;
     }
 
     public class rvImagePagerAdapter extends PagerAdapter {

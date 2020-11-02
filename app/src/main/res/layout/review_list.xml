@@ -68,17 +68,27 @@
         app:layout_constraintStart_toEndOf="@+id/y_review_write"
         app:srcCompat="@drawable/y_addbtn" />
 
-    <ListView
-        android:id="@+id/y_review_list"
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/y_swipe"
         android:layout_width="match_parent"
         android:layout_height="550dp"
         android:layout_marginTop="1dp"
-        app:layout_constraintBottom_toTopOf="@+id/imageView14"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView5"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/imageView5">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/y_review_list"
+            android:layout_width="match_parent"
+            android:layout_height="550dp"
+            app:layout_constraintBottom_toTopOf="@+id/imageView14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/imageView5"
+            app:layout_constraintVertical_bias="0.0" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/textView22"
