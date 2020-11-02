@@ -96,7 +96,7 @@
                 android:id="@+id/btnAddMember"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
+                android:layout_marginEnd="25dp"
                 android:background="@drawable/add_friend"
                 android:onClick="onClick"
                 android:visibility="invisible"
@@ -141,13 +141,13 @@
         app:layout_constraintTop_toBottomOf="@+id/linearLayout">
 
         <Button
-            android:id="@+id/btn_make_room"
+            android:id="@+id/btnComAddFriends"
             android:layout_width="235dp"
             android:layout_height="45dp"
             android:background="@drawable/btn_make_room_red"
             android:fontFamily="@font/tmoney_bold"
             android:onClick="onClick"
-            android:text="방 만들기"
+            android:text="추가하기"
             android:textSize="20dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"

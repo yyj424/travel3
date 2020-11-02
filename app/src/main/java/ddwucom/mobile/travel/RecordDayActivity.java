@@ -3,10 +3,12 @@ package ddwucom.mobile.travel;
 import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
@@ -24,6 +26,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -192,11 +195,20 @@ public class RecordDayActivity extends AppCompatActivity {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 if (position == 1) {
+                    TextView dialogTitle = new TextView(RecordDayActivity.this);
+                    dialogTitle.setText("폴더 추가하기");
+                    dialogTitle.setIncludeFontPadding(false);
+                    dialogTitle.setTypeface(ResourcesCompat.getFont(RecordDayActivity.this, R.font.tmoney_regular));
+                    dialogTitle.setGravity(Gravity.CENTER);
+                    dialogTitle.setPadding(10, 70, 10, 70);
+                    dialogTitle.setTextSize(20F);
+                    dialogTitle.setBackgroundResource(R.color.colorTop);
+                    dialogTitle.setTextColor(Color.DKGRAY);
 
                     AlertDialog alertDialog;
                     AlertDialog.Builder builder = new AlertDialog.Builder(RecordDayActivity.this, R.style.DialogTheme);
 
-                    builder.setTitle("폴더 추가하기")
+                    builder.setCustomTitle(dialogTitle)
                             .setView(addFolderLayout)
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
@@ -221,7 +233,7 @@ public class RecordDayActivity extends AppCompatActivity {
                         ((ViewGroup) addFolderLayout.getParent()).removeView(addFolderLayout);
                     }
                     alertDialog.show();
-                    alertDialog.getWindow().setLayout(1200, 750);
+                    alertDialog.getWindow().setLayout(1200, 800);
 
                     TextView textView = alertDialog.findViewById(android.R.id.message);
                     Typeface face = Typeface.createFromAsset(getAssets(), "fonts/tmoney_regular.ttf");
