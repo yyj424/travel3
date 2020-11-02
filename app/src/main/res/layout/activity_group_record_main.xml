@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    android:background="@color/colorBg"
+    android:orientation="vertical">
+
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abGroupRecord"
         android:layout_width="match_parent"
@@ -12,40 +15,43 @@
         android:elevation="0dp"
         app:elevation="0dp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <androidx.appcompat.widget.Toolbar
+            android:id="@+id/tbGroupRecord"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="70.19dp"
+            android:background="@drawable/group_top"
+            app:buttonGravity="center_vertical">
 
-            <androidx.appcompat.widget.Toolbar
-                android:id="@+id/tbGroupRecord"
-                android:layout_width="match_parent"
-                android:layout_height="70.19dp"
-                android:background="@drawable/top"
-                app:buttonGravity="center_vertical"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent">
-
-            </androidx.appcompat.widget.Toolbar>
-
-            <TextView
-                android:id="@+id/textView12"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/ssangmun"
-                android:includeFontPadding="false"
-                android:shadowColor="#FFC107"
-                android:shadowDx="10"
-                android:shadowDy="10"
-                android:shadowRadius="5"
-                android:text="계획명"
-                android:textColor="#FFFFFF"
-                android:textSize="26sp"
-                app:layout_constraintBottom_toBottomOf="@+id/tbGroupRecord"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvGroupRecord"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/spRecordMainFolder"
+            android:layout_marginStart="15dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginBottom="10dp"
+            android:background="@color/colorBg"
+            android:overScrollMode="never"
+            android:paddingStart="6dp" />
+
+        <ImageButton
+            android:id="@+id/btnAddGroupRecord"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginEnd="15dp"
+            android:layout_marginBottom="15dp"
+            android:background="@drawable/btn_yellow_add"
+            android:onClick="onClick"
+            app:srcCompat="@drawable/btn_yellow_add" />
+    </RelativeLayout>
 </LinearLayout>

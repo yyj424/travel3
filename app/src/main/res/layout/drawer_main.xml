@@ -14,14 +14,13 @@
         android:layout_height="match_parent" />
 
     <com.google.android.material.navigation.NavigationView
-        xmlns:android="http://schemas.android.com/apk/res/android"
         android:id="@+id/nv_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
         app:headerLayout="@layout/drawer_inside">
-<!--        app:menu="@menu/hamburger_menu"-->
-        </com.google.android.material.navigation.NavigationView>
+        <!--        app:menu="@menu/hamburger_menu"-->
+    </com.google.android.material.navigation.NavigationView>
 
 </androidx.drawerlayout.widget.DrawerLayout>
