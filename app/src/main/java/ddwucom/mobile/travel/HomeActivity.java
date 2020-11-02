@@ -1,19 +1,12 @@
 package ddwucom.mobile.travel;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.PorterDuff;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.MotionEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
@@ -37,17 +30,14 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 
-public class HomeActivity extends AppCompatActivity {
-    Button btnLogout;
+public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     ImageView btnHome, btnGroup, btnCourse, btnMap;
     private FirebaseDatabase database;
     private FirebaseAuth firebaseAuth;
     private String currentUid;
-    private DrawerLayout drawerLayout;
-    private View drawerView;
 
-    boolean [] clicked = {true, false, false, false};
-    int [] btn_names = {R.id.btn_home, R.id.btn_friends, R.id.btn_course, R.id.btn_map};
+//    boolean [] clicked = {true, false, false, false};
+//    int [] btn_names = {R.id.btn_home, R.id.btn_friends, R.id.btn_course, R.id.btn_map};
 
     ArrayList<String> folders;
     ArrayList<Record> recordList;
@@ -61,37 +51,31 @@ public class HomeActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
-        //btnLogout = findViewById(R.id.btnLogout);
         firebaseAuth = FirebaseAuth.getInstance();
         currentUid = firebaseAuth.getCurrentUser().getUid();
-
-        //햄버거 버튼 누르면 상세정보 사이드바
-//        drawerLayout = findViewById(R.id.drawer_layout);
-//        drawerView = findViewById(R.id.nv_inside);
-        Toolbar toolbar = findViewById(R.id.toolbar2);
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle(null);
-
-        drawerLayout = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                HomeActivity.this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawerLayout.addDrawerListener(toggle);
-        toggle.syncState();
-
-        getSupportActionBar().setHomeButtonEnabled(true);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_bnt);
-
-        NavigationView navigationView = findViewById(R.id.nv_view);
-        navigationView.setNavigationItemSelectedListener((NavigationView.OnNavigationItemSelectedListener) HomeActivity.this);
-
-
-        //drawerLayout.addDrawerListener(listener);
 
         btnHome = findViewById(R.id.btn_home);
         btnGroup = findViewById(R.id.btn_friends);
         btnCourse = findViewById(R.id.btn_course);
         btnMap = findViewById(R.id.btn_map);
+
+        //햄버거 버튼 누르면 상세정보 사이드바
+//        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+//        setSupportActionBar(toolbar);
+//        //getSupportActionBar().setTitle("please");
+//
+//        DrawerLayout drawerLayout = (DrawerLayout)findViewById(R.id.drawer);
+//        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+//                HomeActivity.this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+//        drawerLayout.addDrawerListener(toggle);
+//        toggle.syncState();
+//
+//        drawerLayout.addDrawerListener(toggle);
+////        getSupportActionBar().setHomeButtonEnabled(true);
+////        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+////        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_bnt);
+//        NavigationView navigationView = findViewById(R.id.nv_view);
+//        navigationView.setNavigationItemSelectedListener(this);
 
         rvHomeRecord = findViewById(R.id.rvHomeRecord);
         folders = new ArrayList<>();
@@ -101,6 +85,50 @@ public class HomeActivity extends AppCompatActivity {
         rvHomeRecord.setAdapter(recordAdapter);
         mgrRecords();
     }
+//    @Override
+//    public boolean onCreateOptionsMenu(Menu menu) {
+//        // Inflate the menu; this adds items to the action bar if it is present.
+//        getMenuInflater().inflate(R.menu.hamburger_menu, menu);
+//        return true;
+//    }
+//
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        // Handle action bar item clicks here. The action bar will
+//        // automatically handle clicks on the Home/Up button, so long
+//        // as you specify a parent activity in AndroidManifest.xml.
+////        int id = item.getItemId();
+////
+////        //noinspection SimplifiableIfStatement
+////        if (id == R.id.action_settings) {
+////            return true;
+////        }
+//
+//        return super.onOptionsItemSelected(item);
+//    }
+//    @Override
+//    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+//        int id = item.getItemId();
+//
+//        if (id == R.id.nav_camera) {
+//            // Handle the camera action
+//        } else if (id == R.id.nav_gallery) {
+//
+//        } else if (id == R.id.nav_slideshow) {
+//
+//        } else if (id == R.id.nav_manage) {
+//
+//        } else if (id == R.id.nav_share) {
+//
+//        } else if (id == R.id.nav_send) {
+//
+//        }
+//
+//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+//        drawer.closeDrawer(GravityCompat.START);
+        //return true;
+//    }
 //    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
 //        @Override
 //        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
@@ -166,9 +194,9 @@ public class HomeActivity extends AppCompatActivity {
                 break;
             case R.id.tvReviewAll:
                 break;
-            case R.id.btn_menu:
-                drawerLayout.openDrawer(drawerView);
-                break;
+//            case R.id.btn_menu:
+//                drawerLayout.openDrawer(drawerView);
+//                break;
         }
     }
 
@@ -265,5 +293,10 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+        return false;
     }
 }
