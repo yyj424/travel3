@@ -20,7 +20,7 @@
         android:layout_height="match_parent"
         android:layout_gravity="start"
         android:fitsSystemWindows="true"
-        headerLayout="@layout/drawer_inside">
+        app:headerLayout="@layout/drawer_inside">
 <!--        app:menu="@menu/hamburger_menu"-->
         </com.google.android.material.navigation.NavigationView>
 
