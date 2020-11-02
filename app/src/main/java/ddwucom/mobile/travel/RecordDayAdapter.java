@@ -25,6 +25,7 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
 
     private Context context;
     private List<RecordContent> recordItems;
+    private boolean isGroup;
 
     List<String> images;
     HashMap<Integer, Integer> mViewPagerState = new HashMap<>();
@@ -34,6 +35,7 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
         public TextView tvContent;
         public TextView tvLocation;
         public PageIndicatorView pivRecordImage;
+        public TextView tvRecordNickname;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -41,11 +43,13 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
             tvContent = itemView.findViewById(R.id.tvRecordContent);
             tvLocation = itemView.findViewById(R.id.tvRecordLocation);
             pivRecordImage = itemView.findViewById(R.id.pivRecordImage);
+            tvRecordNickname = itemView.findViewById(R.id.tvRecordNickname);
         }
     }
 
-    public RecordDayAdapter(Context context, List<RecordContent> recordItems) {
+    public RecordDayAdapter(Context context, boolean isGroup, List<RecordContent> recordItems) {
         this.context = context;
+        this.isGroup = isGroup;
         this.recordItems = recordItems;
     }
 
@@ -62,6 +66,11 @@ public class RecordDayAdapter extends RecyclerView.Adapter<RecordDayAdapter.View
     public void onBindViewHolder(final ViewHolder holder, int position) {
         if (recordItems.get(position).getLocation() != null) {
             holder.tvLocation.setText(recordItems.get(position).getLocation());
+        }
+
+        if (isGroup) {
+            holder.tvRecordNickname.setText(recordItems.get(position).getNickname());
+            holder.tvRecordNickname.setVisibility(View.VISIBLE);
         }
 
         holder.tvContent.setText(recordItems.get(position).getContent());

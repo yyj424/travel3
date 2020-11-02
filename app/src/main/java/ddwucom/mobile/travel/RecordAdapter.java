@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,9 +20,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     private List<Record> recordList;
     private LayoutInflater layoutInflater;
     private OnItemClickListener mListener = null;
+    private boolean isGroup;
 
-    public RecordAdapter(Context context, List<Record> recordList) {
+    public RecordAdapter(Context context, boolean isGroup, List<Record> recordList) {
         this.context = context;
+        this.isGroup = isGroup;
         this.recordList = recordList;
         this.layoutInflater = LayoutInflater.from(context);
     }
@@ -38,12 +41,14 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         public ImageView ivRecord;
         public TextView tvRecordTitle;
         public TextView tvRecordDate;
+        public TextView tvRecordNick;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ivRecord = itemView.findViewById(R.id.ivRecord);
             tvRecordTitle = itemView.findViewById(R.id.tvRecordTitle);
             tvRecordDate = itemView.findViewById(R.id.tvRecordDate);
+            tvRecordNick = itemView.findViewById(R.id.tvRecordNick);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -72,6 +77,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         Glide.with(context)
                 .load(recordList.get(position).getThumbnailImg())
                 .into(holder.ivRecord);
+        if (isGroup) {
+            holder.tvRecordNick.setText(" · " + recordList.get(position).getNickname());
+            holder.tvRecordNick.setVisibility(View.VISIBLE);
+        }
     }
 
     public Record getItem(int id) {

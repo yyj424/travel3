@@ -97,7 +97,7 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
         btnAddRecord = findViewById(R.id.btnAddRecord);
         recyclerView = findViewById(R.id.record_recycler_view);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recordAdapter = new RecordAdapter(this, recordList);
+        recordAdapter = new RecordAdapter(this, false, recordList);
         recyclerView.setAdapter(recordAdapter);
 
         recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {
@@ -143,8 +143,6 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
 
     public void selectDate(final String date) {
         recordList.clear();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = database.getReference("records");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {

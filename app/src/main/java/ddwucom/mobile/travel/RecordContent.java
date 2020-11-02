@@ -6,11 +6,13 @@ import java.util.List;
 public class RecordContent {
     String location;
     String content;
+    String nickname;
     List<String> images;
 
     public RecordContent() {
         this.location = null;
         this.content = null;
+        this.nickname = null;
         this.images = new ArrayList<>();
     }
 
@@ -18,6 +20,21 @@ public class RecordContent {
         this.location = location;
         this.content = content;
         this.images = images;
+    }
+
+    public RecordContent(String location, String content, String nickname, List<String> images) {
+        this.location = location;
+        this.content = content;
+        this.nickname = nickname;
+        this.images = images;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 
     public String getContent() {

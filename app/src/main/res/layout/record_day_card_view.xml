@@ -81,20 +81,33 @@
 
                 <TextView
                     android:id="@+id/tvRecordLocation"
-                    android:layout_width="match_parent"
+                    android:layout_width="0dp"
                     android:layout_height="14dp"
-                    android:layout_marginTop="4dp"
-                    android:layout_marginBottom="8dp"
+                    android:layout_marginStart="5dp"
                     android:fontFamily="@font/tmoney_regular"
                     android:gravity="center|left"
                     android:includeFontPadding="false"
-                    android:paddingLeft="25dp"
-                    android:paddingRight="5dp"
+                    android:text="위치위치위치"
                     android:textColor="#000000"
                     android:textSize="12sp"
                     card:layout_constraintBottom_toBottomOf="parent"
+                    card:layout_constraintStart_toEndOf="@+id/imageView22"
+                    card:layout_constraintTop_toBottomOf="@+id/tvRecordContent" />
+
+                <TextView
+                    android:id="@+id/tvRecordNickname"
+                    android:layout_width="0dp"
+                    android:layout_height="14dp"
+                    android:layout_marginEnd="16dp"
+                    android:fontFamily="@font/tmoney_regular"
+                    android:gravity="center|right"
+                    android:includeFontPadding="false"
+                    android:text="닉네임"
+                    android:textColor="#000000"
+                    android:textSize="12sp"
+                    android:visibility="invisible"
+                    card:layout_constraintBottom_toBottomOf="parent"
                     card:layout_constraintEnd_toEndOf="parent"
-                    card:layout_constraintStart_toStartOf="parent"
                     card:layout_constraintTop_toBottomOf="@+id/tvRecordContent" />
 
                 <ImageView
@@ -103,20 +116,11 @@
                     android:layout_height="15dp"
                     android:layout_marginStart="8dp"
                     android:adjustViewBounds="true"
-                    card:layout_constraintBottom_toBottomOf="@+id/tvRecordLocation"
-                    card:layout_constraintStart_toStartOf="@+id/tvRecordLocation"
-                    card:layout_constraintTop_toTopOf="@+id/tvRecordLocation"
-                    card:srcCompat="@drawable/g_location_icon" />
+                    android:src="@drawable/g_location_icon"
+                    card:layout_constraintBottom_toBottomOf="parent"
+                    card:layout_constraintStart_toStartOf="parent"
+                    card:layout_constraintTop_toBottomOf="@+id/tvRecordContent" />
 
-                <androidx.constraintlayout.widget.Group
-                    android:id="@+id/group"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
-
-                <androidx.constraintlayout.widget.Group
-                    android:id="@+id/group2"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </LinearLayout>
