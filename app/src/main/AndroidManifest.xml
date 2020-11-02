@@ -41,9 +41,13 @@
 
         <activity android:name=".SearchFriends"
             android:windowSoftInputMode="adjustPan">
-                <intent-filter>
-                    <action android:name="android.intent.action.MAIN" />
-                </intent-filter>
+
+        </activity>
+
+        <activity android:name=".GroupListActivity" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
         </activity>
 
         <activity android:name=".PlanList" />

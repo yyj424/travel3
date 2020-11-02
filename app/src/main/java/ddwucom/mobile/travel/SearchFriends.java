@@ -1,5 +1,6 @@
 package ddwucom.mobile.travel;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -30,7 +31,6 @@ import java.util.ArrayList;
 public class SearchFriends extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference dbUser;
-    private DatabaseReference dbGroup;
     private FirebaseUser user;
     private String currentUid;
 
@@ -54,14 +54,13 @@ public class SearchFriends extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
         dbUser = database.getReference("user_list");
-        dbGroup = database.getReference("Groups").push();
 
         user = FirebaseAuth.getInstance().getCurrentUser();
         currentUid = user.getUid();
 
         members = new ArrayList<>();
         memberList = new ArrayList<>();
-        btn_addRoom = findViewById(R.id.btn_make_room);
+        btn_addRoom = findViewById(R.id.btnComAddFriends);
         etSearchFriends = findViewById(R.id.et_search);
         tvSearchResult = findViewById(R.id.tvSearchResult);
         clSearchResult = findViewById(R.id.clSearchResult);
@@ -134,9 +133,11 @@ public class SearchFriends extends AppCompatActivity {
                 members.remove(selectedPos);
                 myAdapter.notifyDataSetChanged();
                 break;
-            case R.id.btn_make_room:
-                members.add(currentUid);
-                dbGroup.child("members").setValue(members);
+            case R.id.btnComAddFriends:
+                Intent resultIntent = new Intent();
+                resultIntent.putStringArrayListExtra("members", members);
+                setResult(RESULT_OK, resultIntent);
+                finish();
                 break;
         }
     }
