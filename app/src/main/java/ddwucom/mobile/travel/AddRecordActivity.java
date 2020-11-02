@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.PagerAdapter;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -60,7 +61,10 @@ public class AddRecordActivity extends Activity {
     String imageFolderName;
     String recordKey;
     String currentUid;
-    boolean imgFlag ;
+    String currentGid;
+    String currentNickname;
+    boolean imgFlag;
+    boolean isGroup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class AddRecordActivity extends Activity {
 
         recordKey = (String) getIntent().getSerializableExtra("recordKey");
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
+        isGroup = (boolean) getIntent().getSerializableExtra("isGroup");
 
         selectedImageList = new ArrayList<>();
         images = new ArrayList<>();
@@ -84,14 +89,27 @@ public class AddRecordActivity extends Activity {
         tvContentCnt = findViewById(R.id.tvRecordContentCnt);
 
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("records").child(recordKey).child("contents").push();
+        if (!isGroup) {
+            dbRef = database.getReference("records").child(recordKey).child("contents").push();
+        }
+        else {
+            dbRef = database.getReference("group_records").child(recordKey).child("contents").push();
+            currentGid = (String) getIntent().getSerializableExtra("currentGid");
+            currentNickname = (String) getIntent().getSerializableExtra("currentNickname");
+        }
 
         setContentCnt();
         checkThumbnail();
     }
 
     public void checkThumbnail() {
-        DatabaseReference checkThumbnail = database.getReference("records").child(recordKey);
+        DatabaseReference checkThumbnail;
+        if (!isGroup) {
+            checkThumbnail = database.getReference("records").child(recordKey);
+        }
+        else {
+            checkThumbnail = database.getReference("group_records").child(recordKey);
+        }
         checkThumbnail.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -157,6 +175,10 @@ public class AddRecordActivity extends Activity {
                 if (location.length() != 0) {
                     recordContent.setLocation(location);
                 }
+
+                if (isGroup) {
+                    recordContent.setNickname(currentNickname);
+                }
                 recordContent.setContent(content.replaceAll(System.getProperty("line.separator"),""));
 
                 if (selectedImageList.size() > 0) {
@@ -171,7 +193,7 @@ public class AddRecordActivity extends Activity {
                     for (final Uri imageUri : selectedImageList) {
                         // storage에 사진 업로드
 
-                        mStorageRef = firebaseStorage.getReference().child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        mStorageRef = firebaseStorage.getReference().child("record_images/" + currentGid + "/" + imageFolderName + imageUri.getLastPathSegment());
                         mStorageRef.putFile(imageUri)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
@@ -181,7 +203,13 @@ public class AddRecordActivity extends Activity {
                                             public void onSuccess(Uri uri) {
                                                 String tmp = uri.toString();
                                                 if (!imgFlag) {
-                                                    DatabaseReference recordRef = database.getReference("records").child(recordKey);
+                                                    DatabaseReference recordRef;
+                                                    if (!isGroup) {
+                                                        recordRef = database.getReference("records").child(recordKey);
+                                                    }
+                                                    else {
+                                                        recordRef = database.getReference("group_records").child(recordKey);
+                                                    }
                                                     recordRef.child("thumbnailImg").setValue(tmp);
                                                     imgFlag = true;
                                                 }

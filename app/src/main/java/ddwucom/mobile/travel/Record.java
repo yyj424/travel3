@@ -9,6 +9,8 @@ import java.util.Map;
 public class Record {
     String key;
     String uid;
+    String gid;
+    String nickname;
     String recordFolder;
     String thumbnailImg;
     String recordTitle;
@@ -17,6 +19,7 @@ public class Record {
     public Record() {
         this.key = null;
         this.uid = null;
+        this.nickname = null;
         this.recordFolder = null;
         this.thumbnailImg = null;
         this.recordTitle = null;
@@ -28,6 +31,30 @@ public class Record {
         this.thumbnailImg = thumbnailImg;
         this.recordTitle = recordTitle;
         this.recordDate = recordDate;
+    }
+
+    public Record(String key, String nickname, String thumbnailImg, String recordTitle, String recordDate) {
+        this.key = key;
+        this.nickname = nickname;
+        this.thumbnailImg = thumbnailImg;
+        this.recordTitle = recordTitle;
+        this.recordDate = recordDate;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
     public void setRecordFolder(String recordFolder) {

@@ -102,7 +102,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         rvHomeRecord = findViewById(R.id.rvHomeRecord);
         folders = new ArrayList<>();
         recordList = new ArrayList<>();
-        recordAdapter = new RecordAdapter(this, recordList);
+        recordAdapter = new RecordAdapter(this, false, recordList);
         rvHomeRecord.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvHomeRecord.setAdapter(recordAdapter);
         mgrRecords();

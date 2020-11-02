@@ -116,7 +116,7 @@ public class RecordDayActivity extends AppCompatActivity {
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
         recordContents = new ArrayList<>();
-        recordDayAdapter = new RecordDayAdapter(this, recordContents);
+        recordDayAdapter = new RecordDayAdapter(this, false, recordContents);
         recyclerView.setAdapter(recordDayAdapter);
 
         firebaseStorage = FirebaseStorage.getInstance();
@@ -261,6 +261,7 @@ public class RecordDayActivity extends AppCompatActivity {
                 saveRecordInDB();
                 Intent intent = new Intent(this, AddRecordActivity.class);
                 intent.putExtra("currentUid", currentUid);
+                intent.putExtra("isGroup", false);
                 intent.putExtra("recordKey", recordKey);
                 startActivity(intent);
                 break;
@@ -353,7 +354,5 @@ public class RecordDayActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
             }
         });
-
-
     }
 }

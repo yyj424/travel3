@@ -45,10 +45,15 @@
         </activity>
 
         <activity android:name=".GroupListActivity" >
+
+        </activity>
+
+        <activity android:name=".GroupRecordMain" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
+        <activity android:name=".GRecordDayActivity" />
 
         <activity android:name=".PlanList" />
         <activity android:name=".PlanFirstStep"/>
@@ -67,6 +72,7 @@
 
         <activity android:name=".RecordMain"
             android:windowSoftInputMode="adjustPan">
+
         </activity>
     </application>
 </manifest>

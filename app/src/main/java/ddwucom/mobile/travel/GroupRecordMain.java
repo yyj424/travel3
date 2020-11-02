@@ -1,6 +1,5 @@
 package ddwucom.mobile.travel;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -10,17 +9,18 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
-import android.widget.Spinner;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.ChildEventListener;
@@ -38,18 +38,20 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-public class GroupRecordMain extends Activity {
+public class GroupRecordMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     private static final String TAG = "GroupRecordMain";
 
     private FirebaseDatabase database;
     private DatabaseReference dbRef;
     private FirebaseUser user;
     private String currentUid;
+    private String currentNickname;
+    private String currentGid;
 
     RecordAdapter recordAdapter;
     List<Record> recordList;
     RecyclerView recyclerView;
-    ImageButton btnAddRecord;
+    ImageButton btnAddGroupRecord;
     Calendar calendar;
     String dateFormat;
     SimpleDateFormat sdf;
@@ -71,17 +73,20 @@ public class GroupRecordMain extends Activity {
 
         // DB
         database = FirebaseDatabase.getInstance();
-        dbRef = database.getReference("records");
 
         // currentUser
         user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null) {
             currentUid = user.getUid();
         }
+        getNickname();
 
-//        Toolbar toolbar = findViewById(R.id.toolBar);
-//        setSupportActionBar(toolbar);
-//        getSupportActionBar().setTitle(null);
+        // test용!!!!!! 나중에 가져오는거 구현해야됨
+        currentGid = "-ML7VAsNH5KHPqnBrBry";
+
+        Toolbar tbGroupRecord = findViewById(R.id.tbGroupRecord);
+        setSupportActionBar(tbGroupRecord);
+        getSupportActionBar().setTitle(null);
 
         // 날짜
         calendar = Calendar.getInstance();
@@ -89,10 +94,10 @@ public class GroupRecordMain extends Activity {
         sdf = new SimpleDateFormat(dateFormat, Locale.KOREA);
 
         recordList = new ArrayList<>();
-        btnAddRecord = findViewById(R.id.btnAddRecord);
-        recyclerView = findViewById(R.id.record_recycler_view);
+        btnAddGroupRecord = findViewById(R.id.btnAddGroupRecord);
+        recyclerView = findViewById(R.id.rvGroupRecord);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recordAdapter = new RecordAdapter(this, recordList);
+        recordAdapter = new RecordAdapter(this, true, recordList);
         recyclerView.setAdapter(recordAdapter);
 
         recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {
@@ -100,8 +105,10 @@ public class GroupRecordMain extends Activity {
             public void onItemClick(View v, int pos) {
                 String key = recordAdapter.getItem(pos).getKey();
                 Log.d("goeun", "click");
-                Intent intent = new Intent(GroupRecordMain.this, RecordDayActivity.class);
+                Intent intent = new Intent(GroupRecordMain.this, GRecordDayActivity.class);
                 intent.putExtra("currentUid", currentUid);
+                intent.putExtra("currentGid", currentGid);
+                intent.putExtra("currentNickname", currentNickname);
                 intent.putExtra("isNew", false);
                 intent.putExtra("recordKey", key);
                 startActivity(intent);
@@ -113,13 +120,13 @@ public class GroupRecordMain extends Activity {
             public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
                 if (dy > 0) {
                     // 아래로 스크롤
-                    btnAddRecord.setVisibility(View.INVISIBLE);
-                    btnAddRecord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                    btnAddGroupRecord.setVisibility(View.INVISIBLE);
+                    btnAddGroupRecord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
                             R.anim.fade_out));
                 } else if (dy < 0) {
                     // 위로 스크롤
-                    btnAddRecord.setVisibility(View.VISIBLE);
-                    btnAddRecord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
+                    btnAddGroupRecord.setVisibility(View.VISIBLE);
+                    btnAddGroupRecord.startAnimation(AnimationUtils.loadAnimation(getApplicationContext(),
                             R.anim.fade_in));
                 }
 
@@ -137,19 +144,14 @@ public class GroupRecordMain extends Activity {
 
     public void selectDate(final String date) {
         recordList.clear();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = database.getReference("records");
+        dbRef = database.getReference("group_records");
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s:snapshot.getChildren()) {
-                    Log.d("goeun", "k"
-                            +s.getKey());
                     Map<String, Object> data = (Map) s.getValue();
-                    Log.d("goeun", "rf" +data);
-                    if (data.get("recordDate").equals(date) && data.get("uid").equals(currentUid)) {
+                    if (data.get("recordDate").equals(date) && s.getKey().equals(currentGid)) {
                         String key = s.getKey();
-                        Log.d("goeun", key);
                         String recordTitle = null;
                         if (data.get("recordTitle") != null) {
                             recordTitle = data.get("recordTitle").toString();
@@ -165,8 +167,9 @@ public class GroupRecordMain extends Activity {
                         else {
                             thumbnailImg = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.g_no_image_icon).toString();
                         }
+                        String nickname = data.get("nickname").toString();
                         Log.d("goeun", key + thumbnailImg + recordTitle + recordDate);
-                        recordList.add(new Record(key, thumbnailImg, recordTitle, recordDate));
+                        recordList.add(new Record(key, nickname, thumbnailImg, recordTitle, recordDate));
                         Collections.sort(recordList, new Record.SortByDate());
 
                         Log.d("goeun", String.valueOf(recordList.size()));
@@ -182,15 +185,35 @@ public class GroupRecordMain extends Activity {
         });
     }
 
+    public void getNickname() {
+        dbRef = database.getReference("user_list");
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    UserInfo u = s.getValue(UserInfo.class);
+                    Log.d(TAG, u.getUid() + " " + currentUid);
+                    if (u.getUid().equals(currentUid)) {
+                        currentNickname = u.getNickname();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
+
     public void getRecords() {
         recordList.clear();
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference dbRef = database.getReference("records");
+        dbRef = database.getReference("group_records");
         dbRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Map<String, Object> data = (Map) snapshot.getValue();
-                if (data.get("uid").equals(currentUid)) {
+                if (data.get("gid").equals(currentGid)) {
                     String key = snapshot.getKey();
                     Log.d("goeun", key);
                     String recordTitle = null;
@@ -208,8 +231,9 @@ public class GroupRecordMain extends Activity {
                     else {
                         thumbnailImg = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.g_no_image_icon).toString();
                     }
+                    String nickname = data.get("nickname").toString();
                     Log.d("goeun", key + thumbnailImg + recordTitle + recordDate);
-                    recordList.add(new Record(key, thumbnailImg, recordTitle, recordDate));
+                    recordList.add(new Record(key, nickname, thumbnailImg, recordTitle, recordDate));
                     Collections.sort(recordList, new Record.SortByDate());
 
                     Log.d("goeun", String.valueOf(recordList.size()));
@@ -234,7 +258,7 @@ public class GroupRecordMain extends Activity {
 
 
     }
-    
+
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
         return super.onOptionsItemSelected(item);
@@ -249,16 +273,17 @@ public class GroupRecordMain extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        //getRecords();
-
+        getRecords();
         recordAdapter.notifyDataSetChanged();
     }
 
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.btnAddRecord:
-                Intent intent = new Intent(this, RecordDayActivity.class);
+            case R.id.btnAddGroupRecord:
+                Intent intent = new Intent(this, GRecordDayActivity.class);
                 intent.putExtra("currentUid", currentUid);
+                intent.putExtra("currentGid", currentGid);
+                intent.putExtra("currentNickname", currentNickname);
                 intent.putExtra("isNew", true);
                 startActivity(intent);
                 break;
