@@ -50,7 +50,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        setContentView(R.layout.drawer_main);
 
         database = FirebaseDatabase.getInstance();
 
@@ -63,12 +63,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         btnMap = findViewById(R.id.btn_map);
 
         //햄버거 버튼 누르면 상세정보 사이드바
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        //getSupportActionBar().setTitle("please");
+        getSupportActionBar().setTitle(null);
 
-        drawerLayout = (DrawerLayout)findViewById(R.id.drawer);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawerLayout = findViewById(R.id.drawer);
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
 //            @Override
 //            public void onDrawerSlide(View drawerView, float slideOffset) {
 //                super.onDrawerSlide(drawerView, slideOffset);
@@ -92,10 +92,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         Log.d("sera", "toggle : "+toggle);
         drawerLayout.addDrawerListener(toggle);
-        //toggle.syncState();
-//        getSupportActionBar().setHomeButtonEnabled(true);
-//        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-//        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_bnt);
+        toggle.syncState();
+
+        getSupportActionBar().setHomeButtonEnabled(true);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_btn);
+
         NavigationView navigationView = findViewById(R.id.nv_view);
         navigationView.setNavigationItemSelectedListener(this);
 

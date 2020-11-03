@@ -10,7 +10,7 @@
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="70dp"
         android:layout_marginBottom="15dp"
         app:srcCompat="@drawable/app_name_icon2" />
 
