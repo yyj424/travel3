@@ -81,7 +81,7 @@ public class PlanList extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(PlanList.this, PlanLastStep.class);
-                intent.putExtra("pname", planName);
+                intent.putExtra("pname", PlanList.get(position).getPlanName());
                 startActivity(intent);
             }
         });

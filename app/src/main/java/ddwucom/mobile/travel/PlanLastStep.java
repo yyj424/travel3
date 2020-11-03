@@ -288,9 +288,12 @@ public class PlanLastStep extends AppCompatActivity {
         else {
             key = databaseReference.child("days_list").push().getKey();
             Log.d("yyj", "데이 리스트 푸시");
-            keyList.put(String.valueOf(pos), key);
+
         }
-        databaseReference.child("days_list").child(key).updateChildren(day);
+        if(day.size() > 0) {
+            keyList.put(String.valueOf(pos), key);
+            databaseReference.child("days_list").child(key).updateChildren(day);
+        }
     }
 
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
