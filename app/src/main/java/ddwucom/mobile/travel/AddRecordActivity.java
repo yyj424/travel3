@@ -193,7 +193,11 @@ public class AddRecordActivity extends Activity {
                     for (final Uri imageUri : selectedImageList) {
                         // storage에 사진 업로드
 
-                        mStorageRef = firebaseStorage.getReference().child("record_images/" + currentGid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        if (isGroup) {
+                            mStorageRef = firebaseStorage.getReference().child("record_images/" + currentGid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        } else {
+                            mStorageRef = firebaseStorage.getReference().child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        }
                         mStorageRef.putFile(imageUri)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override
