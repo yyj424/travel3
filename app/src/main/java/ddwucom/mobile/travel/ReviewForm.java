@@ -68,6 +68,7 @@ public class ReviewForm extends AppCompatActivity {
     long score3;
     long score4;
     String folderName;
+    String pname;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -92,6 +93,7 @@ public class ReviewForm extends AppCompatActivity {
         RatingBar ratingBar = findViewById(R.id.ratingBar);
         Intent intent = getIntent();
         pid = intent.getStringExtra("placeId");
+        pname = intent.getStringExtra("placeName");
 
         ratingBar.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
             @Override
@@ -180,6 +182,7 @@ public class ReviewForm extends AppCompatActivity {
                                 myReview.setScore2(score2);
                                 myReview.setScore3(score3);
                                 myReview.setScore4(score4);
+                                myReview.setPname(pname);
 
                                 reviewRegister(myReview);
                                 finish();

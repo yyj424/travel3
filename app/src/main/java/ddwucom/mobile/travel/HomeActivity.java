@@ -4,12 +4,11 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -30,8 +29,13 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -56,6 +60,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     ArrayList<Record> recordList;
     RecordAdapter recordAdapter;
     RecyclerView rvHomeRecord;
+
+    RecyclerView planListview;
+    ArrayList<MyPlan> planList;
+    HomePlanAdapter planAdapter;
+    String pname;
+
+    RecyclerView reviewListview;
+    ArrayList<MyReview> reviewList;
+    HomeReviewAdapter reviewAdapter;
+    String nick;
+    String rvimg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -143,6 +158,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         rvHomeRecord.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvHomeRecord.setAdapter(recordAdapter);
         mgrRecords();
+
+        planListview = findViewById(R.id.y_home_plans);
+        planList = new ArrayList<>();
+        planAdapter = new HomePlanAdapter(this, planList);
+        planListview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        planListview.setAdapter(planAdapter);
+        getPlans();
+
+        reviewListview = findViewById(R.id.y_home_reviews);
+        reviewList = new ArrayList<>();
+        reviewAdapter = new HomeReviewAdapter(this, reviewList);
+        reviewListview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
+        reviewListview.setAdapter(reviewAdapter);
+        getReview();
     }
 
     @Override
@@ -237,12 +266,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 btnMap.setImageResource(R.drawable.map_icon_yellow);
                 break;
             case R.id.tvPlanAll:
+                Intent plan = new Intent(HomeActivity.this, PlanList.class);
+                startActivity(plan);
                 break;
             case R.id.tvRecordAll:
                 Intent intent = new Intent(HomeActivity.this, RecordMain.class);
                 startActivity(intent);
                 break;
             case R.id.tvReviewAll:
+                Intent review = new Intent(HomeActivity.this, ReviewList.class);
+                review.putExtra("currentId", currentUid);
+                startActivity(review);
                 break;
 //            case R.id.btn_menu:
 //                drawerLayout.openDrawer(drawerView);
@@ -345,4 +379,74 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
+    public void getPlans() {
+        DatabaseReference plandb = database.getReference("plan_list");
+        plandb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    if (s.child("uid").getValue().toString().equals(currentUid)) {
+                        pname = s.child("planName").getValue().toString();
+                        planList.add(new MyPlan(pname, s.child("startDate").getValue().toString(), s.child("endDate").getValue().toString()));
+                    }
+                }
+                planAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+        planAdapter.setOnItemClickListener(new HomePlanAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent getPlan = new Intent(HomeActivity.this, PlanLastStep.class);
+                getPlan.putExtra("pname", planList.get(position).getPlanName());
+                startActivity(getPlan);
+            }
+        });
+    }
+
+    public void getReview()
+    {
+        DatabaseReference userdb = database.getReference("user_list");
+        userdb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    if (s.child("uid").getValue().toString().equals(currentUid)) {
+                        nick = s.child("nickname").getValue().toString();
+                        break;
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+
+        DatabaseReference reviewdb = database.getReference("review_content_list");
+        reviewdb.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    if (s.child("userId").getValue().toString().equals(nick)) {
+                        for (DataSnapshot rvis : s.child("reviewImages").getChildren()) {
+                            rvimg = rvis.getValue().toString();
+                            break;
+                        }
+                        reviewList.add(new MyReview(s.child("placeName").getValue().toString(), rvimg, Double.parseDouble(String.valueOf(s.child("rating").getValue()))));
+                    }
+                }
+                reviewAdapter.notifyDataSetChanged();
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+    }
 }

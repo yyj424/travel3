@@ -314,6 +314,7 @@ public class MapActivity extends AppCompatActivity {
 //                startActivity(intent);
                 Intent intent = new Intent(MapActivity.this, ReviewList.class);
                 intent.putExtra("placeId", pid);
+                intent.putExtra("placeName", placeName);
                 startActivityForResult(intent, 200);//???????????????이거 왜썼지
             }
         });

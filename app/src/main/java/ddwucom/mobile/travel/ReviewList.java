@@ -56,6 +56,8 @@ public class ReviewList extends AppCompatActivity {
     TextView cnt;
     TextView rv;
     int selected = 0;
+    String pname;
+    String currentUid;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +66,8 @@ public class ReviewList extends AppCompatActivity {
 
         Intent intent = getIntent();
         pid = intent.getStringExtra("placeId");
+        pname = intent.getStringExtra("placeName");
+        currentUid = intent.getStringExtra("currentUid");
 
         reviewList = new ArrayList<>();
         listView = findViewById(R.id.y_review_list);
@@ -194,6 +198,7 @@ public class ReviewList extends AppCompatActivity {
                     Intent intent = new Intent(ReviewList.this, ReviewForm.class);
                     intent.putExtra("uid", user.getUid());
                     intent.putExtra("placeId", pid);
+                    intent.putExtra("placeName", pname);
                     startActivityForResult(intent, 100);
                 } else {
                     Toast.makeText(getApplicationContext(), "리뷰는 로그인 후 작성할 수 있습니다.", Toast.LENGTH_LONG).show();

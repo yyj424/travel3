@@ -9,6 +9,8 @@ public class MyReview {
     private double rating;
     private String date;
     private String content;
+    private String pname;
+    String img;
 
     private long score1;
     private long score2;
@@ -27,6 +29,12 @@ public class MyReview {
         this.score4 = 0;
     }
 
+    public MyReview(String pname, String img, double rating)
+    {
+        this.pname = pname;
+        this.img = img;
+        this.rating = rating;
+    }
 
     public MyReview(String userId, List<String> reviewImages, double rating, String date, String content, long score1, long score2, long score3, long score4) {
         this.userId = userId;
@@ -38,6 +46,36 @@ public class MyReview {
         this.score2 = score2;
         this.score3 = score3;
         this.score4 = score4;
+        this.pname = pname;
+    }
+
+    public MyReview(String userId, List<String> reviewImages, double rating, String date, String content, long score1, long score2, long score3, long score4, String pname) {
+        this.userId = userId;
+        this.reviewImages = reviewImages;
+        this.rating = rating;
+        this.date = date;
+        this.content = content;
+        this.score1 = score1;
+        this.score2 = score2;
+        this.score3 = score3;
+        this.score4 = score4;
+        this.pname = pname;
+    }
+
+    public String getPname() {
+        return pname;
+    }
+
+    public void setPname(String pname) {
+        this.pname = pname;
+    }
+
+    public String getImg() {
+        return img;
+    }
+
+    public void setImg(String img) {
+        this.img = img;
     }
 
     public List<String> getReviewImages() {
