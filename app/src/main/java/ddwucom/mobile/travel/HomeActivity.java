@@ -275,7 +275,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 break;
             case R.id.tvReviewAll:
                 Intent review = new Intent(HomeActivity.this, ReviewList.class);
-                review.putExtra("currentId", currentUid);
+                review.putExtra("nickName", nick);
                 startActivity(review);
                 break;
 //            case R.id.btn_menu:
@@ -438,7 +438,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                             rvimg = rvis.getValue().toString();
                             break;
                         }
-                        reviewList.add(new MyReview(s.child("placeName").getValue().toString(), rvimg, Double.parseDouble(String.valueOf(s.child("rating").getValue()))));
+                        reviewList.add(new MyReview(s.child("pname").getValue().toString(), rvimg, Double.parseDouble(String.valueOf(s.child("rating").getValue()))));
                     }
                 }
                 reviewAdapter.notifyDataSetChanged();

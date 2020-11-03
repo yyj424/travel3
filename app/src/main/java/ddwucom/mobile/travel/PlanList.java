@@ -103,7 +103,7 @@ public class PlanList extends AppCompatActivity {
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.y_addPlan:
-                Intent intent = new Intent(PlanList.this, PlanFirstStep.class);
+                Intent intent = new Intent(PlanList.this, PlanLastStep.class);
                 startActivity(intent);
                 finish();
                 break;

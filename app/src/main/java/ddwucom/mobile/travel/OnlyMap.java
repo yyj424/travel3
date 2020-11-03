@@ -3,6 +3,8 @@ package ddwucom.mobile.travel;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
@@ -10,6 +12,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -40,23 +43,23 @@ import com.google.android.libraries.places.widget.Autocomplete;
 import com.google.android.libraries.places.widget.AutocompleteActivity;
 import com.google.android.libraries.places.widget.model.AutocompleteActivityMode;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class MapActivity extends AppCompatActivity {
+public class OnlyMap extends AppCompatActivity {
 
     String [] permission_list ={
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION
     };
 
+    ImageView btnHome, btnGroup, btnCourse, btnMap;
     Marker currentMarker = null;
     LocationManager locationManager;
     GoogleMap map;
     RecyclerView listview;
-    ArrayList<MyCourse> courseList;
-    CourseListAdapter courseListAdapter;
     LatLng position;
     double latitude = 100.0;
     double longitude = 200.0;
@@ -69,61 +72,54 @@ public class MapActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.map);
+        setContentView(R.layout.main_map);
+
+        btnHome = findViewById(R.id.btn_home);
+        btnGroup = findViewById(R.id.btn_friends);
+        btnCourse = findViewById(R.id.btn_course);
+        btnMap = findViewById(R.id.btn_map);
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             requestPermissions(permission_list, 0);
         } else {
             init();
         }
-
-        listview = findViewById(R.id.y_course_list);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        listview.setLayoutManager(layoutManager);
-
-        Intent intent = getIntent();
-        courseList = (ArrayList<MyCourse>) intent.getSerializableExtra("courseList");
-        if (courseList == null) {
-            courseList = new ArrayList<>();
-        }
-        courseListAdapter = new CourseListAdapter(this, courseList, onLongClickItem);
-        listview.setAdapter(courseListAdapter);
-
         String apiKey = getResources().getString(R.string.google_maps_key);
         if (!Places.isInitialized()) {
             Places.initialize(getApplicationContext(), apiKey);
         }
     }
 
-    private void courseAdd() {
-        courseList.add(new MyCourse(courseList.size() + 1, placeName, null));
-        courseListAdapter = new CourseListAdapter(this, courseList, onLongClickItem);
-        listview.setAdapter(courseListAdapter);
-    }
-
-    private View.OnLongClickListener onLongClickItem = new View.OnLongClickListener() {
-        @Override
-        public boolean onLongClick(View v) {
-            listview.removeView(v);
-            return false;
-        }
-    };
-
     public void onClick(View v) {
         switch (v.getId()) {
-            case R.id.y_placeSearch:
+            case R.id.y_home_place_search:
                 List<Place.Field> fieldList = Arrays.asList(Place.Field.ADDRESS, Place.Field.LAT_LNG, Place.Field.NAME, Place.Field.ID);
-                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(MapActivity.this);
+                Intent intent = new Autocomplete.IntentBuilder(AutocompleteActivityMode.OVERLAY, fieldList).build(OnlyMap.this);
                 startActivityForResult(intent, 100);
                 break;
-            case R.id.y_courseAdd:
-                courseAdd();
+            case R.id.btn_home:
+                btnHome.setImageResource(R.drawable.home_icon_yellow);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
                 break;
-            case R.id.y_courseRegister:
-                Intent planIntent = new Intent(MapActivity.this, PlanLastStep.class);
-                planIntent.putExtra("placeList", courseList);
-                setResult(RESULT_OK, planIntent);
-                finish();
+            case R.id.btn_friends:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                break;
+            case R.id.btn_course:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_yellow);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                break;
+            case R.id.btn_map:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_yellow);
                 break;
         }
     }
@@ -141,10 +137,7 @@ public class MapActivity extends AppCompatActivity {
             getMyLocation();
         } else if (resultCode == AutocompleteActivity.RESULT_ERROR) {
             Status status = Autocomplete.getStatusFromIntent(data);
-            Toast.makeText(MapActivity.this, status.getStatusMessage(), Toast.LENGTH_LONG).show();
-        }
-        else if (requestCode == 200 && resultCode == RESULT_OK) {
-            courseAdd();
+            Toast.makeText(OnlyMap.this, status.getStatusMessage(), Toast.LENGTH_LONG).show();
         }
     }
 
@@ -161,9 +154,9 @@ public class MapActivity extends AppCompatActivity {
 
     public void init() {
         FragmentManager fragmentManager = getSupportFragmentManager();
-        SupportMapFragment mapFragment = (SupportMapFragment)fragmentManager.findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment)fragmentManager.findFragmentById(R.id.y_home_map);
 
-        MapReadyCallback callback1 = new MapReadyCallback();
+        OnlyMap.MapReadyCallback callback1 = new OnlyMap.MapReadyCallback();
         mapFragment.getMapAsync(callback1);
     }
 
@@ -173,13 +166,6 @@ public class MapActivity extends AppCompatActivity {
         public void onMapReady(GoogleMap googleMap) {
             map = googleMap;
             getMyLocation();
-            map.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-                    //findPlace(latLng.latitude, latLng.longitude);
-                    setMarker(latLng);
-                }
-            });
         }
     }
 
@@ -208,7 +194,7 @@ public class MapActivity extends AppCompatActivity {
             }
         }
         //새로운 측정 값
-        GetMyLocationListener listener = new GetMyLocationListener();
+        OnlyMap.GetMyLocationListener listener = new OnlyMap.GetMyLocationListener();
 
         if(locationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) == true) {
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10f, (android.location.LocationListener) listener);
@@ -223,7 +209,7 @@ public class MapActivity extends AppCompatActivity {
         if (latitude == 100.0 && longitude == 200.0) {
             position = new LatLng(location.getLatitude(), location.getLongitude());
         }
-       else {
+        else {
             position = new LatLng(latitude, longitude);
         }
 
@@ -249,7 +235,7 @@ public class MapActivity extends AppCompatActivity {
         markerOptions.draggable(true);
         currentMarker = map.addMarker(markerOptions);
 
-        MarkerWindowAdapter customInfoWindow = new MarkerWindowAdapter(MapActivity.this);
+        MarkerWindowAdapter customInfoWindow = new MarkerWindowAdapter(OnlyMap.this);
         map.setInfoWindowAdapter(customInfoWindow);
         currentMarker.showInfoWindow();//되는지 확인
 
@@ -258,10 +244,11 @@ public class MapActivity extends AppCompatActivity {
             public void onInfoWindowClick(Marker marker) {
 //                Intent intent = new Intent(MapActivity.this ,ReviewList.class);
 //                startActivity(intent);
-                Intent intent = new Intent(MapActivity.this, ReviewList.class);
+                Intent intent = new Intent(OnlyMap.this, ReviewList.class);
                 intent.putExtra("placeId", pid);
                 intent.putExtra("placeName", placeName);
-                startActivityForResult(intent, 200);//???????????????이거 왜썼지
+                intent.putExtra("onlyMap",2);
+                startActivity(intent);
             }
         });
 
