@@ -8,12 +8,15 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,6 +28,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,12 +37,18 @@ import java.util.Map;
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
     ImageView btnHome, btnGroup, btnCourse, btnMap;
     private FirebaseDatabase database;
+    private DatabaseReference dbRef;
     private FirebaseAuth firebaseAuth;
+
     private String currentUid;
+    static String nv_phone, nv_email, nv_nickname;
 
     Toolbar toolbar;
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
+    NavigationView navigationView;
+    MenuItem itemP, itemE, menuInfo;
+    TextView tx_name, tx_email, tx_phone;
 //    boolean [] clicked = {true, false, false, false};
 //    int [] btn_names = {R.id.btn_home, R.id.btn_friends, R.id.btn_course, R.id.btn_map};
 
@@ -68,27 +78,52 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setTitle(null);
 
         drawerLayout = findViewById(R.id.drawer);
-        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-//            @Override
-//            public void onDrawerSlide(View drawerView, float slideOffset) {
-//                super.onDrawerSlide(drawerView, slideOffset);
-//            }
-//
-//            @Override
-//            public void onDrawerOpened(View drawerView) {
-//                super.onDrawerOpened(drawerView);
-//            }
-//
-//            @Override
-//            public void onDrawerClosed(View drawerView) {
-//                super.onDrawerClosed(drawerView);
-//            }
-//
-//            @Override
-//            public void onDrawerStateChanged(int newState) {
-//                super.onDrawerStateChanged(newState);
-//            }
-//        }
+        toggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close){
+            @Override
+            public void onDrawerSlide(View drawerView, float slideOffset) {
+                dbRef = database.getReference("user_list");
+                dbRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d("sera", "CLick22!!");
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Log.d("sera", "ValueEventListener : " + snapshot.child("nickname").getValue());
+                            if (currentUid.equals(snapshot.child("uid").getValue().toString())) {
+                                nv_phone = snapshot.child("phone").getValue().toString();
+                                nv_email = snapshot.child("email").getValue().toString();
+                                nv_nickname = snapshot.child("nickname").getValue().toString();
+                            }
+                        }
+                    }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+                tx_name = findViewById(R.id.tx_name);
+                tx_email = findViewById(R.id.tx_email);
+                tx_phone = findViewById(R.id.tx_phone);
+
+                tx_name.setText(nv_nickname);
+                tx_email.setText(nv_email);
+                tx_phone.setText(nv_phone);
+            }
+
+            @Override
+            public void onDrawerOpened(View drawerView) {
+               super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                super.onDrawerClosed(drawerView);
+            }
+
+            @Override
+            public void onDrawerStateChanged(int newState) {
+                super.onDrawerStateChanged(newState);
+            }
+        };
 
         Log.d("sera", "toggle : "+toggle);
         drawerLayout.addDrawerListener(toggle);
@@ -98,7 +133,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.menu_btn);
 
-        NavigationView navigationView = findViewById(R.id.nv_view);
+        navigationView = findViewById(R.id.nv_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         rvHomeRecord = findViewById(R.id.rvHomeRecord);
@@ -109,67 +144,59 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         rvHomeRecord.setAdapter(recordAdapter);
         mgrRecords();
     }
-//    @Override
-//    public boolean onCreateOptionsMenu(Menu menu) {
-//        // Inflate the menu; this adds items to the action bar if it is present.
-//        getMenuInflater().inflate(R.menu.hamburger_menu, menu);
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean onOptionsItemSelected(MenuItem item) {
-//        // Handle action bar item clicks here. The action bar will
-//        // automatically handle clicks on the Home/Up button, so long
-//        // as you specify a parent activity in AndroidManifest.xml.
-////        int id = item.getItemId();
-////
-////        //noinspection SimplifiableIfStatement
-////        if (id == R.id.action_settings) {
-////            return true;
-////        }
-//
-//        return super.onOptionsItemSelected(item);
-//    }
-//    @Override
-//    public boolean onNavigationItemSelected(MenuItem item) {
-//         Handle navigation view item clicks here.
-//        int id = item.getItemId();
-//
-//        if (id == R.id.nav_camera) {
-//            // Handle the camera action
-//        } else if (id == R.id.nav_gallery) {
-//
-//        } else if (id == R.id.nav_slideshow) {
-//
-//        } else if (id == R.id.nav_manage) {
-//
-//        } else if (id == R.id.nav_share) {
-//
-//        } else if (id == R.id.nav_send) {
-//
+
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+         //Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        switch(id){
+            case R.id.nav_signout:
+                if(firebaseAuth.getCurrentUser() != null){
+                    //이미 로그인 되었다면 이 액티비티를 종료함
+                    firebaseAuth.signOut();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), LoginForm.class));
+                }
+                else{
+                    Log.d("sera", "firebaseAuth.getCurrentUser() : null   [nav_signout]");
+                }
+                break;
+            case R.id.nav_revoke:
+                if(firebaseAuth.getCurrentUser() != null){ //회원탈퇴
+                    //이미 로그인 되었다면 이 액티비티를 종료함
+                    firebaseAuth.getCurrentUser().delete();
+                    finish();
+                    startActivity(new Intent(getApplicationContext(), LoginForm.class));
+                }
+                else{
+                    Log.d("sera", "firebaseAuth.getCurrentUser() : null  [nav_revoke]");
+                }
+                break;
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer);
+        drawer.closeDrawer(GravityCompat.START);
+        return true;
+    }
+//    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
+//        @Override
+//        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
+//            Log.d("sera", "hello");
 //        }
-//        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-//        drawer.closeDrawer(GravityCompat.START);
-//        return true;
-//    }
-    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
-        @Override
-        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-            Log.d("sera", "hello");
-        }
-
-        @Override
-        public void onDrawerOpened(@NonNull View drawerView) {
-        }
-
-        @Override
-        public void onDrawerClosed(@NonNull View drawerView) {
-        }
-
-        @Override
-        public void onDrawerStateChanged(int newState) {
-        }
-    };
+//
+//        @Override
+//        public void onDrawerOpened(@NonNull View drawerView) {
+//        }
+//
+//        @Override
+//        public void onDrawerClosed(@NonNull View drawerView) {
+//        }
+//
+//        @Override
+//        public void onDrawerStateChanged(int newState) {
+//        }
+//    };
 
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
 //        Drawable tempImg, tempRes;
@@ -318,8 +345,4 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
     }
 
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        return false;
-    }
 }

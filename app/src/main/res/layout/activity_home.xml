@@ -28,7 +28,7 @@
                 android:layout_gravity="center"
                 android:layout_marginTop="3dp"
                 android:layout_marginBottom="3dp"
-                android:src="@drawable/app_name_icon" />
+                app:srcCompat="@drawable/app_name_icon" />
 
         </androidx.appcompat.widget.Toolbar>
     </com.google.android.material.appbar.AppBarLayout>
