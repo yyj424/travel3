@@ -30,7 +30,6 @@ import com.google.firebase.database.ValueEventListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -61,7 +60,6 @@ public class ReviewList extends AppCompatActivity {
     String pname;
     String nick;
     int f;
-    List<String> rImages;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,7 +81,6 @@ public class ReviewList extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference("review_content_list");
         cnt = findViewById(R.id.y_review_cnt);
         rv = findViewById(R.id.y_rvAvg);
-        rImages = new ArrayList<>();
 
         final SwipeRefreshLayout mSwipeRefreshLayout = (SwipeRefreshLayout) findViewById(R.id.y_swipe);
         mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -128,7 +125,10 @@ public class ReviewList extends AppCompatActivity {
                 for (DataSnapshot s : snapshot.getChildren()) {
                     if (s.child("userId").getValue().toString().equals(nick)) {
                         uid = s.child("userId").getValue().toString();
-                        rImages.addAll((Collection<? extends String>) s.child("reviewImages").getValue());
+                        List<String> rImages = new ArrayList<>();
+                        for (DataSnapshot rvis : s.child("reviewImages").getChildren()) {
+                            rImages.add(rvis.getValue().toString());
+                        }
                         rating = Double.parseDouble(String.valueOf(s.child("rating").getValue()));
                         total += rating;
                         content = s.child("content").getValue().toString();
@@ -163,7 +163,10 @@ public class ReviewList extends AppCompatActivity {
                 for (DataSnapshot s : snapshot.getChildren()) {
                     if (s.child("pid").getValue().toString().equals(pid)) {
                         uid = s.child("userId").getValue().toString();
-                        rImages.addAll((Collection<? extends String>) s.child("reviewImages").getValue());
+                        List<String> rImages = new ArrayList<>();
+                        for (DataSnapshot rvis : s.child("reviewImages").getChildren()) {
+                            rImages.add(rvis.getValue().toString());
+                        }
                         rating = Double.parseDouble(String.valueOf(s.child("rating").getValue()));
                         total += rating;
                         content = s.child("content").getValue().toString();
