@@ -47,6 +47,11 @@
         <activity android:name=".GroupListActivity" >
 
         </activity>
+        <activity android:name=".GroupGalleryActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+            </intent-filter>
+        </activity>
 
         <activity android:name=".GroupRecordMain" >
 
@@ -110,9 +115,7 @@
 
         </activity>
         <activity android:name=".AlbumActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
+
         </activity>
         <activity android:name=".AlbumDetailActivity" />
     </application>

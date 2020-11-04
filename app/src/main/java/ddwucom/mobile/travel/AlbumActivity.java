@@ -54,7 +54,6 @@ public class AlbumActivity extends AppCompatActivity {
     String folderName;
     String albumName;
     String currentGid;
-    int i;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
