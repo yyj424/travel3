@@ -207,7 +207,9 @@ public class GroupListActivity extends Activity {
                                     return;
                                 } else {
                                     Group group = new Group(addMembers, groupName, startDate, endDate);
-                                    databaseReference.push().setValue(group);
+                                    String addKey = databaseReference.push().getKey();
+                                    databaseReference.child(addKey).setValue(group);
+                                    firebaseDatabase.getReference("group_album").child(addKey).child("기본").child("0").setValue("이미지 없음");
                                     //planAdapter.notifyDataSetChanged();
                                 }
                             }

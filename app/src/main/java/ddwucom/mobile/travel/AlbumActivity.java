@@ -28,6 +28,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
+import java.lang.reflect.Array;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -133,8 +134,9 @@ public class AlbumActivity extends AppCompatActivity {
         dbRef.child(currentGid).child(albumName).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                if (snapshot.getValue() != null) {
-                    imageList.addAll((Collection<? extends String>) snapshot.getValue());
+                ArrayList<String> tmp = (ArrayList<String>) snapshot.getValue();
+                if (!tmp.get(0).equals("이미지 없음")) {
+                    imageList.addAll(tmp);
                     albumAdapter.notifyDataSetChanged();
                     rvAlbum.smoothScrollToPosition(imageList.size() - 1);
                 }
@@ -155,14 +157,12 @@ public class AlbumActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.tbAlbum);
         setSupportActionBar(toolbar);
 
-        // !!!!앨범명 가져오는거 구현해야됨
-        setTitle("기본");
-
         selectedImageList = new ArrayList<>();
         uploadImages = new ArrayList<>();
-        //!!!!!! currentGid 가져오는거 구현해야함 임시임
-        currentGid = "-ML7VAsNH5KHPqnBrBry";
-        albumName = "기본";
+
+        currentGid = (String) getIntent().getSerializableExtra("currentGid");
+        albumName = (String) getIntent().getSerializableExtra("albumName");
+        setTitle(albumName);
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("group_album");

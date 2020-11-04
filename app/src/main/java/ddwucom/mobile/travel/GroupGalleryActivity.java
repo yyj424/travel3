@@ -2,6 +2,7 @@ package ddwucom.mobile.travel;
 
 import android.app.Activity;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.ListView;
@@ -75,10 +77,16 @@ public class GroupGalleryActivity extends AppCompatActivity {
                         public void onClick(DialogInterface dialog, int which) {
                             etAlbumName = addAlbumLayout.findViewById(R.id.etDialog);
                             String albumName = etAlbumName.getText().toString();
-                            Log.d(TAG, albumName);
-                            if (!albumName.matches("") && isExistAlbumName(albumName)) {
-                                Log.d(TAG, "앨범 추가");
-                                dbRef.child(albumName).setValue(new ArrayList<String>().add("이미지 없음"));
+
+                            if (!albumName.equals("") && !isExistAlbumName(albumName)) {
+                                dbRef.child(albumName).child("0").setValue("이미지 없음");
+                                Intent intent = new Intent(GroupGalleryActivity.this, AlbumActivity.class);
+                                intent.putExtra("currentGid", currentGid);
+                                intent.putExtra("albumName", albumName);
+                                startActivity(intent);
+                            } else {
+                                Toast.makeText(GroupGalleryActivity.this, "이미 존재하는 앨범명입니다!", Toast.LENGTH_LONG);
+                                return;
                             }
                         }
                     })
@@ -119,17 +127,28 @@ public class GroupGalleryActivity extends AppCompatActivity {
         dbRef = database.getReference("group_album").child(currentGid);
 
         albumList = new ArrayList<>();
-        getAlbumList();
 
         lvAlbumList = findViewById(R.id.lvAlbumList);
         toolbar = findViewById(R.id.tbGallery);
         setSupportActionBar(toolbar);
+        setTitle(null);
 
         galleryAdapter = new GalleryListAdapter(this, albumList);
         lvAlbumList.setAdapter(galleryAdapter);
+
+        lvAlbumList.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(GroupGalleryActivity.this, AlbumActivity.class);
+                intent.putExtra("currentGid", currentGid);
+                intent.putExtra("albumName", albumList.get(position).getAlbumName());
+                startActivity(intent);
+            }
+        });
     }
 
     public void getAlbumList() {
+        albumList.clear();
         dbRef.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
@@ -166,5 +185,11 @@ public class GroupGalleryActivity extends AppCompatActivity {
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        getAlbumList();
     }
 }

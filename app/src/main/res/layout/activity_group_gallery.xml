@@ -18,7 +18,7 @@
             android:id="@+id/tbGallery"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@drawable/top"
+            android:background="@drawable/gallery_top"
             android:theme="@style/ToolbarTheme"
             app:buttonGravity="center_vertical" />
     </com.google.android.material.appbar.AppBarLayout>
