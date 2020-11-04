@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -29,13 +28,8 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
 import java.util.Map;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -51,10 +45,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     DrawerLayout drawerLayout;
     ActionBarDrawerToggle toggle;
     NavigationView navigationView;
-    MenuItem itemP, itemE, menuInfo;
     TextView tx_name, tx_email, tx_phone;
-//    boolean [] clicked = {true, false, false, false};
-//    int [] btn_names = {R.id.btn_home, R.id.btn_friends, R.id.btn_course, R.id.btn_map};
 
     ArrayList<String> folders;
     ArrayList<Record> recordList;
@@ -209,39 +200,9 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-//    DrawerLayout.DrawerListener listener = new DrawerLayout.DrawerListener() {
-//        @Override
-//        public void onDrawerSlide(@NonNull View drawerView, float slideOffset) {
-//            Log.d("sera", "hello");
-//        }
-//
-//        @Override
-//        public void onDrawerOpened(@NonNull View drawerView) {
-//        }
-//
-//        @Override
-//        public void onDrawerClosed(@NonNull View drawerView) {
-//        }
-//
-//        @Override
-//        public void onDrawerStateChanged(int newState) {
-//        }
-//    };
 
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
-//        Drawable tempImg, tempRes;
-//        Bitmap tmpBitmap, tmpBitmapRes;
         switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
-//
-//            case R.id.btnLogout:
-//
-//                if(firebaseAuth.getCurrentUser() != null){
-//                    //이미 로그인 되었다면 이 액티비티를 종료함
-//                    firebaseAuth.signOut();
-//                    finish();
-//                    startActivity(new Intent(getApplicationContext(), LoginForm.class));
-//                }
-//                break;
             case R.id.btn_home:
                     btnHome.setImageResource(R.drawable.home_icon_yellow);
                     btnGroup.setImageResource(R.drawable.friends_icon_grey);
@@ -277,9 +238,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 review.putExtra("nickName", nick);
                 startActivity(review);
                 break;
-//            case R.id.btn_menu:
-//                drawerLayout.openDrawer(drawerView);
-//                break;
         }
     }
 

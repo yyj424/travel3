@@ -47,7 +47,7 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         TextView score4;
 
         public ViewHolder(View itemView) {
-            super(itemView);Log.d("yyj","viewholder");
+            super(itemView);
             viewPager = itemView.findViewById(R.id.y_rvImgVP);
             pageIndicatorView = itemView.findViewById(R.id.y_rvImgPic);
             userId = itemView.findViewById(R.id.y_userId);
@@ -64,20 +64,19 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
 
     public ReviewListAdapter(Context context, ArrayList<MyReview> myReviewList) {
         this.context = context;
-        this.myReviewList = myReviewList;Log.d("yyj","리뷰 리스트 생성자");
+        this.myReviewList = myReviewList;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.reviewlist_adapter_view, parent, false);
         // set the view's size, margins, paddings and layout parameters
-        ViewHolder viewHolder = new ViewHolder(v);Log.d("yyj","뷰홀더 만들기");
+        ViewHolder viewHolder = new ViewHolder(v);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        Log.d("yyj","bind>>>>>>>>>>>>>>>>>>>");
         holder.userId.setText(myReviewList.get(position).getUserId());
         holder.ratingbar.setRating((float) myReviewList.get(position).getRating());
         holder.ratingview.setText(String.valueOf(myReviewList.get(position).getRating()));
@@ -87,8 +86,6 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
         holder.score2.setText(String.valueOf(myReviewList.get(position).getScore2()));
         holder.score3.setText(String.valueOf(myReviewList.get(position).getScore3()));
         holder.score4.setText(String.valueOf(myReviewList.get(position).getScore4()));
-
-        Log.d("yyj", "position: "+String.valueOf(position)); Log.d("yyj", String.valueOf(myReviewList.get(position).getReviewImages().size()));
 
         adapter = new rvImagePagerAdapter(context, myReviewList.get(position).getReviewImages());
         holder.pageIndicatorView.setCount(myReviewList.get(position).getReviewImages().size());
@@ -107,13 +104,13 @@ public class ReviewListAdapter extends RecyclerView.Adapter<ReviewListAdapter.Vi
             public void onPageScrollStateChanged(int state) {}
         });
 
-        if (mViewPagerState.containsKey(position)) {Log.d("yyj", "키있음"+mViewPagerState.get(position));
+        if (mViewPagerState.containsKey(position)) {
             holder.viewPager.setCurrentItem(mViewPagerState.get(position));
         }
     }
 
-    public void onViewRecycled(ViewHolder holder) {Log.d("yyj","recycled");
-        mViewPagerState.put(holder.getAdapterPosition(), holder.viewPager.getCurrentItem());Log.d("yyj", "키넣음");
+    public void onViewRecycled(ViewHolder holder) {
+        mViewPagerState.put(holder.getAdapterPosition(), holder.viewPager.getCurrentItem());
         super.onViewRecycled(holder);
     }
 

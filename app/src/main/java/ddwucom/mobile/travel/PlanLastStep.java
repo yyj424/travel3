@@ -1,9 +1,7 @@
 package ddwucom.mobile.travel;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.EditText;
@@ -18,28 +16,22 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.github.sundeepk.compactcalendarview.CompactCalendarView;
-import com.google.android.gms.common.util.ArrayUtils;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
-import java.lang.reflect.Array;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Collection;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class PlanLastStep extends AppCompatActivity {
     EditText memo;
@@ -125,7 +117,6 @@ public class PlanLastStep extends AppCompatActivity {
                                 planName.setText(pname);
                                 stDate.setText(s.child("startDate").getValue().toString());
                                 enDate.setText(s.child("endDate").getValue().toString());
-                                Log.d("yyj", String.valueOf(s.child("daysList").getValue()));
                                 ArrayList<String> daysList = (ArrayList<String>) s.child("daysList").getValue();
                                 for (int i = 0; i < daysList.size(); i++) {
                                     keyList.put(String.valueOf(i), daysList.get(i));
@@ -212,10 +203,7 @@ public class PlanLastStep extends AppCompatActivity {
                                    final int position, long id) {
             long ct = System.currentTimeMillis();
             if ((ct - t)*1000 > 0.00001) {
-                Log.d("yyj", "<<<<<<<<<<<스피너 클릭!!!!!! : " + position + " 번째자리, Day : " + (position+1) +" >>>>>>>>>>>>>");
                 dayListDBRef = firebaseDatabase.getReference("days_list");
-                Log.d("yyj", "리스트 사이즈!!!!!" + String.valueOf(placeList.size()));
-                Log.d("yyj", "contains Key!!!!!  : " + String.valueOf(keyList.containsKey(String.valueOf(position))) + "***키가 있는지 없는지***");
                 if (keyList.containsKey(String.valueOf(position))) {//키리스트에 지금 누른 값이 있으면 디비를 불러올것임
                     dayListDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
@@ -226,18 +214,13 @@ public class PlanLastStep extends AppCompatActivity {
                                     Map<String, Object> map = (Map) s.getValue();
                                     for (Map.Entry<String, Object> entry : map.entrySet()) {
                                         placeList.add(new MyCourse(i, entry.getKey(), (String) entry.getValue()));
-                                        Log.d("yyj", "리스트에 추가됨 : " + i + "번째");
                                         i++;
                                     }
                                     break;
                                 }
                             }
-
-                            Log.d("yyj", "리스트 추가 끝");
                             placeListAdapter = new PlaceListAdapter(PlanLastStep.this, placeList, onLongClickItem);
-                            Log.d("yyj", "어댑터 리스트생성");
                             listview.setAdapter(placeListAdapter);
-                            Log.d("yyj", "어댑터 셋팅");
                         }
 
                         @Override
@@ -249,7 +232,6 @@ public class PlanLastStep extends AppCompatActivity {
                     plan();
                 }
                 else {
-                    Log.d("yyj", "else문 들어왔음");
                     if (planName.getText() != null && placeList.size() > 0) {
                         daysValue();
                         plan();
@@ -287,8 +269,6 @@ public class PlanLastStep extends AppCompatActivity {
             key = (String) keyList.get(String.valueOf(pos));
         else {
             key = databaseReference.child("days_list").push().getKey();
-            Log.d("yyj", "데이 리스트 푸시");
-
         }
         if(day.size() > 0) {
             keyList.put(String.valueOf(pos), key);

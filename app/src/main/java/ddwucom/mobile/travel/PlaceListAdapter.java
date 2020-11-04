@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -27,7 +26,6 @@ public class PlaceListAdapter extends RecyclerView.Adapter<PlaceListAdapter.View
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        // context 와 parent.getContext() 는 같다.
         View view = LayoutInflater.from(context)
                 .inflate(R.layout.placelist_adapter, parent, false);
 
