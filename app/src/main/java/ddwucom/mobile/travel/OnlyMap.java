@@ -85,18 +85,10 @@ public class OnlyMap extends AppCompatActivity {
                 startActivityForResult(intent, 100);
                 break;
             case R.id.btn_home:
-                btnHome.setImageResource(R.drawable.home_icon_yellow);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
                 Intent home = new Intent(OnlyMap.this, HomeActivity.class);
                 startActivity(home);
                 break;
             case R.id.btn_friends:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
                 Intent group = new Intent(OnlyMap.this, GroupListActivity.class);
                 startActivity(group);
                 break;

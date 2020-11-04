@@ -183,6 +183,20 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             case R.id.nav_revoke:
                 if(firebaseAuth.getCurrentUser() != null){ //회원탈퇴
                     //이미 로그인 되었다면 이 액티비티를 종료함
+                    dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            Log.d("sera", snapshot.toString());
+                            Log.d("sera", snapshot.getValue().toString());
+                            Log.d("sera", snapshot.getChildren().toString());
+                            Log.d("sera", snapshot.child("uid").getValue().toString());
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+
+                        }
+                    });
                     firebaseAuth.getCurrentUser().delete();
                     finish();
                     startActivity(new Intent(getApplicationContext(), LoginForm.class));
@@ -207,18 +221,10 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                     btnMap.setImageResource(R.drawable.map_icon_grey);
                 break;
             case R.id.btn_friends:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
                 Intent group = new Intent(HomeActivity.this, GroupListActivity.class);
                 startActivity(group);
                 break;
             case R.id.btn_map:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_yellow);
                 Intent map = new Intent(HomeActivity.this, OnlyMap.class);
                 startActivity(map);
                 break;
