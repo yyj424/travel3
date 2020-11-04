@@ -147,7 +147,6 @@ public class ReviewForm extends AppCompatActivity {
             case R.id.y_reviewRegister:
                 if (ImageList.size() == 0) {
                     Toast.makeText(this, "이미지를 업로드 해야합니다.", Toast.LENGTH_LONG).show();
-                    Log.d("yyj", "이미지 없음");
                     return;
                 }
                 final ProgressDialog progressDialog = new ProgressDialog(this);
@@ -201,9 +200,8 @@ public class ReviewForm extends AppCompatActivity {
     }
 
     public void reviewRegister(final MyReview myReview) {
-        firebaseStorage = FirebaseStorage.getInstance();  Log.d("yyj", firebaseStorage.getReference().getName());
-        storageReference = firebaseStorage.getReference(); Log.d("yyj", storageReference.getName());
-
+        firebaseStorage = FirebaseStorage.getInstance();
+        storageReference = firebaseStorage.getReference();
         // 폴더명 지정
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd_HHmmss");
         Date now = new Date();
@@ -223,7 +221,6 @@ public class ReviewForm extends AppCompatActivity {
                                 public void onSuccess(Uri uri) {
                                     String tmp = uri.toString();
                                     reviewImages.add(tmp);
-                                    Log.d("yyj", String.valueOf(reviewImages.size()));
                                     if (reviewImages.size() == ImageList.size()) {
                                         myReview.setReviewImages(reviewImages);
                                         databaseReference.child("review_content_list").push().setValue(myReview);

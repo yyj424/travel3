@@ -81,9 +81,8 @@ public class GroupPlan extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listview.setLayoutManager(layoutManager);
 
-//        Intent intent = getIntent();
-//        gKey = (String) intent.getSerializableExtra("groupKey");
-        gKey = "-ML7VAsNH5KHPqnBrBry";
+        Intent intent = getIntent();
+        gKey = (String) intent.getSerializableExtra("groupKey");
 
             planDBRef = firebaseDatabase.getReference("Groups");
             planDBRef.addListenerForSingleValueEvent(new ValueEventListener() {

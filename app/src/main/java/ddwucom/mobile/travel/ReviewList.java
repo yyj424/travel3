@@ -138,7 +138,6 @@ public class ReviewList extends AppCompatActivity {
                         score3 = (long) s.child("score3").getValue();
                         score4 = (long) s.child("score4").getValue();
                         reviewList.add(new MyReview(uid, rImages, rating, date, content, score1, score2, score3, score4));
-                        Log.d("yyj","추가됨 : " + reviewList.size());
                     }
                 }
                 Collections.sort(reviewList, compareNew());
@@ -176,7 +175,6 @@ public class ReviewList extends AppCompatActivity {
                         score3 = (long) s.child("score3").getValue();
                         score4 = (long) s.child("score4").getValue();
                         reviewList.add(new MyReview(uid, rImages, rating, date, content, score1, score2, score3, score4));
-                        Log.d("yyj","추가됨 : " + reviewList.size());
                     }
                 }
                 Collections.sort(reviewList, compareNew());
