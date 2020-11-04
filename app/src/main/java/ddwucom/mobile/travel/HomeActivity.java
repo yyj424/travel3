@@ -214,7 +214,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 btnGroup.setImageResource(R.drawable.friends_icon_yellow);
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_grey);
-                Intent group = new Intent(HomeActivity.this, GroupMainActivity.class);
+                Intent group = new Intent(HomeActivity.this, GroupListActivity.class);
                 startActivity(group);
                 break;
             case R.id.btn_map:

@@ -123,6 +123,8 @@ public class GroupMainActivity extends AppCompatActivity {
                 btnGroup.setImageResource(R.drawable.friends_icon_yellow);
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent list = new Intent(GroupMainActivity.this, GroupListActivity.class);
+                startActivity(list);
                 break;
             case R.id.btn_map:
                 btnHome.setImageResource(R.drawable.home_icon_grey);

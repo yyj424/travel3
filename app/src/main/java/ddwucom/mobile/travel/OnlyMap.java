@@ -97,7 +97,7 @@ public class OnlyMap extends AppCompatActivity {
                 btnGroup.setImageResource(R.drawable.friends_icon_yellow);
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_grey);
-                Intent group = new Intent(OnlyMap.this, GroupMainActivity.class);
+                Intent group = new Intent(OnlyMap.this, GroupListActivity.class);
                 startActivity(group);
                 break;
             case R.id.btn_map:

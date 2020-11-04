@@ -17,7 +17,6 @@
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         <meta-data android:name="com.google.android.geo.API_KEY" android:value="@string/google_maps_key"/>
         <activity android:name=".MainActivity">
-
         </activity>
         <activity android:name=".LoadingActivity">
             <intent-filter>
@@ -46,9 +45,6 @@
         </activity>
 
         <activity android:name=".GroupListActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-            </intent-filter>
         </activity>
         <activity android:name=".GroupGalleryActivity">
 
@@ -65,44 +61,22 @@
         <activity android:name=".GroupPlan"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".PlanList"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".PlanFirstStep"/>
-        <activity android:name=".PlanSecondStep" />
         <activity android:name=".PlanLastStep"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".OnlyMap"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".MapActivity"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="adjustResize|adjustPan">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".ReviewList">
         </activity>

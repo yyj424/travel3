@@ -1,5 +1,6 @@
 package ddwucom.mobile.travel;
 
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,8 +10,10 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.viewpager.widget.ViewPager;
@@ -39,6 +42,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
     ViewPager viewPager;
     Toolbar toolbar;
     SectionsPagerAdapter sectionsPagerAdapter;
+    final static String EXT_FILE_NAME = "extfile.txt";
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,8 +87,22 @@ public class AlbumDetailActivity extends AppCompatActivity {
         viewPager.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                ImageAsyncTask imgTask = new ImageAsyncTask();
-                imgTask.execute(imageList.get(downPos));
+                AlertDialog.Builder builder = new AlertDialog.Builder(AlbumDetailActivity.this);
+                builder.setTitle("파일을 저장하시겠습니까?");
+                builder.setPositiveButton("예",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                ImageAsyncTask imgTask = new ImageAsyncTask();
+                                imgTask.execute(imageList.get(downPos));
+                            }
+                        });
+                builder.setNegativeButton("아니오",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.", Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                builder.show();
                 return false;
             }
         });
@@ -109,7 +127,8 @@ public class AlbumDetailActivity extends AppCompatActivity {
                     Log.d(TAG, "directory not created");
                 }
                 String fileName = String.format("%d.jpg", System.currentTimeMillis());
-                File outFile = new File(file, fileName);
+                Log.d(TAG,"filename" + fileName);
+                File outFile = new File(file.getPath(), fileName);
                 try {
                     outStream = new FileOutputStream(outFile);
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
