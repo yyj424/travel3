@@ -53,7 +53,6 @@ public class GroupMainActivity extends AppCompatActivity {
 
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
         currentNickname = (String) getIntent().getSerializableExtra("currentNickname");
-        Log.d("goeun", "0"+currentNickname);
         selectedGroup = (Group) getIntent().getSerializableExtra("selectedGroup");
 
         btnHome = findViewById(R.id.btn_home);
@@ -209,7 +208,7 @@ public class GroupMainActivity extends AppCompatActivity {
     {
         albumList.clear();
         dbRef = database.getReference("group_album").child(selectedGroup.getGid());
-        dbRef.addChildEventListener(new ChildEventListener() {
+        dbRef.limitToFirst(5).addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 ArrayList<String> imageList = (ArrayList<String>) snapshot.getValue();
