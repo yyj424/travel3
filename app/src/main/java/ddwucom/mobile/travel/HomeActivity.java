@@ -158,6 +158,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         rvHomeRecord.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvHomeRecord.setAdapter(recordAdapter);
         mgrRecords();
+        detailRecord();
 
         planListview = findViewById(R.id.y_home_plans);
         planList = new ArrayList<>();
@@ -282,10 +283,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         }
     }
 
-    public void mgrRecords() {
-        mgrRecordFolder();
-        getRecords();
-
+    public void detailRecord() {
         recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {
             @Override
             public void onItemClick(View v, int pos) {
@@ -298,6 +296,11 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 startActivity(intent);
             }
         });
+    }
+
+    public void mgrRecords() {
+        mgrRecordFolder();
+        getRecords();
     }
 
     public void mgrRecordFolder() {

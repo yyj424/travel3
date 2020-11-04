@@ -45,19 +45,21 @@
         </activity>
 
         <activity android:name=".GroupListActivity" >
-
-        </activity>
-        <activity android:name=".GroupGalleryActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
+        </activity>
+        <activity android:name=".GroupGalleryActivity">
+
         </activity>
 
         <activity android:name=".GroupRecordMain" >
 
         </activity>
         <activity android:name=".GRecordDayActivity" />
-        <activity android:name=".GroupMainActivity" />
+        <activity android:name=".GroupMainActivity" >
+
+        </activity>
 
         <activity android:name=".GroupPlan"
             android:screenOrientation="portrait"

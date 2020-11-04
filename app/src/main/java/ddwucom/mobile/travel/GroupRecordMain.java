@@ -43,7 +43,6 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
 
     private FirebaseDatabase database;
     private DatabaseReference dbRef;
-    private FirebaseUser user;
     private String currentUid;
     private String currentNickname;
     private String currentGid;
@@ -74,15 +73,8 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
         // DB
         database = FirebaseDatabase.getInstance();
 
-        // currentUser
-        user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            currentUid = user.getUid();
-        }
-        getNickname();
 
-        // test용!!!!!! 나중에 가져오는거 구현해야됨
-        currentGid = "-ML7VAsNH5KHPqnBrBry";
+        currentGid = (String) getIntent().getSerializableExtra("cuurentGid");
 
         Toolbar tbGroupRecord = findViewById(R.id.tbGroupRecord);
         setSupportActionBar(tbGroupRecord);
@@ -185,27 +177,6 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
         });
     }
 
-    public void getNickname() {
-        dbRef = database.getReference("user_list");
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-                for (DataSnapshot s : snapshot.getChildren()) {
-                    UserInfo u = s.getValue(UserInfo.class);
-                    Log.d(TAG, u.getUid() + " " + currentUid);
-                    if (u.getUid().equals(currentUid)) {
-                        currentNickname = u.getNickname();
-                    }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
     public void getRecords() {
         recordList.clear();
         dbRef = database.getReference("group_records");
@@ -255,8 +226,6 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
             @Override
             public void onCancelled(@NonNull DatabaseError error) {}
         });
-
-
     }
 
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
