@@ -46,8 +46,8 @@ public class GroupListActivity extends Activity {
     final int ADD_MEMBER_CODE = 100;
     private ListView lvGroup;
     private PlanAdapter planAdapter;
-    private ArrayList<MyPlan> planList = null;
-    private ArrayList<MyPlan> sPlanList = null;
+    private ArrayList<Group> groupList;
+    private ArrayList<Group> sGroupList;
 
     LinearLayout addGroupLayout;
     EditText etSearchGroup;
@@ -65,7 +65,7 @@ public class GroupListActivity extends Activity {
     AlertDialog alertDialog;
     String currentUid;
     String currentNickname;
-    String planName;
+    String groupName;
     String startDate;
     String endDate;
     String selectedDate;
@@ -96,8 +96,8 @@ public class GroupListActivity extends Activity {
 
         addGroupLayout = (LinearLayout) View.inflate(this, R.layout.add_group_layout, null);
 
-        planList = new ArrayList<>();
-        sPlanList = new ArrayList<>();
+        groupList = new ArrayList<>();
+        sGroupList = new ArrayList<>();
 
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Groups");
@@ -107,30 +107,31 @@ public class GroupListActivity extends Activity {
         etSearchGroup = findViewById(R.id.etSearchGroup);
         lvGroup = findViewById(R.id.lvGroup);
 
-        planAdapter = new PlanAdapter(GroupListActivity.this, R.layout.planlist_adapter_view, sPlanList);
+        planAdapter = new PlanAdapter(GroupListActivity.this, R.layout.planlist_adapter_view, true, sGroupList);
         lvGroup.setAdapter(planAdapter);
 
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d(TAG, snapshot.getValue().toString());
+                Log.d("goeun", snapshot.getValue().toString());
                 ArrayList<String> members = (ArrayList<String>) snapshot.child("members").getValue();
-                String key = snapshot.child("members").getKey();
+                String key = snapshot.getKey();
+                Log.d("goeun", key);
                 if (members.contains(currentUid)) {
-                    MyPlan p = new MyPlan();
-                    planName = snapshot.child("groupName").getValue().toString();
-                    p.setPlanName(planName);
+                    Group p = new Group();
+                    groupName = snapshot.child("groupName").getValue().toString();
+                    p.setGroupName(groupName);
                     startDate = snapshot.child("startDate").getValue().toString();
                     p.setStartDate(startDate);
                     endDate = snapshot.child("endDate").getValue().toString();
                     p.setEndDate(endDate);
                     p.setGid(key);
-                    planList.add(p);
+                    groupList.add(p);
                     planAdapter.notifyDataSetChanged();
                 }
-                if (planList.size() > 0) {
-                    sPlanList.clear();
-                    sPlanList.addAll(planList);
+                if (groupList.size() > 0) {
+                    sGroupList.clear();
+                    sGroupList.addAll(groupList);
                 }
 
             }
@@ -160,10 +161,11 @@ public class GroupListActivity extends Activity {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(GroupListActivity.this, GroupMainActivity.class);
-                intent.putExtra("planName", sPlanList.get(position).getPlanName());
-                intent.putExtra("currentGid", sPlanList.get(position).getGid());
+                Log.d(TAG, sGroupList.get(position).getStartDate());
+                intent.putExtra("selectedGroup", sGroupList.get(position));
                 intent.putExtra("currentUid", currentUid);
                 intent.putExtra("currentNickname", currentNickname);
+                Log.d(TAG, "2" +currentNickname);
                 startActivity(intent);
             }
         });
@@ -247,7 +249,13 @@ public class GroupListActivity extends Activity {
                                     String addKey = databaseReference.push().getKey();
                                     databaseReference.child(addKey).setValue(group);
                                     firebaseDatabase.getReference("group_album").child(addKey).child("기본").child("0").setValue("이미지 없음");
-                                    //planAdapter.notifyDataSetChanged();
+                                    group.setGid(addKey);
+                                    Intent intent = new Intent(GroupListActivity.this, GroupMainActivity.class);
+                                    intent.putExtra("selectedGroup", group);
+                                    intent.putExtra("currentUid", currentUid);
+                                    intent.putExtra("currentNickname", currentNickname);
+                                    Log.d(TAG, "1"+currentNickname);
+                                    startActivity(intent);
                                 }
                             }
                         })
@@ -296,18 +304,18 @@ public class GroupListActivity extends Activity {
     }
 
     public void search(String charText) {
-        sPlanList.clear();
+        sGroupList.clear();
 
         if (charText.length() == 0) {
-            sPlanList.addAll(planList);
+            sGroupList.addAll(groupList);
         }
         else
         {
-            for(int i = 0; i < planList.size(); i++)
+            for(int i = 0; i < groupList.size(); i++)
             {
-                if (planList.get(i).getPlanName().toLowerCase().contains(charText))
+                if (groupList.get(i).getGroupName().toLowerCase().contains(charText))
                 {
-                    sPlanList.add(planList.get(i));
+                    sGroupList.add(groupList.get(i));
                 }
             }
         }

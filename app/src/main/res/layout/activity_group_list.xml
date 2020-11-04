@@ -57,10 +57,11 @@
         android:id="@+id/btnGroupAdd"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="70dp"
+        android:layout_marginEnd="15dp"
+        android:layout_marginBottom="15dp"
         android:background="@drawable/btn_yellow_add"
         android:onClick="onClick"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/btn_yellow_add" />
 
@@ -83,9 +84,9 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
+            android:src="@drawable/home_icon_grey"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:srcCompat="@drawable/home_icon_grey" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
             android:id="@+id/btn_friends"
@@ -93,15 +94,15 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:srcCompat="@drawable/friends_icon_yellow" />
+            android:src="@drawable/friends_icon_yellow"
+            app:layout_constraintEnd_toEndOf="parent" />
 
         <ImageView
             android:id="@+id/btn_course"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            app:srcCompat="@drawable/course_icon_grey" />
+            android:src="@drawable/course_icon_grey" />
 
         <ImageView
             android:id="@+id/btn_map"
@@ -109,7 +110,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:onClick="onClick"
-            app:srcCompat="@drawable/map_icon_grey" />
+            android:src="@drawable/map_icon_grey" />
     </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

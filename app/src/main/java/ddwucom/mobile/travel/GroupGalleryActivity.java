@@ -120,8 +120,7 @@ public class GroupGalleryActivity extends AppCompatActivity {
 
         addAlbumLayout = (LinearLayout) View.inflate(this, R.layout.dialog_edittext, null);
 
-        // 현재 그룹 아이디 가져와야함!!
-        currentGid = "-ML7VAsNH5KHPqnBrBry";
+        currentGid = (String) getIntent().getSerializableExtra("currentGid");
 
         database = FirebaseDatabase.getInstance();
         dbRef = database.getReference("group_album").child(currentGid);

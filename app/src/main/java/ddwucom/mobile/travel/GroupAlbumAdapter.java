@@ -68,10 +68,12 @@ public class GroupAlbumAdapter extends RecyclerView.Adapter<GroupAlbumAdapter.Vi
     @Override
     public void onBindViewHolder(@NonNull final GroupAlbumAdapter.ViewHolder holder, int position) {
         holder.albumName.setText(albumList.get(position).getAlbumName());
-        holder.albumSize.setText(albumList.get(position).getImageCnt());
-        Glide.with(context)
-                .load(albumList.get(position).getThumbnail())
-                .into(holder.albumImg);
+        holder.albumSize.setText(String.valueOf(albumList.get(position).getImageCnt()));
+        if (albumList.get(position).getImageCnt() > 0) {
+            Glide.with(context)
+                    .load(albumList.get(position).getThumbnail())
+                    .into(holder.albumImg);
+        }
     }
 
     @Override

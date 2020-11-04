@@ -15,23 +15,44 @@ public class PlanAdapter extends BaseAdapter {
     private Context context;
     private int layout;
     private ArrayList<MyPlan> myPlanList;
+    private ArrayList<Group> groupList;
     private LayoutInflater layoutInflater;
+    private boolean isGroup;
 
     public PlanAdapter(Context context, int layout, ArrayList<MyPlan> myPlanList) {
         this.context = context;
         this.layout = layout;
         this.myPlanList = myPlanList;
+        isGroup = false;
+        layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+    }
+
+    public PlanAdapter(Context context, int layout, boolean isGroup, ArrayList<Group> groupList) {
+        this.context = context;
+        this.layout = layout;
+        this.groupList = groupList;
+        this.isGroup = isGroup;
         layoutInflater = (LayoutInflater)context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
     }
 
     @Override
     public int getCount() {
-        return myPlanList.size();
+        if (!isGroup) {
+            return myPlanList.size();
+        }
+        else {
+            return groupList.size();
+        }
     }
 
     @Override
     public Object getItem(int position) {
-        return myPlanList.get(position);
+        if (!isGroup) {
+            return myPlanList.get(position);
+        }
+        else {
+            return groupList.get(position);
+        }
     }
 
     @Override
@@ -51,9 +72,17 @@ public class PlanAdapter extends BaseAdapter {
         TextView start = convertView.findViewById(R.id.y_plan_startDate);
         TextView end = convertView.findViewById(R.id.y_plan_endDate);
 
-        name.setText(myPlanList.get(pos).getPlanName());
-        start.setText(myPlanList.get(pos).getStartDate());
-        end.setText(myPlanList.get(pos).getEndDate());
+
+        if (!isGroup) {
+            name.setText(myPlanList.get(pos).getPlanName());
+            start.setText(myPlanList.get(pos).getStartDate());
+            end.setText(myPlanList.get(pos).getEndDate());
+        }
+        else {
+            name.setText(groupList.get(pos).getGroupName());
+            start.setText(groupList.get(pos).getStartDate());
+            end.setText(groupList.get(pos).getEndDate());
+        }
 
         return convertView;
     }

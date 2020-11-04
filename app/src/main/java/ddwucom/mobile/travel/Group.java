@@ -1,14 +1,19 @@
 package ddwucom.mobile.travel;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Map;
 
-public class Group {
+public class Group implements Serializable {
     private ArrayList<String> members;
+    private String gid;
     private String groupName;
     private String startDate;
     private String endDate;
     private Map<String, Object> daysList;
+
+    public Group() {
+    }
 
     public Group(ArrayList<String> members, String groupName, String startDate, String endDate) {
         this.members = members;
@@ -23,6 +28,14 @@ public class Group {
         this.startDate = startDate;
         this.endDate = endDate;
         this.daysList = daysList;
+    }
+
+    public String getGid() {
+        return gid;
+    }
+
+    public void setGid(String gid) {
+        this.gid = gid;
     }
 
     public ArrayList<String> getMembers() {

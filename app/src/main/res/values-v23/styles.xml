@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="GroupToolbarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:fontFamily">@font/ssangmun</item>
+        <item name="titleTextColor">#ffffff</item>
+        <item name="subtitleTextColor">#ffffff</item>
+        <item name="android:shadowColor">#FFC107</item>
+        <item name="android:shadowDx">10</item>
+        <item name="android:shadowDy">10</item>
+        <item name="android:shadowRadius">5</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
+</resources>

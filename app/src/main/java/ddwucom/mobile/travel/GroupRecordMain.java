@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;;
@@ -46,6 +47,7 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
     private String currentUid;
     private String currentNickname;
     private String currentGid;
+    private String groupName;
 
     RecordAdapter recordAdapter;
     List<Record> recordList;
@@ -54,6 +56,7 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
     Calendar calendar;
     String dateFormat;
     SimpleDateFormat sdf;
+    TextView tvGroupRecordTitle;
 
     DatePickerDialog.OnDateSetListener recordDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -73,8 +76,10 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
         // DB
         database = FirebaseDatabase.getInstance();
 
-
-        currentGid = (String) getIntent().getSerializableExtra("cuurentGid");
+        currentNickname = (String) getIntent().getSerializableExtra("currentNickname");
+        currentUid = (String) getIntent().getSerializableExtra("currentUid");
+        currentGid = (String) getIntent().getSerializableExtra("currentGid");
+        groupName = (String) getIntent().getSerializableExtra("groupName");
 
         Toolbar tbGroupRecord = findViewById(R.id.tbGroupRecord);
         setSupportActionBar(tbGroupRecord);
@@ -124,6 +129,9 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
 
             }
         });
+
+        tvGroupRecordTitle = findViewById(R.id.tvGroupRecordTitle);
+        tvGroupRecordTitle.setText(groupName);
     }
 
     public void onMenuItemClick(MenuItem item) {

@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -36,7 +37,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GRecordDayActivity extends Activity {
+public class GRecordDayActivity extends AppCompatActivity {
     private static final String TAG = "GRecordDayActivity";
     private StorageReference storageRef;
     private FirebaseStorage firebaseStorage;
@@ -82,9 +83,12 @@ public class GRecordDayActivity extends Activity {
         database = FirebaseDatabase.getInstance();
 
         isNew = (boolean) getIntent().getSerializableExtra("isNew");
-        currentUid = (String) getIntent().getSerializableExtra("currentUid");
-        currentGid = (String) getIntent().getSerializableExtra("currentGid");
-        currentNickname = (String) getIntent().getSerializableExtra("currentNickname");
+        currentUid = getIntent().getStringExtra("currentUid");
+        currentGid = getIntent().getStringExtra("currentGid");
+        Log.d("goeun", "그룹" + currentGid);
+        currentNickname = getIntent().getStringExtra("currentNickname");
+        Log.d("goeun", currentNickname);
+
         if (isNew) {
             recordKey = database.getReference("group_records").push().getKey();
         } else {
@@ -199,6 +203,7 @@ public class GRecordDayActivity extends Activity {
     public void saveRecordInDB() {
         Record record = new Record();
         record.setGid(currentGid);
+        Log.d("goeun", "저장"+currentNickname);
         record.setNickname(currentNickname);
         record.setRecordTitle(title);
         record.setRecordDate(date);

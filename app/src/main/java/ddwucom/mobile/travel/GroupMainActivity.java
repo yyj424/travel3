@@ -14,7 +14,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -33,6 +32,7 @@ public class GroupMainActivity extends AppCompatActivity {
 
     TextView tvGroupStartDate;
     TextView tvGroupEndDate;
+    TextView y_group_main;
 
     ArrayList<Record> recordList;
     RecordAdapter recordAdapter;
@@ -40,10 +40,9 @@ public class GroupMainActivity extends AppCompatActivity {
     RecyclerView rvAlbumList;
     ArrayList<Album> albumList;
     GroupAlbumAdapter albumAdapter;
-    String currentGid;
     String currentUid;
     String currentNickname;
-    String planName;
+    Group selectedGroup;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,10 +51,10 @@ public class GroupMainActivity extends AppCompatActivity {
 
         database = FirebaseDatabase.getInstance();
 
-        currentGid = (String) getIntent().getSerializableExtra("currentGid");
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
         currentNickname = (String) getIntent().getSerializableExtra("currentNickname");
-        planName = (String) getIntent().getSerializableExtra("planName");
+        Log.d("goeun", "0"+currentNickname);
+        selectedGroup = (Group) getIntent().getSerializableExtra("selectedGroup");
 
         btnHome = findViewById(R.id.btn_home);
         btnGroup = findViewById(R.id.btn_friends);
@@ -63,7 +62,11 @@ public class GroupMainActivity extends AppCompatActivity {
         btnMap = findViewById(R.id.btn_map);
 
         tvGroupStartDate = findViewById(R.id.tvGroupStartDate);
+        tvGroupStartDate.setText(selectedGroup.getStartDate());
         tvGroupEndDate = findViewById(R.id.tvGroupEndDate);
+        tvGroupEndDate.setText(selectedGroup.getEndDate());
+        y_group_main = findViewById(R.id.y_group_main);
+        y_group_main.setText(selectedGroup.getGroupName());
 
         rvRecordList = findViewById(R.id.y_group_records);
         recordList = new ArrayList<>();
@@ -77,6 +80,15 @@ public class GroupMainActivity extends AppCompatActivity {
         albumAdapter = new GroupAlbumAdapter(this, albumList);
         rvAlbumList.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvAlbumList.setAdapter(albumAdapter);
+        albumAdapter.setOnItemClickListener(new GroupAlbumAdapter.OnItemClickListener() {
+            @Override
+            public void onItemClick(View v, int position) {
+                Intent intent = new Intent(GroupMainActivity.this, AlbumActivity.class);
+                intent.putExtra("currentGid", selectedGroup.getGid());
+                intent.putExtra("albumName", albumList.get(position).getAlbumName());
+                startActivity(intent);
+            }
+        });
     }
 
     public void detailRecord() {
@@ -84,9 +96,9 @@ public class GroupMainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View v, int pos) {
                 String key = recordAdapter.getItem(pos).getKey();
-                Intent intent = new Intent(GroupMainActivity.this, RecordDayActivity.class);
+                Intent intent = new Intent(GroupMainActivity.this, GRecordDayActivity.class);
                 intent.putExtra("currentUid", currentUid);
-                intent.putExtra("currentGid", currentGid);
+                intent.putExtra("currentGid", selectedGroup.getGid());
                 intent.putExtra("currentNickname", currentNickname);
                 intent.putExtra("isNew", false);
                 intent.putExtra("recordKey", key);
@@ -97,19 +109,7 @@ public class GroupMainActivity extends AppCompatActivity {
 
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
         Intent intent;
-//        Drawable tempImg, tempRes;
-//        Bitmap tmpBitmap, tmpBitmapRes;
         switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
-//
-//            case R.id.btnLogout:
-//
-//                if(firebaseAuth.getCurrentUser() != null){
-//                    //이미 로그인 되었다면 이 액티비티를 종료함
-//                    firebaseAuth.signOut();
-//                    finish();
-//                    startActivity(new Intent(getApplicationContext(), LoginForm.class));
-//                }
-//                break;
             case R.id.btn_home:
                 btnHome.setImageResource(R.drawable.home_icon_yellow);
                 btnGroup.setImageResource(R.drawable.friends_icon_grey);
@@ -134,21 +134,22 @@ public class GroupMainActivity extends AppCompatActivity {
                 break;
             case R.id.y_group_readAllRecords:
                 intent = new Intent(this, GroupRecordMain.class);
-                intent.putExtra("currentGid", currentGid);
+                intent.putExtra("currentGid", selectedGroup.getGid());
+                intent.putExtra("groupName", selectedGroup.getGroupName());
+                intent.putExtra("currentNickname", currentNickname);
+                intent.putExtra("currentUid", currentUid);
                 startActivity(intent);
                 break;
             case R.id.y_group_readAllAlbums:
                 intent = new Intent(this, GroupGalleryActivity.class);
+                intent.putExtra("currentGid", selectedGroup.getGid());
                 startActivity(intent);
                 break;
             case R.id.y_group_plan_start:
-                intent = new Intent(this, PlanLastStep.class);
-                intent.putExtra("pname", planName);
+                intent = new Intent(this, GroupPlan.class);
+                intent.putExtra("groupKey", selectedGroup.getGid());
                 startActivity(intent);
                 break;
-//            case R.id.btn_menu:
-//                drawerLayout.openDrawer(drawerView);
-//                break;
         }
     }
 
@@ -159,7 +160,8 @@ public class GroupMainActivity extends AppCompatActivity {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Map<String, Object> data = (Map) snapshot.getValue();
-                if (data.get("gid").equals(currentGid)) {
+                Log.d("goeun", snapshot.getValue().toString());
+                if (data.get("gid").equals(selectedGroup.getGid())) {
                     String key = snapshot.getKey();
                     Log.d("goeun", key);
                     String recordTitle = null;
@@ -203,7 +205,44 @@ public class GroupMainActivity extends AppCompatActivity {
 
     public void getAlbums()
     {
+        albumList.clear();
+        dbRef = database.getReference("group_album").child(selectedGroup.getGid());
+        dbRef.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                ArrayList<String> imageList = (ArrayList<String>) snapshot.getValue();
+                int size = imageList.size();
+                String thumbnail = imageList.get(size - 1);
+                String albumName = snapshot.getKey();
+                if (!imageList.get(0).equals("이미지 없음")) {
+                    albumList.add(new Album(thumbnail, albumName, size));
+                }
+                else {
+                    albumList.add(new Album(null, albumName, 0));
+                }
+                albumAdapter.notifyDataSetChanged();
+            }
 
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     @Override

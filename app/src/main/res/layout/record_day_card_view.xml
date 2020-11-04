@@ -87,7 +87,6 @@
                     android:fontFamily="@font/tmoney_regular"
                     android:gravity="center|left"
                     android:includeFontPadding="false"
-                    android:text="위치위치위치"
                     android:textColor="#000000"
                     android:textSize="12sp"
                     card:layout_constraintBottom_toBottomOf="parent"

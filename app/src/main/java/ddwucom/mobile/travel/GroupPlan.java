@@ -81,9 +81,8 @@ public class GroupPlan extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         listview.setLayoutManager(layoutManager);
 
-//        Intent intent = getIntent();
-//        gKey = (String) intent.getSerializableExtra("groupKey");
-        gKey = "-ML7VAsNH5KHPqnBrBry";
+        Intent intent = getIntent();
+        gKey = (String) intent.getSerializableExtra("groupKey");
 
             planDBRef = firebaseDatabase.getReference("Groups");
             planDBRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -239,9 +238,7 @@ public class GroupPlan extends AppCompatActivity {
                     daysValue();
                     plan();
                     Toast.makeText(GroupPlan.this, "계획 저장 완료!", Toast.LENGTH_SHORT).show();
-//                    Intent planListintent = new Intent(GroupPlan.this, PlanList.class);
-//                    startActivity(planListintent);
-//                    finish();
+                    finish();
                 }
                 else
                     Toast.makeText(GroupPlan.this, "계획을 제대로 완성하세요!", Toast.LENGTH_SHORT).show();

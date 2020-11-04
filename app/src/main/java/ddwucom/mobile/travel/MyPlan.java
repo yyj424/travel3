@@ -1,11 +1,11 @@
 package ddwucom.mobile.travel;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
 public class MyPlan {
     private String uid;
-    private String gid;
     private String PlanName;
     private String StartDate;
     private String EndDate;
@@ -27,13 +27,6 @@ public class MyPlan {
         this.daysList = daysList;
     }
 
-    public String getGid() {
-        return gid;
-    }
-
-    public void setGid(String gid) {
-        this.gid = gid;
-    }
 
     public String getUid() {
         return uid;

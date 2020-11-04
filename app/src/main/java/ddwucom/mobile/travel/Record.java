@@ -17,13 +17,7 @@ public class Record {
     String recordDate;
 
     public Record() {
-        this.key = null;
-        this.uid = null;
-        this.nickname = null;
-        this.recordFolder = null;
-        this.thumbnailImg = null;
-        this.recordTitle = null;
-        this.recordDate = null;
+
     }
 
     public Record(String key, String thumbnailImg, String recordTitle, String recordDate) {
