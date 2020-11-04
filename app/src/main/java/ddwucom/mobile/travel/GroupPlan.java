@@ -91,12 +91,8 @@ public class GroupPlan extends AppCompatActivity {
                     for (DataSnapshot s : snapshot.getChildren()) {
                         if (s.getKey().equals(gKey)) {
                             planName.setText(s.child("groupName").getValue().toString());
-                            Log.d("yyj", String.valueOf(s.child("daysList").getValue()));
-                            ArrayList<String> daysList = (ArrayList<String>) s.child("daysList").getValue();
-                            if(daysList != null) {
-                                for (int i = 0; i < daysList.size(); i++) {
-                                    keyList.put(String.valueOf(i), daysList.get(i));
-                                }
+                            for (DataSnapshot snap:s.child("daysList").getChildren()) {
+                                keyList.put(snap.getKey(), snap.getValue());
                             }
                             stDate = s.child("startDate").getValue().toString();
                             enDate = s.child("endDate").getValue().toString();

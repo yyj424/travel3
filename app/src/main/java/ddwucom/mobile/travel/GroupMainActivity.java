@@ -156,6 +156,7 @@ public class GroupMainActivity extends AppCompatActivity {
 
     public void getRecords() {
         recordList.clear();
+        Log.d("group record", "레코드 가져오기");
         dbRef = database.getReference("group_records");
         dbRef.orderByChild("recordDate").limitToLast(5).addChildEventListener(new ChildEventListener() {
             @Override
@@ -181,8 +182,11 @@ public class GroupMainActivity extends AppCompatActivity {
                         thumbnailImg = Uri.parse("android.resource://" + R.class.getPackage().getName() + "/" + R.drawable.g_no_image_icon).toString();
                     }
                     String nickname = data.get("nickname").toString();
+                    Log.d("group record", "add 전 " +recordList.size());
                     recordList.add(new Record(key, nickname, thumbnailImg, recordTitle, recordDate));
+                    Log.d("group record", "add 후 " +recordList.size());
                     Collections.sort(recordList, new Record.SortByDate());
+                    Log.d("group record", "sort 후 " +recordList.size());
 
                     recordAdapter.notifyDataSetChanged();
                 }
@@ -249,6 +253,7 @@ public class GroupMainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        Log.d("group record", "onResume");
         getRecords();
         getAlbums();
     }

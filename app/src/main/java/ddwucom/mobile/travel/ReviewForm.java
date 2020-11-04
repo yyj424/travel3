@@ -149,9 +149,6 @@ public class ReviewForm extends AppCompatActivity {
                     Toast.makeText(this, "이미지를 업로드 해야합니다.", Toast.LENGTH_LONG).show();
                     return;
                 }
-                final ProgressDialog progressDialog = new ProgressDialog(this);
-                progressDialog.setTitle("리뷰 업로드 중");
-                progressDialog.show();
 
                 // 객체에 데이터 저장
                 Intent intent = getIntent();

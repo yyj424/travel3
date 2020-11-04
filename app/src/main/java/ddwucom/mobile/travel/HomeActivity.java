@@ -148,7 +148,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         recordAdapter = new RecordAdapter(this, false, recordList);
         rvHomeRecord.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         rvHomeRecord.setAdapter(recordAdapter);
-        mgrRecords();
         detailRecord();
 
         planListview = findViewById(R.id.y_home_plans);
@@ -156,14 +155,12 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         planAdapter = new HomePlanAdapter(this, planList);
         planListview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         planListview.setAdapter(planAdapter);
-        getPlans();
 
         reviewListview = findViewById(R.id.y_home_reviews);
         reviewList = new ArrayList<>();
         reviewAdapter = new HomeReviewAdapter(this, reviewList);
         reviewListview.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false));
         reviewListview.setAdapter(reviewAdapter);
-        getReview();
     }
 
     @Override
@@ -262,6 +259,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void mgrRecordFolder() {
+        folders.clear();
         DatabaseReference dbRefFolder = database.getReference("folders");
 
         dbRefFolder.child(currentUid).child("folderNames").addChildEventListener(new ChildEventListener() {
@@ -339,6 +337,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     }
 
     public void getPlans() {
+        planList.clear();
         DatabaseReference plandb = database.getReference("plan_list");
         plandb.limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -387,6 +386,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             }
         });
 
+        reviewList.clear();
         DatabaseReference reviewdb = database.getReference("review_content_list");
         reviewdb.limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -407,5 +407,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mgrRecords();
+        getPlans();
+        getReview();
     }
 }

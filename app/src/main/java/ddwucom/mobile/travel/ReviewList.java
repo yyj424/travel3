@@ -87,7 +87,7 @@ public class ReviewList extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 reviewList.clear();
-                if(f == 0) {
+                if(f == 0 || f == 2) {
                     readRVDB();
                 }else {
                     readMyReview();

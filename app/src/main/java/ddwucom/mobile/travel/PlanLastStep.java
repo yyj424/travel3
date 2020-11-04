@@ -117,9 +117,8 @@ public class PlanLastStep extends AppCompatActivity {
                                 planName.setText(pname);
                                 stDate.setText(s.child("startDate").getValue().toString());
                                 enDate.setText(s.child("endDate").getValue().toString());
-                                ArrayList<String> daysList = (ArrayList<String>) s.child("daysList").getValue();
-                                for (int i = 0; i < daysList.size(); i++) {
-                                    keyList.put(String.valueOf(i), daysList.get(i));
+                                for (DataSnapshot snap:s.child("daysList").getChildren()) {
+                                    keyList.put(snap.getKey(), snap.getValue());
                                 }
                                 SimpleDateFormat transFormat = new SimpleDateFormat("yyyy.MM.dd");
                                 try {
