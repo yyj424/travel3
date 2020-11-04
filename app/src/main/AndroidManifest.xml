@@ -36,69 +36,38 @@
         <activity android:name=".FindPwActivity"/>
         <activity android:name=".FindIdActivity"/>
         <activity android:name=".FoundIDActivity"/>
-
         <activity android:name=".ChangePWActivity"/>
-
         <activity android:name=".SearchFriends"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
-
-        <activity android:name=".GroupListActivity" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:name=".GroupGalleryActivity">
-
-        </activity>
-
-        <activity android:name=".GroupRecordMain" >
-
-        </activity>
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".GroupListActivity" />
+        <activity android:name=".GroupGalleryActivity"/>
+        <activity android:name=".GroupRecordMain"/>
         <activity android:name=".GRecordDayActivity" />
-        <activity android:name=".GroupMainActivity" >
-
-        </activity>
-
+        <activity android:name=".GroupMainActivity" />
         <activity android:name=".GroupPlan"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".PlanList"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".PlanLastStep"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".OnlyMap"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
         <activity android:name=".MapActivity"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
-        <activity android:name=".ReviewList">
-        </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+        <activity android:name=".ReviewList" />
         <activity android:name=".ReviewForm"
             android:screenOrientation="portrait"
-            android:windowSoftInputMode="adjustResize|adjustPan">
-        </activity>
-        <activity android:name=".AddRecordActivity" >
-        </activity>
+            android:windowSoftInputMode="adjustResize|adjustPan" />
+        <activity android:name=".AddRecordActivity" />
         <activity android:name=".RecordDayActivity" />
-
         <activity android:name=".RecordMain"
-            android:windowSoftInputMode="adjustPan">
-
-        </activity>
-        <activity android:name=".AlbumActivity">
-
-        </activity>
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".AlbumActivity" />
         <activity android:name=".AlbumDetailActivity" />
     </application>
 </manifest>
