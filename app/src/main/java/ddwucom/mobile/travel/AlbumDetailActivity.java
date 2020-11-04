@@ -78,7 +78,6 @@ public class AlbumDetailActivity extends AppCompatActivity {
         viewPager.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
-
                 return mDetector.onTouchEvent(event);
             }
         });
@@ -103,23 +102,6 @@ public class AlbumDetailActivity extends AppCompatActivity {
         viewPager.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
-                Log.d("yyj", "LongClick!");
-                AlertDialog.Builder builder = new AlertDialog.Builder(AlbumDetailActivity.this);
-                builder.setTitle("파일을 저장하시겠습니까?");
-                builder.setPositiveButton("예",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                ImageAsyncTask imgTask = new ImageAsyncTask();
-                                imgTask.execute(imageList.get(downPos));
-                            }
-                        });
-                builder.setNegativeButton("아니오",
-                        new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.", Toast.LENGTH_SHORT).show();
-                            }
-                        });
-                builder.show();
                 return false;
             }
         });
@@ -129,6 +111,22 @@ public class AlbumDetailActivity extends AppCompatActivity {
 
         public void onLongPress(MotionEvent ev) {
             Log.d("yyj", "longClick");
+            AlertDialog.Builder builder = new AlertDialog.Builder(AlbumDetailActivity.this);
+            builder.setTitle("파일을 저장하시겠습니까?");
+            builder.setPositiveButton("예",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            ImageAsyncTask imgTask = new ImageAsyncTask();
+                            imgTask.execute(imageList.get(downPos));
+                        }
+                    });
+            builder.setNegativeButton("아니오",
+                    new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.", Toast.LENGTH_SHORT).show();
+                        }
+                    });
+            builder.show();
         }
 
     }
