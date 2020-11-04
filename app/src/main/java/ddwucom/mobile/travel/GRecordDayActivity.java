@@ -11,6 +11,7 @@ import android.view.animation.AnimationUtils;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class GRecordDayActivity extends AppCompatActivity {
+    ImageView btnHome, btnGroup, btnCourse, btnMap;
     private static final String TAG = "GRecordDayActivity";
     private StorageReference storageRef;
     private FirebaseStorage firebaseStorage;
@@ -79,6 +81,11 @@ public class GRecordDayActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_record_day);
+
+        btnHome = findViewById(R.id.btn_home);
+        btnGroup = findViewById(R.id.btn_friends);
+        btnCourse = findViewById(R.id.btn_course);
+        btnMap = findViewById(R.id.btn_map);
 
         database = FirebaseDatabase.getInstance();
 
@@ -177,6 +184,30 @@ public class GRecordDayActivity extends AppCompatActivity {
                 intent.putExtra("recordKey", recordKey);
                 intent.putExtra("isGroup", true);
                 startActivity(intent);
+                break;
+            case R.id.btn_home:
+                btnHome.setImageResource(R.drawable.home_icon_yellow);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent home = new Intent(GRecordDayActivity.this, HomeActivity.class);
+                startActivity(home);
+                break;
+            case R.id.btn_friends:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent list = new Intent(GRecordDayActivity.this, GroupListActivity.class);
+                startActivity(list);
+                break;
+            case R.id.btn_map:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_yellow);
+                Intent map = new Intent(GRecordDayActivity.this, OnlyMap.class);
+                startActivity(map);
                 break;
         }
     }

@@ -17,6 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -43,6 +44,7 @@ import java.util.Locale;
 
 public class GroupListActivity extends Activity {
     private static final String TAG = "GroupListActivity";
+    ImageView btnHome, btnGroup, btnCourse, btnMap;
     final int ADD_MEMBER_CODE = 100;
     private ListView lvGroup;
     private PlanAdapter planAdapter;
@@ -93,6 +95,11 @@ public class GroupListActivity extends Activity {
     protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
+
+        btnHome = findViewById(R.id.btn_home);
+        btnGroup = findViewById(R.id.btn_friends);
+        btnCourse = findViewById(R.id.btn_course);
+        btnMap = findViewById(R.id.btn_map);
 
         addGroupLayout = (LinearLayout) View.inflate(this, R.layout.add_group_layout, null);
 
@@ -299,6 +306,28 @@ public class GroupListActivity extends Activity {
             case R.id.btnAddMember:
                 Intent intent = new Intent(this, SearchFriends.class);
                 startActivityForResult(intent, ADD_MEMBER_CODE);
+                break;
+            case R.id.btn_home:
+                btnHome.setImageResource(R.drawable.home_icon_yellow);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent home = new Intent(GroupListActivity.this, HomeActivity.class);
+                startActivity(home);
+                break;
+            case R.id.btn_friends:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                break;
+            case R.id.btn_map:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_yellow);
+                Intent map = new Intent(GroupListActivity.this, OnlyMap.class);
+                startActivity(map);
                 break;
         }
     }

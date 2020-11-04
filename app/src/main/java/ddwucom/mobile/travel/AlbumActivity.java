@@ -7,6 +7,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -55,6 +56,7 @@ public class AlbumActivity extends AppCompatActivity {
     String folderName;
     String albumName;
     String currentGid;
+    ImageView btnHome, btnGroup, btnCourse, btnMap;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -149,10 +151,44 @@ public class AlbumActivity extends AppCompatActivity {
         });
     }
 
+    public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
+        switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
+            case R.id.btn_home:
+                btnHome.setImageResource(R.drawable.home_icon_yellow);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent home = new Intent(AlbumActivity.this, HomeActivity.class);
+                startActivity(home);
+                break;
+            case R.id.btn_friends:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent list = new Intent(AlbumActivity.this, GroupListActivity.class);
+                startActivity(list);
+                break;
+            case R.id.btn_map:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_yellow);
+                Intent map = new Intent(AlbumActivity.this, OnlyMap.class);
+                startActivity(map);
+                break;
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_album);
+
+        btnHome = findViewById(R.id.btn_home);
+        btnGroup = findViewById(R.id.btn_friends);
+        btnCourse = findViewById(R.id.btn_course);
+        btnMap = findViewById(R.id.btn_map);
 
         toolbar = findViewById(R.id.tbAlbum);
         setSupportActionBar(toolbar);

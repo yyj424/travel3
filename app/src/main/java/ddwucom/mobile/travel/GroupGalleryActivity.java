@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -47,6 +48,7 @@ public class GroupGalleryActivity extends AppCompatActivity {
 
     ArrayList<Album> albumList;
     String currentGid;
+    ImageView btnHome, btnGroup, btnCourse, btnMap;
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -113,10 +115,44 @@ public class GroupGalleryActivity extends AppCompatActivity {
         return false;
     }
 
+    public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
+        switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
+            case R.id.btn_home:
+                btnHome.setImageResource(R.drawable.home_icon_yellow);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent home = new Intent(GroupGalleryActivity.this, HomeActivity.class);
+                startActivity(home);
+                break;
+            case R.id.btn_friends:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent list = new Intent(GroupGalleryActivity.this, GroupListActivity.class);
+                startActivity(list);
+                break;
+            case R.id.btn_map:
+                btnHome.setImageResource(R.drawable.home_icon_grey);
+                btnGroup.setImageResource(R.drawable.friends_icon_grey);
+                btnCourse.setImageResource(R.drawable.course_icon_grey);
+                btnMap.setImageResource(R.drawable.map_icon_yellow);
+                Intent map = new Intent(GroupGalleryActivity.this, OnlyMap.class);
+                startActivity(map);
+                break;
+        }
+    }
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_gallery);
+
+        btnHome = findViewById(R.id.btn_home);
+        btnGroup = findViewById(R.id.btn_friends);
+        btnCourse = findViewById(R.id.btn_course);
+        btnMap = findViewById(R.id.btn_map);
 
         addAlbumLayout = (LinearLayout) View.inflate(this, R.layout.dialog_edittext, null);
 
