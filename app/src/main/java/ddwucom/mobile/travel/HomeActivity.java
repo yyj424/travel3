@@ -252,18 +252,16 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 btnGroup.setImageResource(R.drawable.friends_icon_yellow);
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_grey);
-                break;
-            case R.id.btn_course:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_yellow);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent group = new Intent(HomeActivity.this, GroupMainActivity.class);
+                startActivity(group);
                 break;
             case R.id.btn_map:
                 btnHome.setImageResource(R.drawable.home_icon_grey);
                 btnGroup.setImageResource(R.drawable.friends_icon_grey);
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_yellow);
+                Intent map = new Intent(HomeActivity.this, OnlyMap.class);
+                startActivity(map);
                 break;
             case R.id.tvPlanAll:
                 Intent plan = new Intent(HomeActivity.this, PlanList.class);
@@ -381,7 +379,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
     public void getPlans() {
         DatabaseReference plandb = database.getReference("plan_list");
-        plandb.addListenerForSingleValueEvent(new ValueEventListener() {
+        plandb.limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s : snapshot.getChildren()) {
@@ -429,7 +427,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         });
 
         DatabaseReference reviewdb = database.getReference("review_content_list");
-        reviewdb.addListenerForSingleValueEvent(new ValueEventListener() {
+        reviewdb.limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s : snapshot.getChildren()) {

@@ -85,6 +85,8 @@ public class GroupMainActivity extends AppCompatActivity {
                 btnGroup.setImageResource(R.drawable.friends_icon_grey);
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent home = new Intent(GroupMainActivity.this, HomeActivity.class);
+                startActivity(home);
                 break;
             case R.id.btn_friends:
                 btnHome.setImageResource(R.drawable.home_icon_grey);
@@ -92,17 +94,13 @@ public class GroupMainActivity extends AppCompatActivity {
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_grey);
                 break;
-            case R.id.btn_course:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_yellow);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
-                break;
             case R.id.btn_map:
                 btnHome.setImageResource(R.drawable.home_icon_grey);
                 btnGroup.setImageResource(R.drawable.friends_icon_grey);
                 btnCourse.setImageResource(R.drawable.course_icon_grey);
                 btnMap.setImageResource(R.drawable.map_icon_yellow);
+                Intent map = new Intent(GroupMainActivity.this, OnlyMap.class);
+                startActivity(map);
                 break;
             case R.id.y_group_readAllRecords:
                 Intent plan = new Intent(GroupMainActivity.this, GroupRecordMain.class);
