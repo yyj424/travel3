@@ -1,6 +1,7 @@
 package ddwucom.mobile.travel;
 
 import android.content.DialogInterface;
+import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -9,6 +10,8 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Toast;
 
@@ -16,6 +19,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GestureDetectorCompat;
 import androidx.viewpager.widget.ViewPager;
 
 import java.io.BufferedInputStream;
@@ -43,6 +47,8 @@ public class AlbumDetailActivity extends AppCompatActivity {
     Toolbar toolbar;
     SectionsPagerAdapter sectionsPagerAdapter;
     final static String EXT_FILE_NAME = "extfile.txt";
+    private static final String DEBUG_TAG = "Gestures";
+    private GestureDetectorCompat mDetector;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -67,6 +73,16 @@ public class AlbumDetailActivity extends AppCompatActivity {
         viewPager.setAdapter(sectionsPagerAdapter);
         viewPager.setCurrentItem(pos);
 
+        mDetector = new GestureDetectorCompat(this,new Gesture());
+
+        viewPager.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+
+                return mDetector.onTouchEvent(event);
+            }
+        });
+
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -75,7 +91,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                downPos = position;
+                downPos = position;Log.d("yyj", "position: " + downPos);
             }
 
             @Override
@@ -87,6 +103,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
         viewPager.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
+                Log.d("yyj", "LongClick!");
                 AlertDialog.Builder builder = new AlertDialog.Builder(AlbumDetailActivity.this);
                 builder.setTitle("파일을 저장하시겠습니까?");
                 builder.setPositiveButton("예",
@@ -106,6 +123,14 @@ public class AlbumDetailActivity extends AppCompatActivity {
                 return false;
             }
         });
+    }
+
+    class Gesture extends GestureDetector.SimpleOnGestureListener{
+
+        public void onLongPress(MotionEvent ev) {
+            Log.d("yyj", "longClick");
+        }
+
     }
 
     class ImageAsyncTask extends AsyncTask<String, Integer, Bitmap> {
