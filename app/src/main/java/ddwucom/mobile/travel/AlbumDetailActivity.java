@@ -61,6 +61,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
         imageList = getIntent().getStringArrayListExtra("imageList");
         Log.d(TAG, String.valueOf(imageList.size()));
         pos = getIntent().getIntExtra("pos", 0);
+        downPos = pos;
 
         // !!!!앨범명 가져오는거 구현해야됨
         setTitle("기본");
@@ -90,7 +91,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
 
             @Override
             public void onPageSelected(int position) {
-                downPos = position;Log.d("yyj", "position: " + downPos);
+                downPos = position;
             }
 
             @Override
@@ -120,12 +121,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
                             imgTask.execute(imageList.get(downPos));
                         }
                     });
-            builder.setNegativeButton("아니오",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            Toast.makeText(getApplicationContext(),"아니오를 선택했습니다.", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+            builder.setNegativeButton("아니오", null);
             builder.show();
         }
 

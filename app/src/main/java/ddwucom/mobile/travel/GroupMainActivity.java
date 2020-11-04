@@ -110,10 +110,6 @@ public class GroupMainActivity extends AppCompatActivity {
         Intent intent;
         switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
             case R.id.btn_home:
-                btnHome.setImageResource(R.drawable.home_icon_yellow);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
                 Intent home = new Intent(GroupMainActivity.this, HomeActivity.class);
                 startActivity(home);
                 break;
@@ -126,10 +122,6 @@ public class GroupMainActivity extends AppCompatActivity {
                 startActivity(list);
                 break;
             case R.id.btn_map:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_yellow);
                 Intent map = new Intent(GroupMainActivity.this, OnlyMap.class);
                 startActivity(map);
                 break;

@@ -220,7 +220,7 @@ public class JoinActivity extends AppCompatActivity {
         isChecked = true;
         dbRef  = database.getReference("user_list");
 
-        dbRef.addValueEventListener(new ValueEventListener() {
+        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.d("sera", "CLick22!!");
@@ -238,7 +238,7 @@ public class JoinActivity extends AppCompatActivity {
                     Log.d("sera", "체크를 했고, 중복된 아이디가 아니다. isChecked: " + isChecked + "isDoubled : "+ isDoubleID);
                     isDoubleID = false;
                 }
-                Toast.makeText(JoinActivity.this, "사용가능한 아이디 입니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
+                Toast.makeText(JoinActivity.this, "사용가능한 아이디 입니다.", Toast.LENGTH_SHORT).show();
             }
             @Override
             public void onCancelled(DatabaseError databaseError) {

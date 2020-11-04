@@ -1,5 +1,6 @@
 package ddwucom.mobile.travel;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -8,10 +9,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.GravityCompat;
@@ -181,29 +184,43 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_revoke:
-                if(firebaseAuth.getCurrentUser() != null){ //회원탈퇴
-                    //이미 로그인 되었다면 이 액티비티를 종료함
-                    dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot snapshot) {
-                            Log.d("sera", snapshot.toString());
-                            Log.d("sera", snapshot.getValue().toString());
-                            Log.d("sera", snapshot.getChildren().toString());
-                            Log.d("sera", snapshot.child("uid").getValue().toString());
-                        }
+                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
+                builder.setTitle("탈퇴하시겠습니까?");
+                builder.setPositiveButton("예",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                if(firebaseAuth.getCurrentUser() != null){ //회원탈퇴
+                                    //이미 로그인 되었다면 이 액티비티를 종료함
+                                    dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                                        @Override
+                                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                            for(DataSnapshot ch : snapshot.getChildren())
+                                            {
+                                                if(ch.child("uid").getValue().toString().equals(currentUid)) {
+                                                    ch.getRef().removeValue();
+                                                    firebaseAuth.getCurrentUser().delete();
+                                                    firebaseAuth.signOut();
+                                                    finish();
+                                                    Intent intent = new Intent(HomeActivity.this, LoginForm.class);
+                                                    startActivity(intent);
+                                                    break;
+                                                }
+                                            }
+                                        }
 
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError error) {
+                                        @Override
+                                        public void onCancelled(@NonNull DatabaseError error) {
 
-                        }
-                    });
-                    firebaseAuth.getCurrentUser().delete();
-                    finish();
-                    startActivity(new Intent(getApplicationContext(), LoginForm.class));
-                }
-                else{
-                    Log.d("sera", "firebaseAuth.getCurrentUser() : null  [nav_revoke]");
-                }
+                                        }
+                                    });
+                                }
+                                else{
+                                    Log.d("sera", "firebaseAuth.getCurrentUser() : null  [nav_revoke]");
+                                }
+                            }
+                        });
+                builder.setNegativeButton("아니오", null);
+                builder.show();
                 break;
         }
 

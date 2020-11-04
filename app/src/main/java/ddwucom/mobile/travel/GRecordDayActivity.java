@@ -186,10 +186,6 @@ public class GRecordDayActivity extends AppCompatActivity {
                 startActivity(intent);
                 break;
             case R.id.btn_home:
-                btnHome.setImageResource(R.drawable.home_icon_yellow);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
                 Intent home = new Intent(GRecordDayActivity.this, HomeActivity.class);
                 startActivity(home);
                 break;
@@ -202,10 +198,6 @@ public class GRecordDayActivity extends AppCompatActivity {
                 startActivity(list);
                 break;
             case R.id.btn_map:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_yellow);
                 Intent map = new Intent(GRecordDayActivity.this, OnlyMap.class);
                 startActivity(map);
                 break;

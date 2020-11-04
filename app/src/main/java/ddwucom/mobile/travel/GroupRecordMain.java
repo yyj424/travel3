@@ -272,10 +272,6 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
                 startActivity(intent);
                 break;
             case R.id.btn_home:
-                btnHome.setImageResource(R.drawable.home_icon_yellow);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
                 Intent home = new Intent(GroupRecordMain.this, HomeActivity.class);
                 startActivity(home);
                 break;
@@ -288,10 +284,6 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
                 startActivity(list);
                 break;
             case R.id.btn_map:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_yellow);
                 Intent map = new Intent(GroupRecordMain.this, OnlyMap.class);
                 startActivity(map);
                 break;
