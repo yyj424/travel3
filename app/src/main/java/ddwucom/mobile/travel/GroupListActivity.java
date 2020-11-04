@@ -34,6 +34,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -59,8 +60,11 @@ public class GroupListActivity extends Activity {
     SimpleDateFormat sdf;
     FirebaseDatabase firebaseDatabase;
     DatabaseReference databaseReference;
+    DatabaseReference dbRefUser;
+    FirebaseUser user;
     AlertDialog alertDialog;
     String currentUid;
+    String currentNickname;
     String planName;
     String startDate;
     String endDate;
@@ -86,7 +90,7 @@ public class GroupListActivity extends Activity {
     };
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
+    protected void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_group_list);
 
@@ -98,8 +102,8 @@ public class GroupListActivity extends Activity {
         firebaseDatabase = FirebaseDatabase.getInstance();
         databaseReference = firebaseDatabase.getReference("Groups");
 
-        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        currentUid = user.getUid();
+        getUserInfo();
+
         etSearchGroup = findViewById(R.id.etSearchGroup);
         lvGroup = findViewById(R.id.lvGroup);
 
@@ -111,11 +115,17 @@ public class GroupListActivity extends Activity {
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 Log.d(TAG, snapshot.getValue().toString());
                 ArrayList<String> members = (ArrayList<String>) snapshot.child("members").getValue();
+                String key = snapshot.child("members").getKey();
                 if (members.contains(currentUid)) {
+                    MyPlan p = new MyPlan();
                     planName = snapshot.child("groupName").getValue().toString();
+                    p.setPlanName(planName);
                     startDate = snapshot.child("startDate").getValue().toString();
+                    p.setStartDate(startDate);
                     endDate = snapshot.child("endDate").getValue().toString();
-                    planList.add(new MyPlan(planName, startDate, endDate));
+                    p.setEndDate(endDate);
+                    p.setGid(key);
+                    planList.add(p);
                     planAdapter.notifyDataSetChanged();
                 }
                 if (planList.size() > 0) {
@@ -149,8 +159,11 @@ public class GroupListActivity extends Activity {
         lvGroup.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(GroupListActivity.this, PlanLastStep.class);
-                intent.putExtra("pname", planName);
+                Intent intent = new Intent(GroupListActivity.this, GroupMainActivity.class);
+                intent.putExtra("planName", sPlanList.get(position).getPlanName());
+                intent.putExtra("currentGid", sPlanList.get(position).getGid());
+                intent.putExtra("currentUid", currentUid);
+                intent.putExtra("currentNickname", currentNickname);
                 startActivity(intent);
             }
         });
@@ -173,8 +186,32 @@ public class GroupListActivity extends Activity {
         calendar = Calendar.getInstance();
         dateFormat = "yyyy-MM-dd";
         sdf = new SimpleDateFormat(dateFormat, Locale.KOREA);
+    }
 
+    public void getUserInfo() {
+        user = FirebaseAuth.getInstance().getCurrentUser();
+        if (user != null) {
+            currentUid = user.getUid();
+        }
 
+        dbRefUser = firebaseDatabase.getReference("user_list");
+        dbRefUser.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    UserInfo u = s.getValue(UserInfo.class);
+                    Log.d(TAG, u.getUid() + " " + currentUid);
+                    if (u.getUid().equals(currentUid)) {
+                        currentNickname = u.getNickname();
+                    }
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void onClick(View v) {
@@ -207,7 +244,9 @@ public class GroupListActivity extends Activity {
                                     return;
                                 } else {
                                     Group group = new Group(addMembers, groupName, startDate, endDate);
-                                    databaseReference.push().setValue(group);
+                                    String addKey = databaseReference.push().getKey();
+                                    databaseReference.child(addKey).setValue(group);
+                                    firebaseDatabase.getReference("group_album").child(addKey).child("기본").child("0").setValue("이미지 없음");
                                     //planAdapter.notifyDataSetChanged();
                                 }
                             }

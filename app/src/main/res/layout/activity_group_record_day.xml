@@ -21,7 +21,8 @@
         android:id="@+id/etGRecordDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginEnd="24dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginBottom="1dp"
         android:background="@android:color/transparent"
         android:editable="false"
         android:ems="10"
@@ -37,10 +38,8 @@
         android:textColorHint="#969191"
         android:textSize="12sp"
         android:textStyle="bold"
-        app:layout_constraintBottom_toBottomOf="@+id/etGRecordTitle"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toEndOf="@+id/etRecordTitle" />
+        app:layout_constraintBottom_toTopOf="@+id/rvGRecordDay"
+        app:layout_constraintStart_toEndOf="@+id/etGRecordTitle" />
 
     <EditText
         android:id="@+id/etGRecordTitle"
@@ -84,11 +83,57 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginRight="15dp"
-        android:layout_marginBottom="15dp"
+        android:layout_marginBottom="70dp"
         android:background="@drawable/btn_yellow_add"
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/btn_yellow_add" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout3"
+        android:layout_width="match_parent"
+        android:layout_height="70dp"
+        android:background="@color/colorTop"
+        android:gravity="center|center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/btn_home"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/home_icon_grey" />
+
+        <ImageView
+            android:id="@+id/btn_friends"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:srcCompat="@drawable/friends_icon_yellow" />
+
+        <ImageView
+            android:id="@+id/btn_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            app:srcCompat="@drawable/course_icon_grey" />
+
+        <ImageView
+            android:id="@+id/btn_map"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            app:srcCompat="@drawable/map_icon_grey" />
+    </LinearLayout>
 </androidx.constraintlayout.widget.ConstraintLayout>

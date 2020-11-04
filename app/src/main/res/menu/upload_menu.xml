@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/btnUploadImg"
+        android:icon="@drawable/upload_icon"
+        android:onClick="onOptionsItemSelected"
+        android:title="사진 업로드하기"
+        app:showAsAction="always" />
+</menu>

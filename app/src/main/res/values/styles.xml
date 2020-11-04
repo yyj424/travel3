@@ -25,4 +25,10 @@
         <item name="android:fontFamily">@font/tmoney_regular</item>
         <item name="android:includeFontPadding">false</item>
     </style>
+
+    <style name="ToolbarTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <item name="android:fontFamily">@font/tmoney_regular</item>
+        <item name="android:textColor">@color/txt_dark_gray</item>
+        <item name="android:includeFontPadding">false</item>
+    </style>
 </resources>

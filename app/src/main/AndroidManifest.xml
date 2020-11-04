@@ -45,22 +45,65 @@
         </activity>
 
         <activity android:name=".GroupListActivity" >
-
-        </activity>
-
-        <activity android:name=".GroupRecordMain" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
             </intent-filter>
         </activity>
-        <activity android:name=".GRecordDayActivity" />
+        <activity android:name=".GroupGalleryActivity">
 
-        <activity android:name=".PlanList" />
+        </activity>
+
+        <activity android:name=".GroupRecordMain" >
+
+        </activity>
+        <activity android:name=".GRecordDayActivity" />
+        <activity android:name=".GroupMainActivity" >
+
+        </activity>
+
+        <activity android:name=".GroupPlan"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".PlanList"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity android:name=".PlanFirstStep"/>
         <activity android:name=".PlanSecondStep" />
-        <activity android:name=".MapActivity" >
+        <activity android:name=".PlanLastStep"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
-        <activity android:name=".ReviewList" >
+        <activity android:name=".OnlyMap"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".MapActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|adjustPan">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".ReviewList">
         </activity>
         <activity android:name=".ReviewForm"
             android:screenOrientation="portrait"
@@ -74,5 +117,9 @@
             android:windowSoftInputMode="adjustPan">
 
         </activity>
+        <activity android:name=".AlbumActivity">
+
+        </activity>
+        <activity android:name=".AlbumDetailActivity" />
     </application>
 </manifest>

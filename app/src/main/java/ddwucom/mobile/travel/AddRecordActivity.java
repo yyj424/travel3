@@ -15,15 +15,12 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.viewpager.widget.PagerAdapter;
-
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.database.annotations.NotNull;
 import com.google.firebase.storage.FirebaseStorage;
@@ -193,7 +190,11 @@ public class AddRecordActivity extends Activity {
                     for (final Uri imageUri : selectedImageList) {
                         // storage에 사진 업로드
 
-                        mStorageRef = firebaseStorage.getReference().child("record_images/" + currentGid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        if (isGroup) {
+                            mStorageRef = firebaseStorage.getReference().child("record_images/" + currentGid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        } else {
+                            mStorageRef = firebaseStorage.getReference().child("record_images/" + currentUid + "/" + imageFolderName + imageUri.getLastPathSegment());
+                        }
                         mStorageRef.putFile(imageUri)
                                 .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                                     @Override

@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -56,6 +57,9 @@ public class ReviewList extends AppCompatActivity {
     TextView cnt;
     TextView rv;
     int selected = 0;
+    String pname;
+    String nick;
+    int f;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -64,6 +68,9 @@ public class ReviewList extends AppCompatActivity {
 
         Intent intent = getIntent();
         pid = intent.getStringExtra("placeId");
+        pname = intent.getStringExtra("placeName");
+        nick = intent.getStringExtra("nickName");
+        f = intent.getIntExtra("onlyMap", 0);
 
         reviewList = new ArrayList<>();
         listView = findViewById(R.id.y_review_list);
@@ -80,12 +87,71 @@ public class ReviewList extends AppCompatActivity {
             @Override
             public void onRefresh() {
                 reviewList.clear();
-                readRVDB();
+                if(f == 0) {
+                    readRVDB();
+                }else {
+                    readMyReview();
+                }
                 mSwipeRefreshLayout.setRefreshing(false);
             }
         });
 
-        readRVDB();
+        if(nick != null) {
+            f = 1;
+            ImageView write = findViewById(R.id.y_review_write);
+            ImageView courseAdd = findViewById(R.id.y_add_course);
+            write.setVisibility(View.GONE);
+            courseAdd.setVisibility(View.GONE);
+            readMyReview();
+        }
+        else if(f == 2) {
+            f = 2;
+            ImageView courseAdd = findViewById(R.id.y_add_course);
+            courseAdd.setVisibility(View.GONE);
+            readRVDB();
+        }
+        else {
+            f = 0;
+            readRVDB();
+        }
+    }
+
+    private void readMyReview() {
+        adapter = new ReviewListAdapter(ReviewList.this, reviewList);
+        listView.setAdapter(adapter);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                for (DataSnapshot s : snapshot.getChildren()) {
+                    if (s.child("userId").getValue().toString().equals(nick)) {
+                        uid = s.child("userId").getValue().toString();
+                        List<String> rImages = new ArrayList<>();
+                        for (DataSnapshot rvis : s.child("reviewImages").getChildren()) {
+                            rImages.add(rvis.getValue().toString());
+                        }
+                        rating = Double.parseDouble(String.valueOf(s.child("rating").getValue()));
+                        total += rating;
+                        content = s.child("content").getValue().toString();
+                        date = s.child("date").getValue().toString();
+                        score1 = (long) s.child("score1").getValue();
+                        score2 = (long) s.child("score2").getValue();
+                        score3 = (long) s.child("score3").getValue();
+                        score4 = (long) s.child("score4").getValue();
+                        reviewList.add(new MyReview(uid, rImages, rating, date, content, score1, score2, score3, score4));
+                        Log.d("yyj","추가됨 : " + reviewList.size());
+                    }
+                }
+                Collections.sort(reviewList, compareNew());
+                adapter.notifyDataSetChanged();
+                cnt.setText(String.valueOf(adapter.getItemCount()));
+                rv.setText(String.format("%.1f", total / Double.parseDouble(cnt.getText().toString())));
+                total = 0.0;
+            }
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
     }
 
     public void readRVDB() {
@@ -194,6 +260,7 @@ public class ReviewList extends AppCompatActivity {
                     Intent intent = new Intent(ReviewList.this, ReviewForm.class);
                     intent.putExtra("uid", user.getUid());
                     intent.putExtra("placeId", pid);
+                    intent.putExtra("placeName", pname);
                     startActivityForResult(intent, 100);
                 } else {
                     Toast.makeText(getApplicationContext(), "리뷰는 로그인 후 작성할 수 있습니다.", Toast.LENGTH_LONG).show();

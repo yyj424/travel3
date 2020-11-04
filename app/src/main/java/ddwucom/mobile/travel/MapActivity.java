@@ -148,60 +148,6 @@ public class MapActivity extends AppCompatActivity {
         }
     }
 
-    public void findPlace(double lat, double lon) {
-        List<Place.Field> placeFields = Arrays.asList(Place.Field.NAME, Place.Field.ADDRESS,
-                Place.Field.LAT_LNG);
-
-        // Use the builder to create a FindCurrentPlaceRequest.
-        FindCurrentPlaceRequest request =
-                FindCurrentPlaceRequest.newInstance(placeFields);
-
-        // Get the likely places - that is, the businesses and other points of interest that
-        // are the best match for the device's current location.
-        PlacesClient mPlacesClient = Places.createClient(this);;
-        @SuppressWarnings("MissingPermission") final Task<FindCurrentPlaceResponse> placeResult =
-                mPlacesClient.findCurrentPlace(request);
-        placeResult.addOnCompleteListener (new OnCompleteListener<FindCurrentPlaceResponse>() {
-            @Override
-            public void onComplete(@NonNull Task<FindCurrentPlaceResponse> task) {
-                if (task.isSuccessful() && task.getResult() != null) {
-                    FindCurrentPlaceResponse likelyPlaces = task.getResult();
-
-                    // Set the count, handling cases where less than 5 entries are returned.
-                    int count;
-                    if (likelyPlaces.getPlaceLikelihoods().size() < 20) {
-                        count = likelyPlaces.getPlaceLikelihoods().size();
-                    } else {
-                        count = 20;
-                    }
-
-                    int i = 0;
-                    String[] mLikelyPlaceNames = new String[count];
-                    String[] mLikelyPlaceAddresses = new String[count];
-
-                    for (PlaceLikelihood placeLikelihood : likelyPlaces.getPlaceLikelihoods()) {
-                        // Build a list of likely places to show the user.
-                        mLikelyPlaceNames[i] = placeLikelihood.getPlace().getName();
-                        mLikelyPlaceAddresses[i] = placeLikelihood.getPlace().getAddress();
-
-                        i++;
-                        if (i > (count - 1)) {
-                            break;
-                        }
-                    }
-
-                    // Show a dialog offering the user the list of likely places, and add a
-                    // marker at the selected place.
-                    address = mLikelyPlaceAddresses[0];
-                    placeName = mLikelyPlaceNames[0];
-                }
-                else {
-                    Log.e("yyj", "Exception: %s", task.getException());
-                }
-            }
-        });
-    }
-
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
@@ -314,6 +260,7 @@ public class MapActivity extends AppCompatActivity {
 //                startActivity(intent);
                 Intent intent = new Intent(MapActivity.this, ReviewList.class);
                 intent.putExtra("placeId", pid);
+                intent.putExtra("placeName", placeName);
                 startActivityForResult(intent, 200);//???????????????이거 왜썼지
             }
         });

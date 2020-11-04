@@ -96,7 +96,7 @@ public class RecordDayActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record_day);
 
-        addFolderLayout = (LinearLayout) View.inflate(this, R.layout.add_folder_layout, null);
+        addFolderLayout = (LinearLayout) View.inflate(this, R.layout.dialog_edittext, null);
 
         database = FirebaseDatabase.getInstance();
 
@@ -213,7 +213,7 @@ public class RecordDayActivity extends AppCompatActivity {
                             .setPositiveButton("OK", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    etRecordFolder = addFolderLayout.findViewById(R.id.etRecordFolder);
+                                    etRecordFolder = addFolderLayout.findViewById(R.id.etDialog);
                                     String addFolderName = etRecordFolder.getText().toString();
 
                                     if (folders.contains(addFolderName)) {

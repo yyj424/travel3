@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/btnAddAlbum"
+        android:icon="@drawable/add_album_icon"
+        android:onClick="onOptionsItemSelected"
+        android:title="앨범 추가하기"
+        app:showAsAction="always" />
+</menu>
