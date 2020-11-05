@@ -2,11 +2,16 @@ package ddwucom.mobile.travel;
 
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.Typeface;
 import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -17,6 +22,7 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -184,9 +190,35 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                 }
                 break;
             case R.id.nav_revoke:
-                AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                builder.setTitle("탈퇴하시겠습니까?");
-                builder.setPositiveButton("예",
+                TextView dialogTitle = new TextView(this);
+                dialogTitle.setText("회원 탈퇴");
+                dialogTitle.setIncludeFontPadding(false);
+                dialogTitle.setTypeface(ResourcesCompat.getFont(this, R.font.tmoney_regular));
+                dialogTitle.setGravity(Gravity.CENTER);
+                dialogTitle.setPadding(10, 70, 10, 70);
+                dialogTitle.setTextSize(20F);
+                dialogTitle.setBackgroundResource(R.color.colorTop);
+                dialogTitle.setTextColor(Color.DKGRAY);
+
+                TextView dialogText = new TextView(this);
+                dialogText.setText("탈퇴하시겠습니까?");
+                dialogText.setIncludeFontPadding(false);
+                dialogText.setTypeface(ResourcesCompat.getFont(this, R.font.tmoney_regular));
+                dialogText.setGravity(Gravity.CENTER);
+                dialogText.setPadding(10, 30, 10, 0);
+                dialogText.setTextSize(15F);
+
+                FrameLayout container = new FrameLayout(this);
+                FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+                params.topMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+                dialogText.setLayoutParams(params);
+                container.addView(dialogText);
+
+                AlertDialog alertDialog;
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
+                builder.setCustomTitle(dialogTitle)
+                        .setView(container)
+                        .setPositiveButton("예",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int which) {
                                 if(firebaseAuth.getCurrentUser() != null){ //회원탈퇴
@@ -218,9 +250,13 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                                     Log.d("sera", "firebaseAuth.getCurrentUser() : null  [nav_revoke]");
                                 }
                             }
-                        });
-                builder.setNegativeButton("아니오", null);
-                builder.show();
+                        })
+                        .setNegativeButton("아니오", null);
+                alertDialog = builder.create();
+                alertDialog.show();
+                alertDialog.getWindow().setLayout(800, 700);
+
+
                 break;
         }
 
@@ -232,17 +268,17 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
     public void onClick(View v) { // 충돌 위험 있으니 push는 하지 마삼!!
         switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
             case R.id.btn_home:
-                    btnHome.setImageResource(R.drawable.home_icon_yellow);
-                    btnGroup.setImageResource(R.drawable.friends_icon_grey);
-                    btnCourse.setImageResource(R.drawable.course_icon_grey);
-                    btnMap.setImageResource(R.drawable.map_icon_grey);
+                Intent home = new Intent(this, HomeActivity.class);
+                home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(home);
+                finish();
                 break;
             case R.id.btn_friends:
-                Intent group = new Intent(HomeActivity.this, GroupListActivity.class);
-                startActivity(group);
+                Intent list = new Intent(this, GroupListActivity.class);
+                startActivity(list);
                 break;
             case R.id.btn_map:
-                Intent map = new Intent(HomeActivity.this, OnlyMap.class);
+                Intent map = new Intent(this, OnlyMap.class);
                 startActivity(map);
                 break;
             case R.id.tvPlanAll:

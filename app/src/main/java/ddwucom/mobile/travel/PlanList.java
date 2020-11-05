@@ -103,6 +103,24 @@ public class PlanList extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 break;
+            case R.id.btn_home:
+                Intent home = new Intent(this, HomeActivity.class);
+                home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(home);
+                finish();
+                break;
+            case R.id.btn_friends:
+                Intent list = new Intent(this, GroupListActivity.class);
+                list.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(list);
+                finish();
+                break;
+            case R.id.btn_map:
+                Intent map = new Intent(this, OnlyMap.class);
+                map.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(map);
+                finish();
+                break;
         }
     }
 

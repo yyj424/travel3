@@ -12,6 +12,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -46,6 +47,7 @@ public class GRecordDayActivity extends AppCompatActivity {
     private FirebaseDatabase database;
     private DatabaseReference dbRefRecord;
 
+    TextView tvGroupRecordDayTitle;
     ImageButton btnAddGRecordContent;
     EditText etGRecordTitle;
     EditText etGRecordDate;
@@ -65,6 +67,7 @@ public class GRecordDayActivity extends AppCompatActivity {
     String currentUid;
     String currentGid;
     String currentNickname;
+    String groupName;
 
     DatePickerDialog.OnDateSetListener recordDatePicker = new DatePickerDialog.OnDateSetListener() {
         @Override
@@ -92,6 +95,7 @@ public class GRecordDayActivity extends AppCompatActivity {
         isNew = (boolean) getIntent().getSerializableExtra("isNew");
         currentUid = getIntent().getStringExtra("currentUid");
         currentGid = getIntent().getStringExtra("currentGid");
+        groupName = getIntent().getStringExtra("groupName");
         Log.d("goeun", "그룹" + currentGid);
         currentNickname = getIntent().getStringExtra("currentNickname");
         Log.d("goeun", currentNickname);
@@ -102,6 +106,8 @@ public class GRecordDayActivity extends AppCompatActivity {
             recordKey = (String) getIntent().getSerializableExtra("recordKey");
         }
 
+        tvGroupRecordDayTitle = findViewById(R.id.tvGroupRecordDayTitle);
+        tvGroupRecordDayTitle.setText(groupName);
         btnAddGRecordContent = findViewById(R.id.btnAddGRecordContent);
         etGRecordDate = findViewById(R.id.etGRecordDate);
         etGRecordTitle = findViewById(R.id.etGRecordTitle);

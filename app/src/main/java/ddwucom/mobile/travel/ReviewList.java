@@ -280,8 +280,7 @@ public class ReviewList extends AppCompatActivity {
 
                 SelectedItems.add(selected);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                //builder.setTitle("");
+                AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.DialogTheme);
                 builder.setSingleChoiceItems(items, selected,
                         new DialogInterface.OnClickListener() {
                             @Override

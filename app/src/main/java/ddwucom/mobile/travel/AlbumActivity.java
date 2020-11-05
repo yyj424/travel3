@@ -155,19 +155,21 @@ public class AlbumActivity extends AppCompatActivity {
         switch (v.getId()) { // 본인 필요한 부분만 주석 풀어서 쓰세욥.
             case R.id.btn_home:
                 Intent home = new Intent(AlbumActivity.this, HomeActivity.class);
+                home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(home);
+                finish();
                 break;
             case R.id.btn_friends:
-                btnHome.setImageResource(R.drawable.home_icon_grey);
-                btnGroup.setImageResource(R.drawable.friends_icon_yellow);
-                btnCourse.setImageResource(R.drawable.course_icon_grey);
-                btnMap.setImageResource(R.drawable.map_icon_grey);
                 Intent list = new Intent(AlbumActivity.this, GroupListActivity.class);
+                list.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(list);
+                finish();
                 break;
             case R.id.btn_map:
                 Intent map = new Intent(AlbumActivity.this, OnlyMap.class);
+                map.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(map);
+                finish();
                 break;
         }
     }
@@ -212,6 +214,7 @@ public class AlbumActivity extends AppCompatActivity {
                         Log.d(TAG, "onClick" + position);
                         Intent intent = new Intent(AlbumActivity.this, AlbumDetailActivity.class);
                         intent.putStringArrayListExtra("imageList", imageList);
+                        intent.putExtra("albumName", albumName);
                         intent.putExtra("pos", position);
                         startActivity(intent);
                     }

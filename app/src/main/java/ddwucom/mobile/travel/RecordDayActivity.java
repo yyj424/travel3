@@ -17,6 +17,7 @@ import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -49,6 +50,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class RecordDayActivity extends AppCompatActivity {
+    ImageView btnHome, btnGroup, btnCourse, btnMap;
     private StorageReference storageRef;
     private FirebaseStorage firebaseStorage;
     private FirebaseDatabase database;
@@ -99,6 +101,11 @@ public class RecordDayActivity extends AppCompatActivity {
         addFolderLayout = (LinearLayout) View.inflate(this, R.layout.dialog_edittext, null);
 
         database = FirebaseDatabase.getInstance();
+
+        btnHome = findViewById(R.id.btn_home);
+        btnGroup = findViewById(R.id.btn_friends);
+        btnCourse = findViewById(R.id.btn_course);
+        btnMap = findViewById(R.id.btn_map);
 
         isNew = (boolean) getIntent().getSerializableExtra("isNew");
         currentUid = (String) getIntent().getSerializableExtra("currentUid");
@@ -264,6 +271,24 @@ public class RecordDayActivity extends AppCompatActivity {
                 intent.putExtra("isGroup", false);
                 intent.putExtra("recordKey", recordKey);
                 startActivity(intent);
+                break;
+            case R.id.btn_home:
+                Intent home = new Intent(this, HomeActivity.class);
+                home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(home);
+                finish();
+                break;
+            case R.id.btn_friends:
+                Intent list = new Intent(this, GroupListActivity.class);
+                list.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(list);
+                finish();
+                break;
+            case R.id.btn_map:
+                Intent map = new Intent(this, OnlyMap.class);
+                map.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(map);
+                finish();
                 break;
         }
     }

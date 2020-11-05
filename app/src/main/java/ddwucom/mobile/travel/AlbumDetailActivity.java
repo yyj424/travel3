@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
@@ -11,14 +12,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.GestureDetector;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.viewpager.widget.ViewPager;
 
@@ -43,6 +49,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
     ArrayList<String> imageList;
     int pos;
     int downPos;
+    String albumName;
     ViewPager viewPager;
     Toolbar toolbar;
     SectionsPagerAdapter sectionsPagerAdapter;
@@ -58,13 +65,13 @@ public class AlbumDetailActivity extends AppCompatActivity {
         toolbar = findViewById(R.id.detail_toolbar);
         setSupportActionBar(toolbar);
 
+        albumName = getIntent().getStringExtra("albumName");
         imageList = getIntent().getStringArrayListExtra("imageList");
         Log.d(TAG, String.valueOf(imageList.size()));
         pos = getIntent().getIntExtra("pos", 0);
         downPos = pos;
 
-        // !!!!앨범명 가져오는거 구현해야됨
-        setTitle("기본");
+        setTitle(albumName);
 
         sectionsPagerAdapter = new SectionsPagerAdapter(getSupportFragmentManager(), imageList);
 
@@ -111,18 +118,45 @@ public class AlbumDetailActivity extends AppCompatActivity {
     class Gesture extends GestureDetector.SimpleOnGestureListener{
 
         public void onLongPress(MotionEvent ev) {
-            Log.d("yyj", "longClick");
-            AlertDialog.Builder builder = new AlertDialog.Builder(AlbumDetailActivity.this);
-            builder.setTitle("파일을 저장하시겠습니까?");
-            builder.setPositiveButton("예",
+            TextView dialogTitle = new TextView(AlbumDetailActivity.this);
+            dialogTitle.setText("사진 저장");
+            dialogTitle.setIncludeFontPadding(false);
+            dialogTitle.setTypeface(ResourcesCompat.getFont(AlbumDetailActivity.this, R.font.tmoney_regular));
+            dialogTitle.setGravity(Gravity.CENTER);
+            dialogTitle.setPadding(10, 70, 10, 70);
+            dialogTitle.setTextSize(20F);
+            dialogTitle.setBackgroundResource(R.color.colorTop);
+            dialogTitle.setTextColor(Color.DKGRAY);
+
+            TextView dialogText = new TextView(AlbumDetailActivity.this);
+            dialogText.setText("사진을 저장하시겠습니까?");
+            dialogText.setIncludeFontPadding(false);
+            dialogText.setTypeface(ResourcesCompat.getFont(AlbumDetailActivity.this, R.font.tmoney_regular));
+            dialogText.setGravity(Gravity.CENTER);
+            dialogText.setPadding(10, 30, 10, 0);
+            dialogText.setTextSize(15F);
+
+            FrameLayout container = new FrameLayout(AlbumDetailActivity.this);
+            FrameLayout.LayoutParams params = new  FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+            params.topMargin = getResources().getDimensionPixelSize(R.dimen.dialog_margin);
+            dialogText.setLayoutParams(params);
+            container.addView(dialogText);
+
+            AlertDialog alertDialog;
+            AlertDialog.Builder builder = new AlertDialog.Builder(AlbumDetailActivity.this, R.style.DialogTheme);
+            builder.setCustomTitle(dialogTitle)
+                    .setView(container)
+                    .setPositiveButton("예",
                     new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
                             ImageAsyncTask imgTask = new ImageAsyncTask();
                             imgTask.execute(imageList.get(downPos));
                         }
-                    });
-            builder.setNegativeButton("아니오", null);
-            builder.show();
+                    })
+                    .setNegativeButton("아니오", null);
+            alertDialog = builder.create();
+            alertDialog.show();
+            alertDialog.getWindow().setLayout(800, 700);
         }
 
     }

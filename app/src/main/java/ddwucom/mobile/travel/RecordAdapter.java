@@ -26,6 +26,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     public RecordAdapter(Context context, boolean isGroup, List<Record> recordList) {
         this.context = context;
         this.isGroup = isGroup;
+        this.isRecordMain = false;
         this.recordList = recordList;
         this.layoutInflater = LayoutInflater.from(context);
     }

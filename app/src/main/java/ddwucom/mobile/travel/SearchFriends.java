@@ -79,9 +79,10 @@ public class SearchFriends extends AppCompatActivity {
                         String searchFriends = etSearchFriends.getText().toString();
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             searchUser = snapshot.getValue(UserInfo.class);
-                            if (searchUser.getUid().equals(currentUid)) {
-                                tvSearchResult.setText("자신은 추가할 수 없습니다!");
-                            }
+//                            if (searchUser.getUid().equals(currentUid)) {
+//                                tvSearchResult.setText("자신은 추가할 수 없습니다!");
+//                                break;
+//                            }
                             Log.d("goeun", "s " + searchFriends + "r " + searchUser.getNickname());
                             if (searchFriends.equals(searchUser.getNickname())) {
                                 Log.d("goeun", "true");

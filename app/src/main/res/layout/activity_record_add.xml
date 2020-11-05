@@ -7,7 +7,7 @@
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:src="@drawable/record_top"
         android:visibility="visible"
@@ -60,7 +60,7 @@
 
     <EditText
         android:id="@+id/et_content"
-        android:layout_width="378dp"
+        android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginStart="17dp"
         android:layout_marginTop="4dp"

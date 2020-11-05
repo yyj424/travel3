@@ -48,8 +48,7 @@
         android:fontFamily="@font/tmoney_regular"
         android:includeFontPadding="false"
         android:text="폴더명"
-        android:textColor="#5A5757"
-        android:textStyle="bold"
+        android:textColor="#000000"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/cardView2" />
 </androidx.constraintlayout.widget.ConstraintLayout>

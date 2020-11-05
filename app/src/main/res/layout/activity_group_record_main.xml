@@ -9,9 +9,10 @@
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/abGroupRecord"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="#FFFFFF"
+        android:background="@drawable/top"
+        android:gravity="center|center_horizontal|center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -20,9 +21,9 @@
             android:id="@+id/tbGroupRecord"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@drawable/top"
+            android:gravity="center"
             android:theme="@style/GroupToolbarTheme"
-            app:buttonGravity="center_vertical" >
+            app:buttonGravity="center_vertical">
 
             <TextView
                 android:id="@+id/tvGroupRecordTitle"
@@ -35,21 +36,22 @@
         </androidx.appcompat.widget.Toolbar>
 
 
-
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rvGroupRecord"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="14dp"
+        android:layout_marginEnd="20dp"
         android:background="@color/colorBg"
         android:overScrollMode="never"
-        android:paddingStart="10dp"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout3"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/abGroupRecord">
+        app:layout_constraintTop_toBottomOf="@+id/abGroupRecord"
+        app:layout_constraintVertical_bias="0.0">
 
     </androidx.recyclerview.widget.RecyclerView>
 

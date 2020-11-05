@@ -27,16 +27,17 @@
             android:id="@+id/y_rvImgPic"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="2dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
+            app:piv_animationType="fill"
             app:piv_radius="5dp"
             app:piv_selectedColor="@color/lightYellow"
             app:piv_unselectedColor="#C1BFBF"
-            attrs:piv_animationType="scale"
-            attrs:piv_dynamicCount="true"
-            attrs:piv_interactiveAnimation="true"
-            attrs:piv_padding="12dp" />
+            app:piv_dynamicCount="true"
+            app:piv_interactiveAnimation="true"
+            app:piv_padding="12dp" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -101,7 +101,7 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
         btnAddGroupRecord = findViewById(R.id.btnAddGroupRecord);
         recyclerView = findViewById(R.id.rvGroupRecord);
         recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recordAdapter = new RecordAdapter(this, true, recordList);
+        recordAdapter = new RecordAdapter(this, true, true, recordList);
         recyclerView.setAdapter(recordAdapter);
 
         recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {
@@ -113,6 +113,7 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
                 intent.putExtra("currentUid", currentUid);
                 intent.putExtra("currentGid", currentGid);
                 intent.putExtra("currentNickname", currentNickname);
+                intent.putExtra("groupName", groupName);
                 intent.putExtra("isNew", false);
                 intent.putExtra("recordKey", key);
                 startActivity(intent);
@@ -268,6 +269,7 @@ public class GroupRecordMain extends AppCompatActivity implements NavigationView
                 intent.putExtra("currentUid", currentUid);
                 intent.putExtra("currentGid", currentGid);
                 intent.putExtra("currentNickname", currentNickname);
+                intent.putExtra("groupName", groupName);
                 intent.putExtra("isNew", true);
                 startActivity(intent);
                 break;

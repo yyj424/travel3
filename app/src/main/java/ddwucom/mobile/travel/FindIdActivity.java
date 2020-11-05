@@ -61,7 +61,7 @@ public class FindIdActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Log.d(TAG, "CLick!!");
                             Log.d(TAG, "ValueEventListener : " + snapshot.child("email").getValue());
-                            if(email.equals(snapshot.child("nickname").getValue().toString())) {
+                            if(nickname.equals(snapshot.child("nickname").getValue().toString())) {
                                 Log.d(TAG, snapshot.child("email").getValue().toString());
                                 is_in = 1;
                                 email = snapshot.child("email").getValue().toString();
@@ -98,6 +98,10 @@ public class FindIdActivity extends AppCompatActivity {
                 startActivity(intent2);
                 break;
             case R.id.findID_imgNext:
+                if (!checkID) {
+                    Toast.makeText(FindIdActivity.this, "닉네임 존재 여부를 확인해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 Toast.makeText(FindIdActivity.this, "아이디는 " + email + "입니다", Toast.LENGTH_SHORT).show();
                 finish();
                 startActivity(new Intent(getApplicationContext(),  LoginForm.class));

@@ -18,6 +18,7 @@
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
         <item name="android:fontFamily">@font/tmoney_regular</item>
         <item name="colorAccent">@color/colorFolder</item>
+        <item name="android:includeFontPadding">false</item>
     </style>
 
     <style name="searchText" parent="Theme.AppCompat">

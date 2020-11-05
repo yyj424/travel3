@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
 public class ChangePWActivity extends AppCompatActivity {
@@ -32,7 +31,6 @@ public class ChangePWActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent;
-                AlertDialog.Builder builder;
                 if(etNewPw.getText().toString().equals(etCheckPw.getText().toString()))
                     intent = new Intent(ChangePWActivity.this, LoginForm.class);
                 else {

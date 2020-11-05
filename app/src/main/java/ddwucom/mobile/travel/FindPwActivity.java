@@ -24,7 +24,6 @@ import com.google.firebase.database.ValueEventListener;
 
 public class FindPwActivity extends AppCompatActivity {
     EditText etEmail;
-    TextView checkEmail;
 
     private static final String TAG = "sera";
     final int _CHECK = 1004;
@@ -32,6 +31,7 @@ public class FindPwActivity extends AppCompatActivity {
     private FirebaseAuth firebaseAuth;
     private FirebaseDatabase database;
     private DatabaseReference dbRef;
+    static boolean checkID = false;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -39,7 +39,6 @@ public class FindPwActivity extends AppCompatActivity {
         setContentView(R.layout.activity_find_pw);
 
         etEmail = findViewById(R.id.findPW_etEmail);
-        checkEmail = findViewById(R.id.findPW_chEmail); //>>이메일 확인 글자..
 
         database = FirebaseDatabase.getInstance();
         firebaseAuth = FirebaseAuth.getInstance();
@@ -48,6 +47,10 @@ public class FindPwActivity extends AppCompatActivity {
     public void onClick (View v){ //화살표 눌렀을 때
         switch(v.getId()){
             case R.id.findPW_imgNext:
+                if (!checkID) {
+                    Toast.makeText(this, "이메일 존재 여부를 확인해주세요!", Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 final String email = etEmail.getText().toString();
                 dbRef  = database.getReference("user_list");
 
@@ -58,7 +61,6 @@ public class FindPwActivity extends AppCompatActivity {
                         for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                             Log.d(TAG, "ValueEventListener : " + snapshot.child("email").getValue());
                             if (email.equals(snapshot.child("email").getValue().toString())) {
-                                Toast.makeText(FindPwActivity.this, "존재하는 아이디입니다.", Toast.LENGTH_SHORT).show();
                                 firebaseAuth.sendPasswordResetEmail(email)
                                         .addOnCompleteListener(new OnCompleteListener<Void>() {
                                             @Override
@@ -95,6 +97,37 @@ public class FindPwActivity extends AppCompatActivity {
                 break;
             case R.id.findPW_etEmail:
                 etEmail.setText("");
+                break;
+            case R.id.findPW_chEmail:
+                dbRef  = database.getReference("user_list");
+                dbRef.addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot dataSnapshot) {
+                        Log.d(TAG, "CLick22!!");
+                        int is_in = 0;
+                        final String email = etEmail.getText().toString();
+
+                        for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                            Log.d(TAG, "CLick!!");
+                            Log.d(TAG, "ValueEventListener : " + snapshot.child("email").getValue());
+                            if(email.equals(snapshot.child("email").getValue().toString())) {
+                                is_in = 1;
+                                break;
+                            }
+                        }
+                        if(is_in != 1){
+                            Toast.makeText(FindPwActivity.this, "해당 이메일이 없습니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
+                        }
+                        else{
+                            Toast.makeText(FindPwActivity.this, "존재하는 이메일입니다.", Toast.LENGTH_SHORT).show();
+                            checkID = true;
+                        }
+                    }
+                    @Override
+                    public void onCancelled(DatabaseError databaseError) {
+
+                    }
+                });
                 break;
         }
     }

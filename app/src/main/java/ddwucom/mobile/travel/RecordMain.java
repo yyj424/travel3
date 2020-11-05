@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
@@ -44,7 +45,7 @@ import java.util.Map;
 import gun0912.tedimagepicker.adapter.GridSpacingItemDecoration;
 
 public class RecordMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
-
+    ImageView btnHome, btnGroup, btnCourse, btnMap;
     private FirebaseDatabase database;
     private DatabaseReference dbRef;
     private FirebaseUser user;
@@ -85,6 +86,11 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
         if (user != null) {
             currentUid = user.getUid();
         }
+
+        btnHome = findViewById(R.id.btn_home);
+        btnGroup = findViewById(R.id.btn_friends);
+        btnCourse = findViewById(R.id.btn_course);
+        btnMap = findViewById(R.id.btn_map);
 
         Toolbar toolbar = findViewById(R.id.toolBar);
         setSupportActionBar(toolbar);
@@ -374,6 +380,24 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
                 intent.putExtra("isNew", true);
                 intent.putStringArrayListExtra("folders", folders);
                 startActivity(intent);
+                break;
+            case R.id.btn_home:
+                Intent home = new Intent(this, HomeActivity.class);
+                home.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(home);
+                finish();
+                break;
+            case R.id.btn_friends:
+                Intent list = new Intent(this, GroupListActivity.class);
+                list.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(list);
+                finish();
+                break;
+            case R.id.btn_map:
+                Intent map = new Intent(this, OnlyMap.class);
+                map.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(map);
+                finish();
                 break;
         }
     }
