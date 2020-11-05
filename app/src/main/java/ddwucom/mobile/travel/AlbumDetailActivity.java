@@ -1,6 +1,8 @@
 package ddwucom.mobile.travel;
 
+import android.Manifest;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.gesture.Gesture;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -24,6 +26,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.viewpager.widget.ViewPager;
@@ -45,7 +49,7 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class AlbumDetailActivity extends AppCompatActivity {
     private static final String TAG = "AlbumDetailActivity";
-
+    final int PERMISSIONS_REQUEST_CODE = 1;
     ArrayList<String> imageList;
     int pos;
     int downPos;
@@ -53,8 +57,6 @@ public class AlbumDetailActivity extends AppCompatActivity {
     ViewPager viewPager;
     Toolbar toolbar;
     SectionsPagerAdapter sectionsPagerAdapter;
-    final static String EXT_FILE_NAME = "extfile.txt";
-    private static final String DEBUG_TAG = "Gestures";
     private GestureDetectorCompat mDetector;
 
     @Override
@@ -147,16 +149,16 @@ public class AlbumDetailActivity extends AppCompatActivity {
             builder.setCustomTitle(dialogTitle)
                     .setView(container)
                     .setPositiveButton("예",
-                    new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            ImageAsyncTask imgTask = new ImageAsyncTask();
-                            imgTask.execute(imageList.get(downPos));
-                        }
-                    })
+                            new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ImageAsyncTask imgTask = new ImageAsyncTask();
+                                    imgTask.execute(imageList.get(downPos));
+                                }
+                            })
                     .setNegativeButton("아니오", null);
             alertDialog = builder.create();
             alertDialog.show();
-            alertDialog.getWindow().setLayout(800, 600);
+            alertDialog.getWindow().setLayout(800, 700);
         }
     }
 
@@ -172,17 +174,27 @@ public class AlbumDetailActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(Bitmap bitmap) {
             if (isExternalStorageWritable()) {
-                FileOutputStream outStream = null;
-                File file = new File(getExternalFilesDir(Environment.DIRECTORY_PICTURES),
-                        "travel3");
-                if (!file.mkdirs()) { // 만들어져있으면 make 못함
-                    Log.d(TAG, "directory not created");
+                if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                    ActivityCompat.requestPermissions(AlbumDetailActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
                 }
+                String destPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
+                final String folderPath = destPath+"travel3";
+                    File folder = new File(folderPath);
+                    if (!folder.exists()) {
+                        File wallpaperDirectory = new File(folderPath);
+                        wallpaperDirectory.mkdirs();
+                    }
+
+
+                FileOutputStream outStream = null;
+
+                File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES),
+                        "travel3");
                 String fileName = String.format("%d.jpg", System.currentTimeMillis());
-                Log.d(TAG,"filename" + fileName);
                 File outFile = new File(file.getPath(), fileName);
                 try {
                     outStream = new FileOutputStream(outFile);
+                    Log.d(TAG, "outStream " + outStream.toString());
                     bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outStream);
                     outStream.flush();
                     outStream.close();
@@ -237,6 +249,8 @@ public class AlbumDetailActivity extends AppCompatActivity {
     protected Bitmap readStreamToBitmap(InputStream stream) {
         return BitmapFactory.decodeStream(stream);
     }
+
+
 }
 
 

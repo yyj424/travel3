@@ -48,10 +48,10 @@
         android:id="@+id/y_review_write"
         android:layout_width="0dp"
         android:layout_height="50dp"
+        android:layout_marginStart="10dp"
         android:layout_marginBottom="10dp"
         android:onClick="onClick"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/y_add_course"
         app:layout_constraintStart_toEndOf="@+id/y_filter"
         app:srcCompat="@drawable/y_reviewwrite" />
 
