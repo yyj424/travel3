@@ -178,7 +178,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
                     ActivityCompat.requestPermissions(AlbumDetailActivity.this, new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, PERMISSIONS_REQUEST_CODE);
                 }
                 String destPath = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES).getPath();
-                final String folderPath = destPath+"travel3";
+                final String folderPath = destPath+"/travel3";
                     File folder = new File(folderPath);
                     if (!folder.exists()) {
                         File wallpaperDirectory = new File(folderPath);
