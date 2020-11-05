@@ -42,12 +42,22 @@ public class FoundIDActivity extends AppCompatActivity {
         msg_email.setText(checkEmail);
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Intent intent = new Intent(this, LoginForm.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        startActivity(intent);
+        finish();
+    }
+
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.foundID_imgBack:
-                finish();
                 Intent intent = new Intent(this, LoginForm.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.reMessage:
                 //final String email = etEmail.getText().toString();

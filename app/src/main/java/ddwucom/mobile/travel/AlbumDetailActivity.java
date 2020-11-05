@@ -158,7 +158,6 @@ public class AlbumDetailActivity extends AppCompatActivity {
             alertDialog.show();
             alertDialog.getWindow().setLayout(800, 600);
         }
-
     }
 
     class ImageAsyncTask extends AsyncTask<String, Integer, Bitmap> {
