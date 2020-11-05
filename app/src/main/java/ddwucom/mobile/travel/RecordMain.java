@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.DatePicker;
 import android.widget.ImageButton;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+
+import gun0912.tedimagepicker.adapter.GridSpacingItemDecoration;
 
 public class RecordMain extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -96,8 +99,10 @@ public class RecordMain extends AppCompatActivity implements NavigationView.OnNa
         recordList = new ArrayList<>();
         btnAddRecord = findViewById(R.id.btnAddRecord);
         recyclerView = findViewById(R.id.record_recycler_view);
-        recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
-        recordAdapter = new RecordAdapter(this, false, recordList);
+        GridLayoutManager gm = new GridLayoutManager(this, 2);
+        recyclerView.setLayoutManager(gm);
+
+        recordAdapter = new RecordAdapter(this, false, true, recordList);
         recyclerView.setAdapter(recordAdapter);
 
         recordAdapter.setOnItemClickListener(new RecordAdapter.OnItemClickListener() {

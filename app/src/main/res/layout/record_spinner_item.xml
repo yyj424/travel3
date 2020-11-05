@@ -4,5 +4,7 @@
     android:layout_height="wrap_content"
     android:fontFamily="@font/tmoney_regular"
     android:gravity="left"
+    android:includeFontPadding="false"
+    android:padding="2dp"
     android:textColor="#969191"
-    android:textSize="12sp" />
+    android:textSize="14sp" />

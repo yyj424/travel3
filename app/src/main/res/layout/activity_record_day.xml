@@ -19,10 +19,11 @@
 
     <ImageView
         android:id="@+id/imageView20"
-        android:layout_width="wrap_content"
+        android:layout_width="15dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginTop="23dp"
+        android:adjustViewBounds="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar4"
         app:srcCompat="@drawable/g_icon_folder" />
@@ -79,7 +80,7 @@
         android:paddingBottom="2dp"
         android:textColor="#000000"
         android:textColorHint="#969191"
-        android:textSize="12sp"
+        android:textSize="14sp"
         android:textStyle="bold"
         app:layout_constraintBottom_toBottomOf="@+id/etRecordTitle"
         app:layout_constraintEnd_toEndOf="parent"
@@ -88,8 +89,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/record_day_recycler_view"
-        android:layout_width="409dp"
-        android:layout_height="645dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:overScrollMode="never"
         android:padding="13dp"
         android:paddingTop="15dp"

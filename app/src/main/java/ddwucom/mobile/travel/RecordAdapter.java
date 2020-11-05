@@ -21,10 +21,19 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
     private LayoutInflater layoutInflater;
     private OnItemClickListener mListener = null;
     private boolean isGroup;
+    private boolean isRecordMain;
 
     public RecordAdapter(Context context, boolean isGroup, List<Record> recordList) {
         this.context = context;
         this.isGroup = isGroup;
+        this.recordList = recordList;
+        this.layoutInflater = LayoutInflater.from(context);
+    }
+
+    public RecordAdapter(Context context, boolean isGroup, boolean isRecordMain, List<Record> recordList) {
+        this.context = context;
+        this.isGroup = isGroup;
+        this.isRecordMain = isRecordMain;
         this.recordList = recordList;
         this.layoutInflater = LayoutInflater.from(context);
     }
@@ -42,9 +51,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         public TextView tvRecordTitle;
         public TextView tvRecordDate;
         public TextView tvRecordNick;
+        public RelativeLayout rlRecordItem;
 
         public ViewHolder(View itemView) {
             super(itemView);
+            rlRecordItem = itemView.findViewById(R.id.rlRecordItem);
             ivRecord = itemView.findViewById(R.id.ivRecord);
             tvRecordTitle = itemView.findViewById(R.id.tvRecordTitle);
             tvRecordDate = itemView.findViewById(R.id.tvRecordDate);
@@ -80,6 +91,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordAdapter.ViewHolder
         if (isGroup) {
             holder.tvRecordNick.setText(" · " + recordList.get(position).getNickname());
             holder.tvRecordNick.setVisibility(View.VISIBLE);
+        }
+        if (isRecordMain) {
+            holder.rlRecordItem.setPadding(13, 0, 13, 0);
         }
     }
 

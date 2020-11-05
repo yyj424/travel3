@@ -24,19 +24,21 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="40dp"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="20dp"
         android:fontFamily="@font/tmoney_bold"
         android:text="날짜"
         android:textColor="#969191"
         android:textSize="20sp"
+        app:layout_constraintEnd_toEndOf="@+id/planName"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/planName" />
+        app:layout_constraintTop_toBottomOf="@+id/y_etPlanName" />
 
     <EditText
         android:id="@+id/y_etPlanName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="30dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/y_planname"
         android:ems="10"
         android:fontFamily="@font/tmoney_regular"
@@ -45,17 +47,18 @@
         android:padding="15dp"
         android:textColor="#575555"
         android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@+id/planName"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/planName"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/planName" />
 
     <TextView
         android:id="@+id/y_pickStartDate"
         android:layout_width="110dp"
         android:layout_height="32dp"
         android:layout_marginStart="45dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="10dp"
+        android:layout_marginEnd="12dp"
         android:background="@drawable/y_planname"
         android:fontFamily="@font/tmoney_regular"
         android:hint="시작 날짜"
@@ -64,17 +67,17 @@
         android:textColor="#575555"
         android:textColorHint="#D1CFCF"
         android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@+id/y_PlanDate"
         app:layout_constraintEnd_toStartOf="@+id/textView44"
         app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/y_PlanDate"
-        app:layout_constraintTop_toBottomOf="@+id/y_etPlanName" />
+        app:layout_constraintTop_toTopOf="@+id/y_PlanDate" />
 
     <TextView
         android:id="@+id/y_pickEndDate"
         android:layout_width="110dp"
         android:layout_height="32dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginEnd="32dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/y_planname"
         android:fontFamily="@font/tmoney_regular"
         android:hint="마지막 날짜"
@@ -83,32 +86,36 @@
         android:textColor="#575555"
         android:textColorHint="#D1CFCF"
         android:textSize="17sp"
+        app:layout_constraintBottom_toBottomOf="@+id/textView44"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/y_etPlanName" />
+        app:layout_constraintTop_toTopOf="@+id/textView44" />
 
     <TextView
         android:id="@+id/textView44"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="18dp"
         android:layout_marginEnd="12dp"
         android:fontFamily="@font/tmoney_bold"
         android:text="~"
         android:textColor="#969191"
         android:textSize="20sp"
+        app:layout_constraintBottom_toBottomOf="@+id/y_pickStartDate"
         app:layout_constraintEnd_toStartOf="@+id/y_pickEndDate"
-        app:layout_constraintTop_toBottomOf="@+id/y_etPlanName" />
+        app:layout_constraintTop_toTopOf="@+id/y_pickStartDate" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/placeList"
-        android:layout_width="357dp"
-        android:layout_height="492dp"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginStart="25dp"
         android:layout_marginTop="15dp"
+        android:layout_marginEnd="20dp"
         app:layout_constraintBottom_toTopOf="@+id/imageView16"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.491"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/daySpinner" />
+        app:layout_constraintTop_toBottomOf="@+id/daySpinner"
+        app:layout_constraintVertical_bias="1.0" />
 
     <ImageView
         android:id="@+id/imageView16"
@@ -121,10 +128,11 @@
 
     <Spinner
         android:id="@+id/daySpinner"
-        android:layout_width="160dp"
-        android:layout_height="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginTop="15dp"
         android:background="@drawable/y_day_n"
+        android:gravity="center_horizontal|center_vertical"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/y_pickStartDate" />
@@ -145,9 +153,9 @@
         android:layout_width="255dp"
         android:layout_height="250dp"
         android:layout_marginTop="28dp"
-        android:layout_marginEnd="31dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:visibility="gone"
         app:compactCalendarBackgroundColor="#AAD8B0"
         app:compactCalendarCurrentDayBackgroundColor="#AAD8B0"
         app:compactCalendarCurrentSelectedDayBackgroundColor="#97C69D"
@@ -155,7 +163,9 @@
         app:compactCalendarTargetHeight="250dp"
         app:compactCalendarTextColor="#fff"
         app:compactCalendarTextSize="12sp"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/enYM"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/stYM"
         app:layout_constraintTop_toBottomOf="@+id/y_pickEndDate" />
 
     <com.github.sundeepk.compactcalendarview.CompactCalendarView
@@ -165,6 +175,7 @@
         android:layout_marginStart="125dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
+        android:visibility="gone"
         app:compactCalendarBackgroundColor="#AAD8B0"
         app:compactCalendarCurrentDayBackgroundColor="#AAD8B0"
         app:compactCalendarCurrentSelectedDayBackgroundColor="#97C69D"
@@ -172,6 +183,8 @@
         app:compactCalendarTargetHeight="250dp"
         app:compactCalendarTextColor="#fff"
         app:compactCalendarTextSize="12sp"
+        app:layout_constraintEnd_toEndOf="@+id/enYM"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/stYM" />
 
@@ -184,9 +197,10 @@
         android:gravity="center"
         android:text="TextView"
         android:textColor="#FFFFFF"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.801"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="@+id/y_pickStartDate"
         app:layout_constraintTop_toBottomOf="@+id/y_pickStartDate" />
 
     <TextView
@@ -198,8 +212,9 @@
         android:gravity="center"
         android:text="TextView"
         android:textColor="#FFFFFF"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.801"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="@+id/y_pickEndDate"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/y_pickEndDate" />
 

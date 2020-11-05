@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">travel3</string>
     <string name="login_with_google">Google로 로그인 하기</string>
-    <string name="pw_rules1">* 10자 이상\n * 영문/숫자/특수문자(공백제외)허용, 2개이상 조합</string>
+    <string name="pw_rules1">* 10자 이상\n* 영문/숫자/특수문자(공백제외)허용, 2개이상 조합</string>
     <string name="pw_rules2">* 영문/숫자/특수문자(공백제외)허용, 2개이상 조합</string>
     <string name="pw_rules">최소 10글자 이상/영문, 숫자, 특수문자 2개 이상 조합\n 동일한 숫자 3개 이상 연속 사용 불가</string>
     <string name="error">에러유형\n 1)이미 등록된 이메일 2) 암호 최소 6자리 이상 3) 서버에러</string>

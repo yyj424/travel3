@@ -22,9 +22,7 @@ import java.util.List;
 
 public class HomeReviewAdapter extends RecyclerView.Adapter<HomeReviewAdapter.ViewHolder> {
 private Context context;
-private int layout;
 private ArrayList<MyReview> myReviewList;
-private LayoutInflater layoutInflater;
 
 public static class ViewHolder extends RecyclerView.ViewHolder {
     RatingBar ratingbar;
@@ -49,7 +47,6 @@ public static class ViewHolder extends RecyclerView.ViewHolder {
     @Override
     public HomeReviewAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_reviews_card_view, parent, false);
-        // set the view's size, margins, paddings and layout parameters
         HomeReviewAdapter.ViewHolder viewHolder = new HomeReviewAdapter.ViewHolder(v);
         return viewHolder;
     }

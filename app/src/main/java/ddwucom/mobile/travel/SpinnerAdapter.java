@@ -34,7 +34,6 @@ public class SpinnerAdapter extends BaseAdapter {
         }
 
         if(data!=null){
-            //데이터세팅
             String text = data.get(position);
             ((TextView)convertView.findViewById(R.id.spinnerText)).setText(text);
         }
@@ -48,7 +47,6 @@ public class SpinnerAdapter extends BaseAdapter {
             convertView = inflater.inflate(R.layout.spinner_dropdown, parent, false);
         }
 
-        //데이터세팅
         String text = data.get(position);
         ((TextView)convertView.findViewById(R.id.spinnerText)).setText(text);
 

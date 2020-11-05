@@ -2,67 +2,76 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="185dp"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="3dp"
+        android:layout_marginTop="3dp"
+        android:layout_marginEnd="3dp"
+        android:layout_marginBottom="3dp"
         app:cardCornerRadius="10dp"
-        app:cardPreventCornerOverlap="true">
-
-        <ImageView
-            android:id="@+id/y_home_review_img"
-            android:layout_width="170dp"
-            android:layout_height="110dp"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/ic_launcher_background" />
+        app:cardUseCompatPadding="true">
 
         <androidx.constraintlayout.widget.ConstraintLayout
-            android:layout_width="170dp"
-            android:layout_height="160dp">
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/y_home_review_img"
+                android:layout_width="160dp"
+                android:layout_height="110dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:srcCompat="@drawable/ic_launcher_background" />
 
             <TextView
                 android:id="@+id/y_home_review_pname"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="5dp"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="10dp"
                 android:fontFamily="@font/tmoney_regular"
                 android:includeFontPadding="false"
                 android:text="리뷰이름"
-                android:textColor="#4E4949"
+                android:textColor="#000000"
                 android:textSize="14sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/y_home_review_rating"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/y_home_review_img" />
 
             <RatingBar
                 android:id="@+id/y_home_review_rating"
                 style="@style/smallRatingBar"
                 android:layout_width="wrap_content"
                 android:layout_height="17dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginBottom="5dp"
-                android:max="5"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="4dp"
+                android:layout_marginBottom="10dp"
 
+                android:max="5"
                 android:numStars="5"
                 android:rating="0"
                 android:stepSize="0.5"
                 app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/y_home_review_pname"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/y_home_review_ratingView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="3dp"
-                android:layout_marginBottom="7dp"
                 android:fontFamily="@font/tmoney_regular"
                 android:includeFontPadding="false"
                 android:text="4.5"
-                android:textSize="11sp"
-                app:layout_constraintBottom_toBottomOf="parent"
+                android:textColor="@color/xd_gray"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="@+id/y_home_review_rating"
                 app:layout_constraintStart_toEndOf="@+id/y_home_review_rating" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

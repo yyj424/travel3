@@ -24,9 +24,8 @@
                 android:fontFamily="@font/tmoney_regular"
                 android:includeFontPadding="false"
                 android:text="계획 이름"
-                android:textColor="#4E4949"
+                android:textColor="#000000"
                 android:textSize="18sp"
-                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -39,6 +38,8 @@
                 android:fontFamily="@font/tmoney_regular"
                 android:includeFontPadding="false"
                 android:text="시작날짜"
+                android:textColor="@color/xd_gray"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/y_card_planName" />
 
@@ -47,10 +48,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="5dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/tmoney_regular"
                 android:includeFontPadding="false"
                 android:text="끝날짜"
+                android:textColor="@color/xd_gray"
+                android:textSize="12sp"
                 app:layout_constraintStart_toEndOf="@+id/textView57"
                 app:layout_constraintTop_toBottomOf="@+id/y_card_startDate" />
 
@@ -59,10 +62,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="10dp"
-                android:layout_marginTop="10dp"
+                android:layout_marginTop="8dp"
                 android:fontFamily="@font/tmoney_regular"
                 android:includeFontPadding="false"
                 android:text="~"
+                android:textColor="@color/xd_gray"
+                android:textSize="12sp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/y_card_startDate" />
         </androidx.constraintlayout.widget.ConstraintLayout>

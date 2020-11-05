@@ -84,18 +84,14 @@ public class PlanLastStep extends AppCompatActivity {
 
         stCalendar = (CompactCalendarView) findViewById(R.id.y_startCalendar);
         stCalendar.setFirstDayOfWeek(Calendar.SUNDAY);
-        stCalendar.setVisibility(View.GONE);
         enCalendar = (CompactCalendarView) findViewById(R.id.y_EndCalendar);
         enCalendar.setFirstDayOfWeek(Calendar.SUNDAY);
-        enCalendar.setVisibility(View.GONE);
         long now = System.currentTimeMillis();
         final Date date = new Date(now);
         final SimpleDateFormat stdate = new SimpleDateFormat("yyyy-MM");
         String getTime = stdate.format(date);
         stYM.setText(getTime);
-        stYM.setVisibility(View.GONE);
         enYM.setText(getTime);
-        enYM.setVisibility(View.GONE);
 
         listview = findViewById(R.id.placeList);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);

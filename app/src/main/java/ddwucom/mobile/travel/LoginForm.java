@@ -91,10 +91,10 @@ public class LoginForm extends AppCompatActivity {
     public void onClick (View v){
         switch (v.getId()) {
             case R.id.etPwForm:
-                etPW.setText("");
+                etPW.setHint("");
                 break;
             case R.id.etEmailForm:
-                etEmail.setText("");
+                etEmail.setHint("");
                 break;
             case R.id.findID:
                 Intent intent2 = new Intent(this, FindIdActivity.class);
