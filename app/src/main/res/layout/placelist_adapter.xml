@@ -8,7 +8,7 @@
 
     <EditText
         android:id="@+id/y_placeMemo"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="89dp"
         android:background="@drawable/y_plancontent"
         android:ems="10"
@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/y_placeName"
-        android:layout_width="88dp"
+        android:layout_width="0dp"
         android:layout_height="89dp"
         android:layout_marginStart="8dp"
         android:background="@drawable/y_yellow"

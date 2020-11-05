@@ -98,6 +98,7 @@ public class GroupMainActivity extends AppCompatActivity {
                 Intent intent = new Intent(GroupMainActivity.this, GRecordDayActivity.class);
                 intent.putExtra("currentUid", currentUid);
                 intent.putExtra("currentGid", selectedGroup.getGid());
+                intent.putExtra("groupName", selectedGroup.getGroupName());
                 intent.putExtra("currentNickname", currentNickname);
                 intent.putExtra("isNew", false);
                 intent.putExtra("recordKey", key);

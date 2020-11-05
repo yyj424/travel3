@@ -156,7 +156,7 @@ public class AlbumDetailActivity extends AppCompatActivity {
                     .setNegativeButton("아니오", null);
             alertDialog = builder.create();
             alertDialog.show();
-            alertDialog.getWindow().setLayout(800, 700);
+            alertDialog.getWindow().setLayout(800, 600);
         }
 
     }

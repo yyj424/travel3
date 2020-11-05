@@ -254,7 +254,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         .setNegativeButton("아니오", null);
                 alertDialog = builder.create();
                 alertDialog.show();
-                alertDialog.getWindow().setLayout(800, 700);
+                alertDialog.getWindow().setLayout(800, 600);
 
 
                 break;
