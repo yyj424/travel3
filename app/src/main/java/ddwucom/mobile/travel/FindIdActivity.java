@@ -51,7 +51,7 @@ public class FindIdActivity extends AppCompatActivity {
                 dbRef  = database.getReference("user_list");
                 Log.d(TAG, "CLick11!!");
 
-                dbRef.addValueEventListener(new ValueEventListener() {
+                dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot dataSnapshot) {
                         Log.d(TAG, "CLick22!!");
@@ -70,7 +70,7 @@ public class FindIdActivity extends AppCompatActivity {
                             }
                         }
                         if(is_in != 1){
-                            Toast.makeText(FindIdActivity.this, "해당 닉네임이 없습니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
+//                            Toast.makeText(FindIdActivity.this, "해당 닉네임이 없습니다. 다시입력하세요 ", Toast.LENGTH_SHORT).show();
                         }
                         else{
 

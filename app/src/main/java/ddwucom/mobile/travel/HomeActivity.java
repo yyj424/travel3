@@ -445,7 +445,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         reviewList.clear();
         DatabaseReference reviewdb = database.getReference("review_content_list");
-        reviewdb.limitToLast(5).addListenerForSingleValueEvent(new ValueEventListener() {
+        reviewdb.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot s : snapshot.getChildren()) {

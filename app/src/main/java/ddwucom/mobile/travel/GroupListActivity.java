@@ -299,9 +299,9 @@ public class GroupListActivity extends Activity {
                     }
                 });
 
-                TextView textView = alertDialog.findViewById(android.R.id.message);
-                Typeface face = Typeface.createFromAsset(getAssets(), "fonts/tmoney_regular.ttf");
-                textView.setTypeface(face);
+//                TextView textView = alertDialog.findViewById(android.R.id.message);
+//                Typeface face = Typeface.createFromAsset(getAssets(), "fonts/tmoney_regular.ttf");
+//                textView.setTypeface(face);
                 break;
             case R.id.btnAddMember:
                 Intent intent = new Intent(this, SearchFriends.class);
